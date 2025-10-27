@@ -1,0 +1,154 @@
+## Introduction to Conditional Expressions
+<section id="conditional-expressions"></section>
+
+## Concise Conditionals: The Ternary Operator
+
+Often, you'll find yourself writing simple `if-else` statements where the only purpose is to assign one of two possible values to a variable based on a condition.
+
+For example:
+
+```python
+age = 20
+status = "" # Initialize variable
+
+if age >= 18:
+    status = "Adult"
+else:
+    status = "Minor"
+
+print(status) # Output: Adult
+```
+
+While this works perfectly fine, Python provides a more compact syntax for this specific scenario called a <span className="highlight">conditional expression</span>, often referred to as the <span className="highlight">ternary operator</span> (because it involves three operands).
+
+## Syntax of Conditional Expressions
+<section id="syntax-of-conditional-expressions"></section>
+
+The structure is as follows:
+
+```python
+variable = value_if_true if condition else value_if_false
+```
+
+Let's break it down:
+
+*   **condition**: The expression to be evaluated (must result in True or False).
+*   **value_if_true**: The value that the entire expression will evaluate to if the `condition` is True.
+*   **value_if_false**: The value that the entire expression will evaluate to if the `condition` is False.
+*   **if` and `else**: Keywords separating the components.
+
+The entire expression evaluates to either `value_if_true` or `value_if_false`, which is then typically assigned to a variable or used directly within another expression (like a **print** statement).
+
+## Rewriting the Example
+
+Using the conditional expression, the previous age example becomes much shorter:
+
+```python
+age = 20
+
+# Assign status using a conditional expression
+status = "Adult" if age >= 18 else "Minor"
+
+print(status) # Output: Adult
+```
+
+This single line achieves the same result as the four lines of the **if-else** block used for assignment.
+
+## When to Use Conditional Expressions
+<section id="when-to-use-conditional-expressions"></section>
+
+
+*   **Simple Assignments:** Ideal when you need to choose between two specific values to assign to a variable based on a condition.
+*   **Inline Usage:** Can be used directly within other expressions, like **print** functions or list comprehensions (which we'll see later), to make the code more compact.
+
+<div className="warning">
+  **Readability vs. Conciseness:** While conditional expressions are concise, overusing them or nesting them can make code harder to read than a standard **if-else** block. If the logic is complex, or the **value_if_true**/**value_if_false** involve multiple steps or complex calculations, a standard **if-else** is often clearer. Use ternary operators judiciously for simple, clear-cut choices.
+</div>
+
+### Example 1: Setting a Discount Rate
+
+```python
+# File: discount_rate.py
+is_member = True
+quantity = 15
+
+# Standard if-else
+# if is_member:
+#     discount = 0.10 # 10% discount
+# else:
+#     discount = 0.05 # 5% discount
+
+# Using conditional expression
+discount = 0.10 if is_member else 0.05
+
+# Using the discount
+total_price = 100
+final_price = total_price * (1 - discount)
+
+print(f"Membership Status: {is_member}")
+print(f"Discount Applied: {discount:.0%}") # Format as percentage
+print(f"Final Price: ${final_price:.2f}")
+```
+
+### Example 2: Pluralization in Output
+
+```python
+# File: pluralize.py
+num_items = 1
+
+# Determine the correct word ("item" or "items")
+item_word = "items" if num_items != 1 else "item" # Note: Handles 0 items as "items" too
+
+print(f"You have {num_items} {item_word} in your cart.")
+
+# Try changing num_items to 0 or 5 and run again
+num_items = 5
+item_word = "items" if num_items != 1 else "item"
+print(f"You have {num_items} {item_word} in your cart.")
+```
+
+### Example 3: Inline Use in Print Statement
+
+```python
+# File: inline_ternary.py
+score = 65
+passing_score = 60
+
+# Use conditional expression directly inside the f-string
+print(f"Your score is {score}.")
+print(f"Result: {'Pass' if score >= passing_score else 'Fail'}")
+
+# Compare to assigning first:
+# result = "Pass" if score >= passing_score else "Fail"
+# print(f"Result: {result}") # Does the same thing, maybe slightly clearer
+```
+
+Using it inline like this can be very convenient for simple output choices.
+
+## Avoid Nesting Conditional Expressions
+
+While technically possible, nesting ternary operators is generally discouraged as it quickly becomes very difficult to read.
+
+```python
+# Technically possible, but BAD PRACTICE
+a = 10
+b = 20
+result = "A is greater" if a > b else ("B is greater" if b > a else "A and B are equal")
+print(result) # Output: B is greater
+
+# Much clearer using if-elif-else:
+if a > b:
+    result_clear = "A is greater"
+elif b > a:
+    result_clear = "B is greater"
+else:
+    result_clear = "A and B are equal"
+print(result_clear)
+```
+
+Stick to simple, non-nested conditional expressions for clarity.
+
+import Quiz from '../../../../components/Quiz'
+import pythonQuiz from '../../../../Data/conditional_expre'
+
+<Quiz questions={pythonQuiz} />

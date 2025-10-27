@@ -1,0 +1,275 @@
+# Variables, Naming Conventions & Comments
+
+## What are Variables?
+
+<section id="What-are-variables?"></section>
+In programming, a variable is like a container used to store data values.
+Instead of using the data directly every time, you can give it a name (the
+variable name) and refer to it by that name. This makes code more readable and
+easier to manage.
+
+Think of it like labeling a box. The box holds something (the data), and the label (the variable name) tells you what's inside or how you can refer to it.
+
+In Python, you create a variable the moment you first assign a value to it. The assignment operator is the equals sign (`=`).
+
+<img src="/images/variable.png" alt="variable" className="w-150 h-100 mx-auto" />
+
+
+
+
+### Creating variables and assigning values
+
+```python
+message = "This is stored in a variable" # Assigning a string
+count = 10                           # Assigning an integer
+price = 99.95                        # Assigning a float
+is_active = True                     # Assigning a boolean
+```
+
+### Using variables
+
+```python
+print(message)
+print(count)
+print("The price is:", price)
+print("User status:", is_active)
+```
+
+## Dynamic Typing
+
+<section id="Dynamic-Typing"></section>
+Python is dynamically typed. This means you don't have to explicitly declare the
+type of a variable when you create it. Python figures out the type based on the
+value you assign. Furthermore, you can change the type of data stored in a
+variable by assigning a value of a different type to it later.
+
+```python
+my_variable = 100      # my_variable is now an integer
+print(my_variable)
+print(type(my_variable)) # Check the type using the type() function
+
+my_variable = "Now I'm a string" # Reassigning with a different type
+print(my_variable)
+print(type(my_variable))
+
+my_variable = 3.14     # Reassigning again
+print(my_variable)
+print(type(my_variable))
+```
+
+While flexible, changing variable types excessively can sometimes make code harder to understand. It's generally good practice to keep the type consistent for a given variable's purpose.
+
+## Variable Naming Rules and Conventions
+
+<section id="variable-naming-rules-and-conventions"></section>
+Choosing good variable names is crucial for writing readable and maintainable
+code.
+
+### Rules (Mandatory):
+
+- Variable names must start with a letter (a-z, A-Z) or an underscore (\_).
+- They cannot start with a number (0-9).
+- They can only contain alpha-numeric characters (a-z, A-Z, 0-9) and underscores (\_).
+- Variable names are case-sensitive (age, Age, and AGE are three different variables).
+- You cannot use Python keywords (reserved words like if, else, while, def, class, print, etc.) as variable names.
+
+### Valid variable names
+
+```python
+my_var = 1
+_count = 2
+user_name = "Alice"
+speed1 = 99
+
+#Invalid variable names
+1. 2speed = 100
+2. user-name = "Bob"
+3. class = "Economy"
+```
+
+## Identifiers
+
+<section id="identifiers"></section>
+Identifiers in Python are names given to variables, functions, classes, or
+objects. They can include letters, digits, and underscores but cannot start with
+a digit, contain spaces or special characters, or use reserved keywords.
+Identifiers are case-sensitive, so `name` and `Name` are different.
+
+## Valid and Invalid Identifiers
+
+
+
+    <table>
+        <thead>
+          <tr>
+            <th>Valid Identifiers</th>
+            <th>Reason</th>
+            <th>Invalid Identifiers</th>
+            <th>Reason</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="valid-code">`my_variable`</td>
+            <td>Uses only letters, numbers, and underscores.</td>
+            <td class="invalid-code">`1_my_variable`</td>
+            <td>Cannot start with a digit.</td>
+          </tr>
+          <tr>
+            <td class="valid-code">`user_age`</td>
+            <td>Uses lowercase letters and underscores (PEP 8 standard).</td>
+            <td class="invalid-code">`user-age`</td>
+            <td>Hyphens are not allowed.</td>
+          </tr>
+          <tr>
+            <td class="valid-code">`__private_var`</td>
+            <td>Starts with an underscore, often used for conventions.</td>
+            <td class="invalid-code">`for`</td>
+            <td>Cannot be a reserved keyword.</td>
+          </tr>
+          <tr>
+            <td class="valid-code">`CamelCaseVariable`</td>
+            <td>Common convention for class names.</td>
+            <td class="invalid-code">`my var`</td>
+            <td>Cannot contain spaces.</td>
+          </tr>
+          <tr>
+            <td class="valid-code">`_my_function_name`</td>
+            <td>Can start with an underscore.</td>
+            <td class="invalid-code">`@my_variable`</td>
+            <td>Cannot contain special characters like `@` or `$`.</td>
+          </tr>
+          <tr>
+            <td class="valid-code">`my_long_name_25`</td>
+            <td>Can contain digits (but not at the beginning).</td>
+            <td class="invalid-code">`class`</td>
+            <td>Another example of a reserved keyword.</td>
+          </tr>
+          <tr>
+            <td class="valid-code">`a_very_long_variable_name_that_is_still_valid`</td>
+            <td>Length does not affect validity.</td>
+            <td class="invalid-code">`if`</td>
+            <td>Cannot be a reserved keyword.</td>
+          </tr>
+          <tr>
+            <td class="valid-code">`_`</td>
+            <td>A single underscore is a valid identifier.</td>
+            <td class="invalid-code">`my.variable`</td>
+            <td>Dots (`.`) are not allowed.</td>
+          </tr>
+        </tbody>
+      </table>
+                                        
+
+## Conventions (Recommended Best Practices - PEP 8):
+
+PEP 8 is the official style guide for Python code. Following it makes your code consistent and readable by other Python developers.
+
+- Use lowercase letters for variable names.
+- Separate words in a variable name with an underscore (`_`). This style is called snake_case.
+- Choose names that are descriptive and indicate the variable's purpose (e.g., `customer_name` instead of `cn`, `total_price` instead of `tp`).
+- Avoid using single letters like `l` (lowercase L), `O` (uppercase O), or `I` (uppercase I) as they can be confused with numbers 1 and 0.
+
+```python
+## Good variable names (following conventions)
+- `first_name` = "Guido"
+- `item_count` = 5
+- `is_valid_input` = False
+- `total_calculation_result` = 105.7
+```
+* **Less readable names (avoid these)**
+```python
+- `fn` = "Guido"
+- `ic` = 5
+- `x` = False
+- `result` = 105.7 # (Could be okay, but 'total_calculation_result' is more descriptive)
+```
+
+## Revisiting Comments
+
+<section id="Revisiting Comments"></section>
+Comments are essential for explaining why your code does something, or
+clarifying complex parts. Good variable names reduce the need for obvious
+comments.
+
+- Use comments to explain non-obvious logic.
+- Use comments to document assumptions.
+- Keep comments concise and up-to-date with the code.
+
+```python
+# Constants (often named in ALL_CAPS by convention)
+`TAX_RATE` = 0.08 # 8% sales tax rate
+# Calculate the final price including tax
+
+
+subtotal = 150.00  # The price before tax
+tax_amount = subtotal * TAX_RATE  # Calculate the tax amount
+final_price = subtotal + tax_amount  # Add tax to subtotal for the final price
+
+print(f"Subtotal: ${subtotal:.2f}")  # Using f-strings for formatted output
+print(f"Tax: ${tax_amount:.2f}")
+print(f"Final Price: ${final_price:.2f}")
+
+
+# This comment explains a specific choice or assumption if needed
+# Using f-strings (like f"...") allows embedding variables directly in strings
+# The :.2f formats the number to 2 decimal places
+```
+
+## Example 1: Assigning and Reassigning Variables
+
+```python
+# File: variable_reassignment.py
+planet = "Earth"
+print("Current planet:", planet)
+
+# Reassign the variable
+planet = "Mars"
+print("Destination planet:", planet)
+
+# Assign a number
+distance_km = 225000000  # Approximate average distance
+print("Distance to Mars (km):", distance_km)
+```
+
+## Example 2: Multiple Assignments
+
+You can assign the same value to multiple variables simultaneously, or assign multiple values to multiple variables.
+
+```python
+# File: multiple_assignments.py
+
+# Assign same value to multiple variables
+x = y = z = 0
+print(x, y, z)  # Output: 0 0 0
+
+# Assign multiple values to multiple variables (unpacking)
+a, b, c = 5, 10, "hello"
+print(a)      # Output: 5
+print(b)      # Output: 10
+print(c)      # Output: hello
+```
+
+## Example 3: Using Variables in Calculations
+
+```python
+# File: calculation_with_vars.py
+
+length = 12.5
+width = 4.0
+
+# Calculate area
+area = length * width
+print("Length:", length)
+print("Width:", width)
+print("Area:", area)
+
+# Calculate perimeter
+perimeter = 2 * (length + width)
+print("Perimeter:", perimeter)
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/variable_question";
+
+<Quiz questions={pythonQuiz} />

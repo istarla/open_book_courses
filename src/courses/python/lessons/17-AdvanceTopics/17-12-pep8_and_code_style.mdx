@@ -1,0 +1,240 @@
+
+# PEP 8 & Code Style
+<section id="pep-8-and-code-style"></section>
+
+## Why Code Style Matters
+<section id="why-code-style-matters"></section>
+
+You can write Python code that works perfectly fine but is difficult for others (or your future self) to read and understand. Consistent code style makes code more readable, maintainable, and less prone to certain types of errors.
+
+In the Python community, the universally accepted style guide is known as **PEP 8** (Python Enhancement Proposal #8). Adhering to PEP 8 is highly recommended, especially when collaborating with others or contributing to open-source projects.
+
+Today, we'll cover some of the most important aspects of PEP 8. The full document ([PEP 8](https://peps.python.org/pep-0008/)) is worth reading, but we'll focus on key takeaways. Many code editors and tools (linters like Flake8, Black, Ruff) can help automatically check and format your code according to PEP 8.
+
+## Key PEP 8 Guidelines
+<section id="key-pep-8-guidelines"></section>
+
+### 1. Indentation
+
+*   Use **4 spaces** per indentation level.
+*   Do not mix tabs and spaces (most modern editors can be configured to insert spaces when you press the Tab key). Python 3 disallows mixing tabs and spaces in a way that causes ambiguity.
+
+```python
+# <span class="good">Good:</span>
+def my_function(arg):
+    if arg > 10:
+        print("Greater than 10") # 4 spaces indentation
+    else:
+        print("Less than or equal to 10")
+
+# <span class="bad">Bad:</span> (Inconsistent indentation - might cause IndentationError)
+# def my_function(arg):
+#  if arg > 10:
+#      print("Greater than 10") # Mix of 1 and 5 spaces
+#     else:
+#         print("Less than or equal to 10")
+```
+
+### 2. Line Length
+
+*   Limit all lines to a maximum of **79 characters**.
+*   For long blocks of text (docstrings, comments), limit lines to 72 characters.
+*   Long lines can be broken using parentheses `()`, brackets `[]`, or braces `{}` (implicit line continuation), or using a backslash `\` (explicit line continuation - less preferred).
+
+```python
+# <span class="good">Good:</span> Implicit continuation inside parentheses
+def long_function_name(var_one, var_two, var_three,
+                       var_four, var_five): # Aligned under opening parenthesis
+    print(var_one, var_two, var_three, var_four, var_five)
+
+# <span class="good">Good:</span> Hanging indent
+result = some_function(
+    parameter_one, parameter_two,
+    parameter_three, parameter_four
+)
+
+# <span class="bad">Bad:</span> Line too long
+# my_really_long_variable_name_that_goes_on_and_on = function_call_one() + function_call_two() + another_value + yet_another
+```
+
+### 3. Blank Lines
+
+*   Use **two blank lines** to separate top-level function and class definitions.
+*   Use **one blank line** to separate method definitions inside a class.
+*   Use blank lines sparingly inside functions to indicate logical sections, but avoid excessive blank lines.
+
+```python
+# <span class="good">Good:</span>
+def top_level_function_one():
+    pass
+
+
+# Two blank lines before next top-level definition
+def top_level_function_two():
+    pass
+
+
+class MyClass:
+    # One blank line before method
+    def method_one(self):
+        # Sparingly use blank lines inside methods for logical separation
+        x = 1
+        y = 2
+
+        z = x + y
+        print(z)
+
+    # One blank line before next method
+    def method_two(self):
+        pass
+```
+
+### 4. Imports
+
+*   Imports should usually be on separate lines:
+    ```python
+    # <span class="good">Good:</span>
+    import os
+    import sys
+
+    # <span class="bad">Bad:</span>
+    # import os, sys                
+    ```
+*   `from...import` is okay on one line if importing multiple names from the same module:
+    ```python
+    # <span class="good">Okay:</span>
+    from subprocess import Popen, PIPE    
+    ```
+*   Imports should always be at the **top of the file**, after any module comments and docstrings, and before global variables and constants.
+*   Group imports in the following order, separated by blank lines:
+    1.  Standard library imports (e.g., **os**, **sys**, **datetime**).
+    2.  Related third-party imports (e.g., **requests**, **pandas**, **numpy**).
+    3.  Local application/library specific imports (modules you created).
+    ```python
+    # <span class="good">Good:</span> Import grouping
+    import os
+    import sys
+
+    import requests # Blank line separating standard from third-party
+
+    import my_own_module # Blank line separating third-party from local
+    from my_other_module import specific_function    
+    ```
+*   Avoid wildcard imports (`from module import *`) as they pollute the namespace.
+
+### 5. Whitespace in Expressions and Statements
+
+*   Avoid extraneous whitespace immediately inside parentheses, brackets, or braces.
+    ```python
+    # <span class="good">Good:</span> spam(ham[1], {eggs: 2})
+    # <span class="bad">Bad:</span>  spam( ham[ 1 ], { eggs: 2 } )               
+    ```
+*   Avoid extraneous whitespace immediately before a comma, semicolon, or colon.
+    ```python
+    # <span class="good">Good:</span> if x == 4: print(x, y); x, y = y, x
+    # <span class="bad">Bad:</span>  if x == 4 : print(x , y) ; x , y = y , x                
+    ```
+*   Always surround these binary operators with a single space on either side: assignment (**=**), augmented assignment (**+=**, **-=**, etc.), comparisons (**==**, ****, **>**, **!=**, **=**, **>=**, **in**, **not in**, **is**, **is not**), Booleans (**and**, **or**, **not**).
+    ```python
+    # <span class="good">Good:</span>
+    i = i + 1
+    submitted += 1
+    x = x * 2 - 1
+    hypot2 = x*x + y*y
+    c = (a+b) * (a-b)
+    if x > 5 and y < 10:
+        print("Condition met")                 
+    ```
+    ```python
+    # <span class="bad">Bad:</span>
+    # i=i+1
+    # submitted +=1
+    # x = x*2 - 1
+    # hypot2 = x * x + y * y
+    # c = (a + b) * (a - b)
+    # if x>5 and y<10: print("Condition met")  
+    ```
+*   Don't use spaces around the `=` sign when used to indicate a keyword argument or a default parameter value.
+    ```python
+    # <span class="good">Good:</span>
+    def complex(real, imag=0.0): # No space around '=' for default
+        return magic(r=real, i=imag) # No space around '=' for keyword arg                 
+    ```
+    ```python
+    # <span class="bad">Bad:</span>
+    # def complex(real, imag = 0.0):
+    #     return magic(r = real, i = imag)                
+    ```
+
+### 6. Naming Conventions
+
+*   **Modules:** Short, all-lowercase names. Underscores can be used if it improves readability (e.g., **string_utils**).
+*   **Packages:** Short, all-lowercase names. Preferably no underscores (e.g., **mypackage**).
+*   **Classes:** CapWords (CamelCase starting with uppercase) convention (e.g., **MyClass**, **BankAccount**).
+*   **Functions & Methods:** Lowercase with words separated by underscores (snake_case) (e.g., **calculate_area**, **get_user_name**).
+*   **Variables:** Lowercase with words separated by underscores (snake_case) (e.g., **user_input**, **total_count**).
+*   **Constants:** All uppercase with words separated by underscores (e.g., **MAX_CONNECTIONS**, **PI**).
+*   **Method Arguments:** Always use **self** for the first argument to instance methods. Always use **cls** for the first argument to class methods.
+
+### 7. Comments
+
+*   Write comments that are clear, concise, and explain the "why" rather than just the "what" (if the code is already clear).
+*   Keep comments up-to-date with code changes.
+*   Use block comments (**#** at the beginning of lines) to explain sections of code.
+*   Use inline comments (**#** after code on the same line) sparingly, usually to explain a non-obvious part of that specific line. Ensure at least two spaces separate the code and the inline comment.
+*   Use **Docstrings** (multi-line strings `"""..."""` immediately after a function, class, or module definition) to explain the purpose, arguments, and return values.
+
+```python
+# File: comments_docstrings.py
+
+"""This module demonstrates comments and docstrings.""" # Module docstring
+
+MAX_RETRIES = 3 # Inline comment (use sparingly)
+
+def fetch_data(url, retries=MAX_RETRIES):
+    """Fetches data from a URL with a specified number of retries.
+
+    Args:
+        url (str): The URL to fetch data from.
+        retries (int): The maximum number of times to retry on failure.
+
+    Returns:
+        bytes: The content fetched from the URL, or None if failed.
+    """
+    # Block comment explaining the following logic
+    # We will attempt to connect and read data up to 'retries' times.
+    for attempt in range(retries):
+        print(f"Attempt {attempt + 1} to fetch {url}...")
+        # Simulate fetching (replace with actual requests call)
+        success = (attempt >= 1) # Simulate success on second attempt onwards
+        if success:
+            print("Fetch successful!")
+            return b"Sample data content" # Return bytes
+        else:
+            print("Fetch failed, retrying...")
+    print("All retries failed.")
+    return None # Return None if all attempts fail
+
+# Example usage
+data = fetch_data("https://example.com")
+if data:
+    print(f"\nSuccessfully fetched {len(data)} bytes.")
+else:
+    print("\nFailed to fetch data.")
+```
+
+## Tools for Style Checking and Formatting
+<section id="tools-for-style-checking-and-formatting"></section>
+
+Manually checking for PEP 8 compliance can be tedious. Thankfully, there are excellent tools:
+
+*   **Linters (Checkers):** Analyze your code and report style violations (and potential errors). Popular examples: `Flake8`, `Pylint`, `Ruff` (Ruff is very fast and combines linting and formatting).
+*   **Formatters:** Automatically reformat your code to comply with a specific style guide (usually PEP 8 or a variation). Popular examples: `Black` (very opinionated, minimal configuration), `autopep8`, `YAPF` (from Google), `Ruff Format`.
+
+Integrating these tools into your development workflow (e.g., in your code editor or via pre-commit hooks) is highly recommended for maintaining consistent code style.
+
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/pep8_and_code";
+
+<Quiz questions={pythonQuiz} />

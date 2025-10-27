@@ -1,0 +1,180 @@
+
+# Introduction to File I/O (Reading Files)
+
+## Interacting with Files
+<section id="interacting-with-files"></section>
+
+So far, our programs have worked with data held in memory (variables). When the program finishes, this data is lost. To make data persistent (save it for later use) or to process existing data stored outside the program, we need to interact with files on the computer's storage system.
+
+**File I/O (Input/Output)** refers to the process of reading data from files (Input) and writing data to files (Output). Python provides built-in functions and methods to handle file operations.
+
+Today, we'll focus on the basics of reading data from existing text files.
+
+## Opening Files: The **open()** Function
+<section id="opening-files-the-open-function"></section>
+
+The first step in working with a file is to open it using the built-in open() function. This function establishes a connection between your program and the file on disk and returns a file object (also called a file handle), which you use to perform read/write operations.
+
+The basic syntax for opening a file for reading is:
+
+```python
+file_object = open("filename.txt", mode="r", encoding="utf-8")
+# ... perform operations using file_object ...
+file_object.close() # IMPORTANT: Close the file when done
+```
+
+Key arguments for `open()`:
+
+*   **file (filename.txt):** A string specifying the path to the file you want to open. This can be just the filename (if the file is in the same directory as your script) or a full path (e.g., **/path/to/your/filename.txt** or **C:\path\to\your\filename.txt**).
+*   **mode (optional):** A string indicating how the file will be used. Common modes include:
+*   **r:** Read (default). Opens the file for reading. Raises an error if the file doesn't exist.
+*   **w:** Write. Opens the file for writing. Creates the file if it doesn't exist. **Truncates (erases) the file if it does exist!**
+*   **a:** Append. Opens the file for writing, appending new data to the end. Creates the file if it doesn't exist.
+*   **b:** Binary mode (e.g., `'rb'`, `'wb'`). Used for non-text files like images or executables.
+*   **+:** Update mode (e.g., `'r+'`, `'w+'`). Allows both reading and writing.
+    For today, we'll focus on mode `'r'`.
+*   **encoding:** (optional but recommended):** Specifies the text encoding used by the file (e.g., 'utf-8', 'latin-1'). `'utf-8'` is a very common and recommended encoding for text files. Explicitly setting it avoids potential issues on different operating systems or with files containing special characters.
+
+**Always Close Files!** It's crucial to close a file using the `file_object.close()` method after you're finished with it. Closing the file frees up system resources and ensures that any buffered data is written to the disk. Forgetting to close files can lead to data loss or resource exhaustion. We'll see a better way to handle closing automatically using the **with** statement in a later lesson.
+
+## Reading File Content
+<section id="reading-file-content"></section>
+
+Once a file is opened in read mode (`'r'`), the file object provides several methods to read its content:
+
+*   `read(size=-1)`: Reads and returns up to `size` bytes (characters in text mode) from the file as a single string. If `size` is omitted or negative, it reads and returns the entire file content.
+*   `readline()`: Reads and returns a single line from the file, including the newline character (`
+`) at the end. Returns an empty string (`''`) when the end of the file (EOF) is reached.
+*   `readlines()`: Reads all remaining lines from the file and returns them as a **list of strings**, where each string is a line including its newline character.
+
+File objects maintain an internal cursor or position. Reading methods advance this cursor. **read()** reads from the current position to the end (or **size** bytes), **readline()** reads the next line, etc.
+
+### Example 1: Reading the Entire File (**read()**)
+<section id="example-1-reading-the-entire-file-read"></section>
+
+First, create a text file named `sample.txt` in the same directory as your Python script with the following content:
+
+```text
+Line 1: Hello from the file!
+Line 2: This is the second line.
+Line 3: End of sample.
+```
+
+Now, create the Python script:
+
+
+* **File: read_entire_file.py**
+```python
+try:
+    # Open the file for reading with specified encoding
+    file_handle = open("sample.txt", mode="r", encoding="utf-8")
+    print("File opened successfully.")
+
+    # Read the entire content
+    content = file_handle.read()
+    print("\n--- File Content ---")
+    print(content)
+    print("--------------------")
+
+    # Try reading again after reaching the end
+    more_content = file_handle.read()
+    print(f"Reading again returns: '{more_content}' (empty string indicates EOF)")
+
+except FileNotFoundError:
+    print("Error: sample.txt not found in the current directory.")
+except Exception as e:
+    print(f"An error occurred: {e}")
+finally:
+    # Ensure the file is closed even if errors occur (basic error handling)
+    # Check if file_handle was successfully created before trying to close
+    if 'file_handle' in locals() and not file_handle.closed:
+        file_handle.close()
+        print("\nFile closed.")
+```
+
+(Note: The **try...except...finally** block provides basic error handling, ensuring the file gets closed. We'll cover this properly later.)
+
+### Example 2: Reading Line by Line (**readline()** or loop)
+<section id="example-2-reading-line-by-line-readline-or-loop"></section>
+
+Using the same `sample.txt` file.
+
+
+* **File: read_line_by_line.py**
+```python
+try:
+    file = open("sample.txt", "r", encoding="utf-8")
+    print("--- Reading with readline() ---")
+    line1 = file.readline()
+    print(f"Line 1: {line1.strip()}") # Use strip() to remove trailing newline
+    line2 = file.readline()
+    print(f"Line 2: {line2.strip()}")
+    line3 = file.readline()
+    print(f"Line 3: {line3.strip()}")
+    line4 = file.readline() # Reached end of file
+    print(f"Line 4: '{line4}' (empty string)")
+    file.close() # Close after reading manually
+
+    print("\n--- Reading with a for loop (Preferred Method) ---")
+    # File objects are iterable by line - this is the most Pythonic way!
+    file = open("sample.txt", "r", encoding="utf-8") # Reopen the file
+    line_num = 1
+    for line in file: # Loop directly over the file object
+        print(f"Line {line_num}: {line.strip()}")
+        line_num += 1
+    file.close() # Close again
+
+except FileNotFoundError:
+    print("Error: sample.txt not found.")
+except Exception as e:
+    print(f"An error occurred: {e}")
+finally:
+     # Ensure file is closed if it was opened
+    if 'file' in locals() and not file.closed:
+        file.close()
+        print("File closed.")
+```
+
+Looping directly over the file object (`for line in file:`) is the most common and recommended way to read a file line by line.
+
+### Example 3: Reading All Lines into a List (**readlines()**)
+<section id="example-3-reading-all-lines-into-a-list-readlines"></section>
+
+Using the same `sample.txt` file.
+
+
+* **File: read_all_lines.py**
+```python
+try:
+    f_obj = open("sample.txt", "r", encoding="utf-8")
+    print("Opening file...")
+
+    # Read all lines into a list
+    lines_list = f_obj.readlines()
+    print("\n--- Content of lines_list ---")
+    print(lines_list)
+    # Output: ['Line 1: Hello from the file!\n', 'Line 2: This is the second line.\n', 'Line 3: End of sample.\n']
+
+    print("\n--- Processing the list ---")
+    # You can now process the list like any other list
+    for i, line in enumerate(lines_list):
+        # Note: lines still have '\n' at the end
+        print(f"List item {i}: {line.strip()}")
+
+except FileNotFoundError:
+    print("Error: sample.txt not found.")
+except Exception as e:
+    print(f"An error occurred: {e}")
+finally:
+    if 'f_obj' in locals() and not f_obj.closed:
+        f_obj.close()
+        print("\nFile closed.")
+```
+
+Be cautious with `readlines()` on very large files, as it reads the entire file into memory at once.
+
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/introduction_to_files";
+
+<Quiz questions={pythonQuiz} />

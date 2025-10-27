@@ -1,0 +1,240 @@
+
+# Return Values & Variable Scope
+
+## Getting Output from Functions: The **&nbsp;return&nbsp;** Statement
+<section id="getting-output-from-functions-the-return-statement"></section>
+
+Many of the functions we've written so far perform an action, like printing output to the console. However, functions are often more useful when they compute a result and send that result back to the part of the program that called them.
+
+The return statement is used within a function to exit the function and optionally send a value (the return value) back to the caller.
+
+
+* **File: return_value.py**
+```python
+def add(x, y):
+    """Calculates the sum of x and y and returns the result."""
+    total = x + y
+    print("Inside add(): Calculation complete.") # This still runs
+    return total # Sends the value of 'total' back to the caller
+```
+* **Call the function and store the return value**
+```python
+sum_result = add(10, 5)
+print(f"The value returned by add(10, 5) is: {sum_result}")
+```
+* **Use the return value directly**
+```python
+print(f"Result of add(100, 50) multiplied by 2 is: {add(100, 50) * 2}")
+```
+* **Function execution stops at the return statement**
+```python
+def check_value(val):
+    """Checks if value is positive and returns True/False."""
+    if val > 0:
+        return True # Function exits here if val is positive
+    print("Value was not positive.") # This line is skipped if val > 0
+    return False # Function exits here otherwise
+
+is_pos = check_value(10)
+print(f"Is 10 positive? {is_pos}")
+is_pos = check_value(-5)
+print(f"Is -5 positive? {is_pos}")
+```
+
+### Functions without an Explicit **return**
+
+If a function doesn't have a `return` statement, or if the `return` statement has no expression after it, the function automatically returns the special value `None` when it finishes executing.
+
+
+* **File: no_return.py**
+```python
+def simple_greet(name):
+    """Prints a greeting but doesn't explicitly return anything."""
+    print(f"Hello, {name}!")
+    # No return statement here
+
+result = simple_greet("World")
+print(f"The return value of simple_greet() is: {result}") # Output: None
+print(f"Type of the return value: {type(result})}")       # Output: <class 'NoneType'>
+
+def explicit_return_none():
+    """Explicitly returns None."""
+    x = 10 # Some calculation
+    return # Same as return None
+
+none_val = explicit_return_none()
+print(f"\nValue from explicit_return_none(): {none_val}") # Output: None
+```
+
+### Returning Multiple Values
+<section id="returning-multiple-values"></section>
+
+A function can return multiple values by listing them after the `return` statement, separated by commas. Python automatically packs these values into a **tuple**, which is then returned. The caller can unpack this tuple.
+
+
+* **File: return_multiple.py**
+```python
+import math
+
+def circle_stats(radius):
+    """Calculates and returns the area and circumference of a circle."""
+    area = math.pi * radius ** 2
+    circumference = 2 * math.pi * radius
+    return area, circumference # Returns a tuple (area, circumference)
+
+# Call and unpack the returned tuple
+r = 5.0
+a, c = circle_stats(r) # Unpacking the tuple
+
+print(f"Radius: {r}")
+print(f"Area: {a:.2f}")
+print(f"Circumference: {c:.2f}")
+
+# Or store the tuple directly
+stats_tuple = circle_stats(10.0)
+print(f"\nStats for radius 10.0: {stats_tuple}")
+print(f"Area from tuple: {stats_tuple[0]:.2f}")
+```
+
+## Variable Scope: Local vs. Global
+<section id="variable-scope-local-vs-global"></section>
+
+**Scope** refers to the region of a program where a variable is accessible or "visible". Understanding scope is crucial for avoiding naming conflicts and managing data flow.
+
+### Local Scope
+
+1. Variables defined **inside** a function (including parameters) have **local scope**.
+2. They only exist and can only be accessed from within that specific function.
+3. They are created when the function is called and destroyed when the function finishes (returns).
+4. Each call to a function creates a new local scope.
+
+### Global Scope
+
+1. Variables defined **outside**of any function have **global scope**.
+2. They can be accessed (read) from anywhere in the program, including inside functions.
+3. They exist for the entire duration the script is running.
+
+
+* **File: scope_example.py**
+```python
+global_var = 100 # This variable has global scope
+def my_function(param): # 'param' has local scope
+    local_var = param * 2 # 'local_var' has local scope
+    print(f"Inside function: param = {param}")
+    print(f"Inside function: local_var = {local_var}")
+    # We can READ global variables from inside a function
+    print(f"Inside function: Reading global_var = {global_var}")
+    # Trying to modify global_var directly might create a <strong>new</strong> local variable (see below)
+
+print(f"Outside function: global_var = {global_var}")
+```
+* **Call the function**
+```python
+my_function(10)
+print(f"\nOutside function: global_var = {global_var}") # Still 100
+```
+* **Try to access local variables outside the function - This causes NameError**
+```python
+try:
+    print(f"Outside function: Trying to access param = {param}")
+except NameError as e:
+    print(f"Error accessing param: {e}")
+
+try:
+    print(f"Outside function: Trying to access local_var = {local_var}")
+except NameError as e:
+    print(f"Error accessing local_var: {e}")
+```
+
+### Modifying Global Variables (The **global** Keyword)
+<section id="modifying-global-variables-the-global-keyword"></section>
+
+**Generally Avoid Modifying Globals:** Modifying global variables from within functions is generally discouraged as it makes program flow harder to track and can lead to unexpected side effects. It's usually better to use parameters and return values to pass data in and out of functions.
+
+If you **must** modify a global variable from inside a function, you need to explicitly declare your intent using the `global` keyword at the beginning of the function.
+
+
+* **File: global_keyword.py**
+```python
+counter = 0 # Global variable
+def increment_counter():
+    # Without 'global', assigning to 'counter' would create a <strong>local</strong>variable
+    # 'counter' shadowing the global one within this function.
+    global counter # Declare that we intend to modify the global 'counter'
+    counter += 1
+    print(f"Inside function: counter = {counter}")
+
+print(f"Initial counter: {counter}")
+increment_counter()
+increment_counter()
+print(f"Final counter: {counter}") # The global variable was actually changed
+```
+
+### Example 1: Function Returning Calculation Result
+<section id="example-1-function-returning-calculation-result"></section>
+
+
+* **File: return_calculation.py**
+```python
+def is_even(number):
+    """Checks if a number is even and returns True or False."""
+    return number % 2 == 0 # Return the boolean result directly
+num_to_check = 17
+result = is_even(num_to_check) # Store the returned boolean
+if result: # Same as 'if result == True:'
+    print(f"{num_to_check} is even.")
+else:
+    print(f"{num_to_check} is odd.")
+```
+
+### Example 2: Scope Demonstration
+<section id="example-2-scope-demonstration"></section>
+
+
+* **File: scope_demo.py**
+```python
+x = "global" # Global x
+def outer_func():
+    x = "outer local" # Local x in outer_func, shadows global x
+    y = "outer y"     # Local y in outer_func
+    def inner_func():
+        x = "inner local" # Local x in inner_func, shadows outer and global x
+        z = "inner z"     # Local z in inner_func
+        # Can read y from the enclosing scope (outer_func)
+        print(f"  Inside inner_func: x = {x}, y = {y}, z = {z}")
+    inner_func()
+    # Cannot access z from inner_func here
+    # print(f"Outside inner_func: z = {z}") # NameError
+    print(f"Inside outer_func: x = {x}, y = {y}")
+
+print(f"Global scope before call: x = {x}")
+outer_func()
+print(f"Global scope after call: x = {x}") # Global x remains unchanged
+# Cannot access y or z here
+```
+
+(This introduces the concept of nested functions and enclosing scope, related to closures, which are more advanced topics).
+
+### Example 3: Function Simulating Dice Roll
+<section id="example-3-function-simulating-dice-roll"></section>
+
+
+* **File: dice_roll.py**
+```python
+import random
+def roll_two_dice():
+    """Simulates rolling two 6-sided dice and returns their values."""
+    die1 = random.randint(1, 6)
+    die2 = random.randint(1, 6)
+    return die1, die2 # Return as a tuple
+# Roll the dice
+roll1, roll2 = roll_two_dice() # Unpack the result
+total = roll1 + roll2
+print(f"Rolled a {roll1} and a {roll2}. Total: {total}")
+```
+
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/return_values_variable_scope";
+
+<Quiz questions={pythonQuiz} />

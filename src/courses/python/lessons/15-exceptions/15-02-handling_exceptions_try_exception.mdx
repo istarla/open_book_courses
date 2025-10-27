@@ -1,0 +1,143 @@
+
+# Handling Exceptions (try...except)
+
+## Preventing Program Crashes
+<section id="preventing-program-crashes"></section>
+
+Yesterday, we saw that unhandled exceptions cause Python programs to stop execution and print a traceback. While tracebacks are useful for debugging, we usually want our programs to handle predictable errors gracefully without crashing.
+
+For instance, if we ask the user for a number, they might type text instead. Trying to convert this text to an integer using `int()` would raise a `ValueError`. Instead of crashing, we might want to inform the user about the invalid input and perhaps ask them to try again.
+
+Python provides the try...except block for handling exceptions.
+
+## The **try...except** Block Syntax
+<section id="the-try-except-block-syntax"></section>
+
+* **The basic structure is:**
+
+```python
+try:
+    # Code block where an exception might occur
+    # This is the code you want to "try" running.
+    potentially_problematic_code
+    more_code_if_no_error
+except ExceptionType:
+    # Code block to execute if an exception of ExceptionType
+    # (or a subclass of it) occurs within the 'try' block.
+    error_handling_code
+# Code here executes after the try block completes successfully
+# OR after the except block finishes handling an error.
+code_after_try_except
+```
+
+How it works:
+
+1.  Python first attempts to execute the code inside the try block.
+2.  If no exception occurs during the execution of the try block, the except block is skipped entirely, and execution continues with the code after the **try...except** structure.
+3.  If an exception occurs within the try block:
+    *   Python immediately stops executing the rest of the code in the try block.
+    *   It checks if the type of the exception raised matches the ExceptionType specified in the except clause.
+    *   If the types match (or if the raised exception is a subclass of ExceptionType), the code inside the corresponding except block is executed.
+    *   After the except block finishes, execution continues with the code after the entire try...except structure (it does not return to the point where the error occurred in the **try** block).
+    *   If the raised exception does not match any specified ExceptionType in the except clauses (we'll see multiple except blocks tomorrow), the exception is unhandled, and the program terminates with a traceback as usual.
+
+## Handling Specific Exceptions
+<section id="handling-specific-exceptions"></section>
+
+It's generally best practice to catch specific exception types that you anticipate and know how to handle, rather than using a generic except Exception which might hide unexpected errors.
+
+### Example 1: Handling **ValueError** during Input Conversion
+
+
+* **File: handle_value_error.py**
+```python
+age_str = input("Please enter your age: ")
+
+try:
+    # Attempt the conversion, which might fail
+    age = int(age_str)
+    print(f"Successfully converted age: {age}")
+    # Further processing with 'age' could go here...
+    print(f"Next year you will be {age + 1}.")
+
+except ValueError:
+    # This block executes ONLY if int() raised a ValueError
+    print(f"Invalid input: '{age_str}' is not a valid integer.")
+    print("Could not calculate age next year.")
+
+print("\nProgram continues after try-except block.")
+```
+
+Run this code twice: once entering a valid number (e.g., 30) and once entering text (e.g., thirty). Notice how the program doesn't crash in the second case.
+
+### Example 2: Handling **ZeroDivisionError**
+
+
+* **File: handle_zero_division.py**
+```python
+numerator_str = input("Enter numerator: ")
+denominator_str = input("Enter denominator: ")
+
+try:
+    numerator = float(numerator_str) # Use float for more general division
+    denominator = float(denominator_str)
+
+    # Attempt the division
+    result = numerator / denominator
+    print(f"Result of {numerator} / {denominator} is {result}")
+
+except ZeroDivisionError:
+    # Handle only the division by zero case
+    print("Error: Cannot divide by zero.")
+except ValueError:
+    # Handle invalid number input separately
+    print("Error: Please enter valid numbers for numerator and denominator.")
+
+print("\nDivision attempt finished.")
+```
+
+This example shows handling multiple potential errors (ValueError from conversion, ZeroDivisionError from the calculation) using separate except blocks (though we'll formally cover multiple blocks tomorrow).
+
+### Example 3: Handling **FileNotFoundError**
+
+
+* **File: handle_file_not_found.py**
+```python
+filename = input("Enter the name of the file to read: ")
+
+try:
+    # Use 'with' which is preferred for file handling
+    with open(filename, "r", encoding="utf-8") as f:
+        print(f"Successfully opened '{filename}'. Reading content...")
+        content = f.read()
+        print("\n--- File Content ---")
+        print(content)
+        print("--------------------")
+    # File automatically closed by 'with'
+
+except FileNotFoundError:
+    # Handle the specific case where the file doesn't exist
+    print(f"Error: The file '{filename}' was not found.")
+except Exception as e:
+    # Catch other potential errors during file processing (e.g., permission errors)
+    print(f"An unexpected error occurred: {e}")
+
+print("\nFile reading process complete.")
+```
+
+Try running this with the name of a file that exists (like **sample.txt** from Day 39) and then with a name that doesn't exist.
+
+ **Accessing the Exception Object:** You can capture the exception object itself in the except clause using as variable_name. This allows you to inspect the error details further if needed.
+ 
+ ```python
+ try:
+     result = 10 / 0
+ except ZeroDivisionError as err_obj: # Capture the exception object as 'err_obj'
+     print(f"Caught an error: {err_obj}") # Print the standard error message
+     print(f"Error type: {type(err_obj)}")
+ ```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/handling_exception";
+
+<Quiz questions={pythonQuiz} />

@@ -1,0 +1,131 @@
+
+# Introduction to Errors & Exceptions
+
+## When Programs Go Wrong
+<section id="when-programs-go-wrong"></section>
+
+
+Even carefully written programs can encounter problems during execution. Maybe the user enters invalid data, a required file is missing, a network connection fails, or there's a logical flaw in the code. When Python encounters a situation it cannot proceed with normally, it raises an error.
+
+There are generally two categories of errors:
+
+*   **Syntax Errors:** Errors in the structure or grammar of your code that Python detects before execution even begins (e.g., mismatched parentheses, incorrect indentation, misspelled keywords). These must be fixed before the program can run at all.
+*   **Exceptions (Runtime Errors):** Errors that occur during the execution of the program. These happen when the code is syntactically correct, but an operation is invalid for the current state or data (e.g., trying to divide by zero, accessing a non-existent file, using an index outside the bounds of a list).
+
+Today, we focus on **Exceptions** and how Python signals them.
+
+## What is an Exception?
+<section id="what-is-an-exception"></section>
+
+When a runtime error occurs, Python creates an exception object. This object contains information about the error, including its type and where it occurred.
+
+If the exception is not handled by your code (which we'll learn how to do tomorrow), the program stops executing immediately and prints a traceback. The traceback shows the sequence of function calls that led to the error and includes the exception type and a descriptive message.
+
+## Common Built-in Exception Types
+<section id="common-built-in-exception-types"></section>
+
+Python has many built-in exception types for different kinds of runtime errors. Understanding these helps you diagnose problems:
+
+*   **SyntaxError**: Problem with the code's grammar (detected before runtime).
+*   **IndentationError**: Incorrect indentation (subtype of SyntaxError).
+*   **NameError**: Trying to use a variable or function name that hasn't been defined.
+*   **TypeError**: Performing an operation on an object of an inappropriate type (e.g., adding a string and an integer: `"hello" + 5`).
+*   **ValueError**: An operation receives an argument of the correct type but an inappropriate value (e.g., `int("abc")`).
+*   **IndexErro`**: Trying to access a sequence (list, tuple, string) index that is out of bounds.
+*   **KeyError**: Trying to access a dictionary key that doesn't exist using square bracket notation (`my_dict["missing_key"]`).
+*   **FileNotFoundError**: Trying to open a file that does not exist in read mode.
+*   **ZeroDivisionError**: Trying to divide a number by zero.
+*   **AttributeError**: Trying to access an attribute or method that doesn't exist for an object (e.g., `my_list.non_existent_method()`).
+
+This is not an exhaustive list, but covers many common scenarios.
+
+## Understanding Tracebacks
+<section id="understanding-tracebacks"></section>
+
+Tracebacks can look intimidating initially, but they provide valuable debugging information. You should read them from the **bottom up**:
+
+1.  The last line usually tells you the specific Exception type and a message explaining the error.
+2.  The lines above it show the "call stack" – the sequence of code lines and function calls that were active when the error occurred, starting from the most recent call.
+3.  Each entry typically includes the filename, line number, and the specific line of code that triggered the error or led to it.
+
+### Example 1: Triggering a **ZeroDivisionError**
+<section id="example-1-triggering-a-zerodivisionerror"></section>
+
+
+* **File: zero_division_error.py**
+```python
+numerator = 10
+denominator = 0
+
+print("Attempting division...")
+# This line will cause a ZeroDivisionError
+result = numerator / denominator
+print("This line will not be reached.")
+```
+
+* **Running this will likely produce a traceback similar to this:**
+```python
+Traceback (most recent call last):
+  File "/path/to/your/zero_division_error.py", line 6, in <module>
+    result = numerator / denominator
+ZeroDivisionError: division by zero
+```
+
+The traceback clearly indicates a **ZeroDivisionError** occurred on line 6 due to division by zero.
+
+### Example 2: Triggering a **TypeError**
+<section id="example-2-triggering-a-typeerror"></section>
+
+
+* **File: type_error.py**
+```python
+age = 30
+message = "Your age is: "
+
+# This line will cause a TypeError
+full_message = message + age # Cannot concatenate string and integer directly
+print(full_message)
+```
+
+* **Running this might show:**
+
+```python
+Traceback (most recent call last):
+  File "/path/to/your/type_error.py", line 6, in <module>
+    full_message = message + age # Cannot concatenate string and integer directly
+TypeError: can only concatenate str (not "int") to str
+```
+
+The error message clearly explains the problem: trying to add (`+`) an **int** to a **str**.
+
+### Example 3: Triggering an **IndexError**
+<section id="example-3-triggering-an-indexerror"></section>
+
+
+* **File: index_error.py**
+```python
+my_list = [10, 20, 30]
+
+# Valid indices are 0, 1, 2 (or -1, -2, -3)
+# Trying to access index 3 will cause an IndexError
+item = my_list[3]
+print(f"Item at index 3: {item}")
+```
+
+* **Running this might show:**
+```Python
+Traceback (most recent call last):
+  File "/path/to/your/index_error.py", line 6, in <module>
+    item = my_list[3]
+IndexError: list index out of range
+```
+
+The error indicates we tried to access an index beyond the valid range for the list.
+
+ Encountering exceptions is a normal part of programming. The key is learning to read the traceback to understand what went wrong and where, and then learning how to **handle** these exceptions gracefully (using **try...except**) so your program doesn't crash unexpectedly. We'll start handling exceptions tomorrow!
+
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/introduction_exception";
+
+<Quiz questions={pythonQuiz} />

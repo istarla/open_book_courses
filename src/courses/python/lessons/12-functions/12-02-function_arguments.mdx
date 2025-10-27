@@ -1,0 +1,182 @@
+
+# Function Arguments & Parameters
+
+## Recap: Defining and Calling 
+<section id="recap-defining-and-calling"></section>
+
+we learned how to define our own functions using the def keyword to encapsulate blocks of reusable code. We saw that functions can accept input through parameters defined in the function header.
+
+When we call a function, we provide **arguments**, which are the actual values passed into the function and assigned to the corresponding parameters.
+
+```python
+def describe_pet(animal_type, pet_name): # animal_type, pet_name are parameters
+    """Displays information about a pet."""
+    print(f"I have a {animal_type}.")
+    print(f"My {animal_type}'s name is {pet_name.title()}.")
+```
+* **Calling the function with arguments**
+```python
+describe_pet("hamster", "harry") # "hamster" and "harry" are arguments
+describe_pet("dog", "willie")
+```
+
+Today, we'll explore different ways arguments can be passed to functions in Python.
+
+## Positional Arguments
+<section id="positional-arguments"></section>
+The most straightforward way to pass arguments is using **positional arguments**. Python matches the arguments provided in the function call to the parameters in the function definition based on their order.
+
+In the **describe_pet** example above:
+
+*   The first argument (`"hamster"`) is assigned to the first parameter (`animal_type`).
+*   The second argument (`"harry"`) is assigned to the second parameter (`pet_name`).
+
+The order matters significantly. If you switch the arguments:
+
+* **Calling with arguments in the wrong order**
+```python
+describe_pet("willie", "dog")
+# Output will be incorrect:
+# I have a willie.
+# My willie's name is Dog.
+```
+
+You must provide an argument for every parameter defined positionally, unless the parameter has a default value (which we'll cover later).
+
+
+* **Trying to call with too few arguments**
+```python
+try:
+    describe_pet("cat") # Missing argument for pet_name
+except TypeError as e:
+    print(f"\nError calling describe_pet('cat'): {e}")
+    # Output: Error calling describe_pet('cat'): describe_pet() missing 1 required positional argument: 'pet_name'
+```
+* **Trying to call with too many arguments**
+```python
+try:
+    describe_pet("bird", "polly", "green") # Extra argument
+except TypeError as e:
+     print(f"\nError calling describe_pet('bird', 'polly', 'green'): {e}")
+     # Output: Error calling describe_pet('bird', 'polly', 'green'): describe_pet() takes 2 positional arguments but 3 were given
+```
+
+## Keyword Arguments
+<section id="keyword-arguments"></section>
+
+To avoid confusion with positional arguments or to make function calls more explicit, you can use **keyword arguments**. A keyword argument consists of the parameter name followed by an equals sign (`=`) and the value you want to pass.
+
+
+* **Calling describe_pet using keyword arguments**
+```python
+print("Calling with keyword arguments:")
+describe_pet(animal_type="dog", pet_name="buddy")
+```
+* **The order of keyword arguments doesn't matter**
+```python
+print("\nCalling with keyword arguments (different order):")
+describe_pet(pet_name="lucy", animal_type="cat")
+```
+
+Benefits of keyword arguments:
+
+1. **Clarity:** Explicitly states which argument corresponds to which parameter, improving readability.
+2. **Order Independence:** You don't need to remember the exact order of the parameters.
+3. **Flexibility:** You can mix positional and keyword arguments, but positional arguments must come before keyword arguments in the function call.
+
+
+* **Mixing positional and keyword arguments**
+```python
+print("\nMixed arguments (positional first):")
+describe_pet("fish", pet_name="goldie") # Correct: Positional then keyword
+# This would cause a SyntaxError:
+# describe_pet(animal_type="bird", "rio") # Error: positional argument follows keyword argument
+```
+
+## Parameters vs. Arguments (Clarification)
+<section id="parameters-vs-arguments-clarification"></section>
+
+It's common to sometimes use these terms interchangeably, but there's a technical difference:
+ *   A **Parameter** is the variable name listed in the function's definition (e.g., animal_type, pet_name).
+ *   An **Argument** is the actual value passed into the function when it is called (e.g., "dog", "buddy").
+
+ Think of parameters as placeholders and arguments as the values that fill those placeholders during a specific function call.
+
+### Example 1: Function with Positional Arguments
+<section id="example-1-function-with-positional-arguments"></section>
+
+
+* **File: positional_example.py**
+```python
+def calculate_power(base, exponent):
+    """Calculates base raised to the power of exponent."""
+    result = base ** exponent
+    print(f"{base} raised to the power of {exponent} is {result}")
+
+print("Using positional arguments:")
+calculate_power(2, 5)  # 2 is base, 5 is exponent
+calculate_power(5, 2)  # 5 is base, 2 is exponent (order matters!)
+```
+
+### Example 2: Function with Keyword Arguments
+<section id="example-2-function-with-keyword-arguments"></section>
+
+
+* **File: keyword_example.py**
+```python
+def create_email(recipient, subject, body):
+    """Simulates creating and printing an email."""
+    print("---"New Email"---")
+    print(f"To: {recipient}")
+    print(f"Subject: {subject}")
+    print("-----------------")
+    print(body)
+    print("-----------------")
+
+print("Using keyword arguments (order doesn't matter):")
+create_email(
+    subject="Meeting Reminder",
+    body="Just a reminder about our meeting tomorrow at 10 AM.",
+    recipient="team@example.com"
+)
+
+print("\nUsing mixed arguments (positional first):")
+create_email(
+    "hr@example.com", # Positional for recipient
+    subject="Job Application",
+    body="Please find my resume attached."
+)
+```
+
+### Example 3: Avoiding Ambiguity
+<section id="example-3-avoiding-ambiguity"></section>
+
+Keyword arguments are especially helpful when a function has multiple parameters of the same type or with similar meanings.
+
+
+* **File: avoid_ambiguity.py**
+```python
+
+# Function definition might be less clear without context
+def move_file(source, destination, overwrite):
+    """Simulates moving a file."""
+    print(f"Attempting to move '{source}' to '{destination}'.")
+    if overwrite:
+        print("Overwrite flag is set to True.")
+    else:
+        print("Overwrite flag is set to False.")
+    # ... actual move logic would go here ...
+
+print("Calling with positional arguments (can be ambiguous):")
+# Is True the source, destination, or overwrite flag? Not immediately clear.
+# move_file("/path/a", "/path/b", True)
+
+print("\nCalling with keyword arguments (much clearer):")
+move_file(source="/path/a", destination="/path/b", overwrite=True)
+move_file(destination="/new/location", source="/old/file", overwrite=False) # Order changed, still clear
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/argument_functions";
+
+<Quiz questions={pythonQuiz} />

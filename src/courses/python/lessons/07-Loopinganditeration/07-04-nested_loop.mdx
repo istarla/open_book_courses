@@ -1,0 +1,149 @@
+ # Nested Loops
+
+
+<section id="nested-loops"></section>
+
+Just as we can nest conditional statements (`if` inside `if`), we can also nest loops. A nested loop is a loop (either `for` or `while`) placed inside the code block of another loop.
+
+The loop containing the other loop is called the outer loop, and the loop inside is called the inner loop.
+
+Nested loops are commonly used when you need to work with two-dimensional data structures (like grids or tables, which we'll see with lists of lists later), generate combinations, or perform an action multiple times for each item processed by the outer loop.
+<img src="/images/nested_loop.png" alt="variable" className="w-150 h-100 mx-auto" />
+## Syntax and Structure
+<section id="nested-loop-syntax"></section>
+The structure involves indenting the inner loop within the block of the outer loop.
+
+```python
+# Outer loop
+for outer_variable in outer_iterable:
+    # Code in the outer loop block (executes for each outer item)
+    print(f"Outer loop iteration: {outer_variable}")
+
+    # Inner loop (nested)
+    for inner_variable in inner_iterable:
+        # Code in the inner loop block
+        # This entire inner loop completes fully for EACH outer loop iteration
+        print(f"  Inner loop iteration: {inner_variable} (within outer {outer_variable})")
+
+    # Code in the outer loop block, after the inner loop finishes for this outer iteration
+    print(f"Finished inner loop for outer {outer_variable}")
+
+print("Outer loop finished.")
+```
+
+## Key points:
+
+*   For every single iteration of the outer loop, the inner loop will execute *completely* from its beginning to its end.
+*   The total number of times the innermost block executes is the product of the number of iterations of the outer loop and the number of iterations of the inner loop.
+*   Indentation is crucial for defining which loop each statement belongs to.
+
+> **Performance Consideration:** Nested loops can significantly increase the execution time of your program, especially if both loops iterate many times. If the innermost block runs $M \times N$ times (where M and N are the iteration counts of the outer and inner loops), the complexity can grow quickly. Be mindful of this when working with large datasets.
+
+### Example 1: Printing Coordinates (Grid)
+<section id="printing-coordinates-grid"></section>
+
+Simulating movement across a simple 3x3 grid.
+
+```python
+# File: grid_coords.py
+print("Grid Coordinates (X, Y):")
+
+# Outer loop for X coordinate (rows)
+for x in range(3): # x will be 0, 1, 2
+    # Inner loop for Y coordinate (columns)
+    for y in range(3): # y will be 0, 1, 2
+        # This print executes 3 * 3 = 9 times
+        print(f"  ({x}, {y})")
+    # This message prints after the inner loop finishes for each x
+    print(f"Finished row {x}")
+
+print("Grid traversal complete.")
+```
+
+Observe the output carefully to see how the inner loop (y) runs fully for each value of the outer loop (x).
+
+### Example 2: Multiplication Table
+<section id="multiplication-table"></section>
+
+```python
+# File: multiplication_table.py
+size = 5 # Generate table up to 5x5
+
+print(f"Multiplication Table (up to {size}x{size}):")
+
+# Outer loop for the first number (row header)
+for i in range(1, size + 1): # i = 1, 2, 3, 4, 5
+    # Inner loop for the second number (column value)
+    for j in range(1, size + 1): # j = 1, 2, 3, 4, 5
+        product = i * j
+        # Print the product, end with a tab (\t) to align columns
+        # Using f-string formatting for alignment might be better for larger numbers
+        print(f"{product}\t", end="")
+    # After the inner loop finishes (one row is complete), print a newline
+    print() # Moves to the next line for the next row
+
+print("Table generation complete.")
+```
+
+### Example 3: Finding Pairs in a List (Conceptual)
+<section id="finding-pairs-in-a-list"></section>
+
+Find all unique pairs of numbers in a list that add up to a target sum. (We'll learn about lists properly soon).
+
+```python
+# File: find_pairs.py
+numbers = [2, 7, 4, 1, 5, 6, 3] # Example list
+target_sum = 10
+
+print(f"Finding pairs in {numbers} that sum to {target_sum}:")
+
+# Outer loop iterates with index 'i'
+for i in range(len(numbers)):
+    # Inner loop iterates with index 'j' starting from 'i + 1'
+    # This avoids checking the same pair twice (e.g., 2+7 and 7+2)
+    # and avoids adding a number to itself (e.g., 5+5 if target was 10 and list had two 5s)
+    for j in range(i + 1, len(numbers)):
+        num1 = numbers[i]
+        num2 = numbers[j]
+        # Check if the sum of the pair matches the target
+        if num1 + num2 == target_sum:
+            print(f"  Found pair: ({num1}, {num2})")
+
+print("Pair search complete.")
+# Output:
+# Finding pairs in [2, 7, 4, 1, 5, 6, 3] that sum to 10:
+#   Found pair: (7, 3)
+#   Found pair: (4, 6)
+# Pair search complete.
+```
+
+This example uses indexing (`numbers[i]`) which is common when working with sequences like lists. The key idea is using nested loops to compare each element with every other element that comes after it.
+
+## break and continue in Nested Loops
+<section id="break-and-continue-in-nested-loops"></section>
+Remember that `break` and `continue` only affect the innermost loop they are placed within.
+
+```python
+# File: nested_break_continue.py
+for i in range(3): # Outer loop: 0, 1, 2
+    print(f"Outer {i}")
+    for j in range(5): # Inner loop: 0, 1, 2, 3, 4
+        if j == 3:
+            print("  Inner break (j=3)")
+            break # Exits the INNER loop (over j) only
+        if j == 1:
+            print("  Inner continue (j=1)")
+            continue # Skips print for j=1, goes to j=2
+
+        print(f"    Inner {j}")
+    # This line is still reached after the inner loop breaks or completes
+    print(f"  (After inner loop for outer {i})")
+print("Finished all loops.")
+```
+
+If you need to break out of *both* loops, you often use a flag variable or restructure the code (e.g., putting the loops in a function and using `return`).
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/nested_loop";
+
+<Quiz questions={pythonQuiz} />

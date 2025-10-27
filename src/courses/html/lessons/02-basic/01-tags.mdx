@@ -1,0 +1,78 @@
+# 02-basic/01-tags.mdx
+
+<section id="opening-closing">
+## Opening & Closing Tags
+
+Most HTML elements use paired opening and closing tags that wrap content, defining where an element begins and ends.
+
+```html
+<!-- Basic tag structure -->
+<tagname>Content goes here</tagname>
+
+<!-- Common paired tags -->
+<h1>This is a heading</h1>
+<p>This is a paragraph with <strong>bold text</strong> and <em>italic text</em>.</p>
+
+<!-- Nested tags for complex structure -->
+<article>
+    <header>
+        <h2>Article Title</h2>
+        <time datetime="2024-01-15">January 15, 2024</time>
+    </header>
+    <section>
+        <p>Article content with <a href="https://example.com">external link</a>.</p>
+        <blockquote>
+            <p>"This is a quoted text from another source."</p>
+            <cite>- Author Name</cite>
+        </blockquote>
+    </section>
+</article>
+
+<!-- Tags with attributes -->
+<img src="image.jpg" alt="Description" class="responsive-image">
+<a href="https://example.com" target="_blank" rel="noopener">Visit Example</a>
+```
+
+The closing tag includes a forward slash before the tag name. Proper nesting is crucial - tags must be closed in reverse order of opening.
+</section>
+
+<section id="self-closing">
+## Self-Closing Tags
+
+Some HTML elements don't contain content and are self-closing. These elements represent standalone items like images, line breaks, or metadata.
+
+```html
+<!-- Common self-closing tags -->
+<br>                                    <!-- Line break -->
+<hr>                                    <!-- Horizontal rule -->
+<img src="photo.jpg" alt="Photo">      <!-- Image -->
+<input type="text" name="username">    <!-- Form input -->
+<meta charset="UTF-8">                 <!-- Metadata -->
+<link rel="stylesheet" href="style.css"> <!-- External resource -->
+
+<!-- HTML5 syntax (recommended) -->
+<area shape="rect" coords="0,0,100,100" href="link.html" alt="Clickable area">
+<base href="https://example.com/">
+<col span="2" style="background-color:red">
+<embed src="video.mp4" type="video/mp4" width="400" height="300">
+<source src="audio.mp3" type="audio/mpeg">
+<track kind="captions" src="captions.vtt" srclang="en" label="English">
+<wbr> <!-- Word break opportunity -->
+
+<!-- In forms -->
+<form>
+    <input type="email" placeholder="Enter email" required>
+    <input type="password" placeholder="Enter password" minlength="8">
+    <input type="submit" value="Submit">
+</form>
+
+<!-- Meta information -->
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Page description for SEO">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+```
+
+Self-closing tags don't need closing tags and cannot contain other elements. In HTML5, the trailing slash is optional.
+</section>

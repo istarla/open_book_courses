@@ -1,0 +1,120 @@
+# Control Flow - for Loops & the range() Function
+<section id="Introduction-to-for-loop"></section>
+
+Conditional statements (`if`, `elif`, `else`) allow us to choose which code path to execute. But often, we need to perform the same (or similar) actions multiple times. Manually writing the same code repeatedly is inefficient and error-prone.
+
+Loops are control flow structures designed to execute a block of code repeatedly. Python provides two main types of loops: `for` loops and `while` loops (which we'll cover next).
+
+`for` loops are typically used when you know how many times you want to iterate (repeat) or when you want to iterate over the items in a sequence (like a string, list, or tuple).
+<img src="/images/for_loop.jpg" alt="variable" className="w-150 h-100 mx-auto" />
+
+## for Loop Syntax
+<section id="for-loop-syntax"></section>
+
+The basic structure of a `for` loop in Python is:
+
+```python
+for loop_variable in iterable:
+    # Code block to execute for each item in the iterable
+    statement1
+    statement2
+    # ... more statements indented at the same level
+# Code here executes after the loop has finished iterating through all items
+statement_after_loop
+```
+
+## Key components:
+
+*   **for**: The keyword that starts the loop.
+*   **loop_variable**: A variable name you choose. In each iteration of the loop, this variable will automatically be assigned the current item from the iterable.
+*   **in**: Keyword separating the loop variable from the iterable.
+*   **iterable**: An object that can be looped over, meaning it contains a sequence of items. Examples include strings (iterate over characters), lists, tuples, dictionaries (iterate over keys by default), sets, and objects returned by functions like `range()`.
+*   **:**: A colon marks the end of the `for` loop header.
+*   **Indented Block**: The block of code that will be executed once for each item in the iterable. Inside this block, you can use the `loop_variable` to access the current item.
+
+## Iterating with range()
+
+A very common use case for `for` loops is to execute a block of code a specific number of times. The built-in `range()` function is perfect for this. It generates a sequence of numbers.
+
+`range()` can be called in a few ways:
+
+*   **range(stop)**: Generates numbers from 0 up to (but *not including*) `stop`.
+*   **range(start, stop)**: Generates numbers from `start` up to (but *not including*) `stop`.
+*   **range(start, stop, step)**: Generates numbers from `start` up to (but *not including*) `stop`, incrementing by `step` each time. The step can be negative for counting down.
+
+Technically, `range()` creates a special `range` object, which is memory-efficient as it doesn't store all the numbers at once. It generates them as needed by the `for` loop.
+
+### Example 1: Simple Counting Loop
+<section id="simple-counting-loop"></section>
+
+```python
+# File: count_loop.py
+
+print("Counting from 0 to 4:")
+# range(5) generates numbers 0, 1, 2, 3, 4
+for i in range(5):
+    # The loop variable 'i' takes each value from the range in turn
+    print(f"Current number: {i}")
+
+print("\nCounting from 2 to 6:")
+# range(2, 7) generates 2, 3, 4, 5, 6
+for count in range(2, 7):
+    print(f"Count: {count}")
+
+print("\nCounting down from 10 to 2 by 2s:")
+# range(10, 1, -2) generates 10, 8, 6, 4, 2
+for num in range(10, 1, -2):
+     print(f"Countdown: {num}")
+
+print("\nLoop finished.") # Executes after all loops complete
+```
+
+### Example 2: Iterating Over a String
+<section id="iterating-over-a-string"></section>
+
+A `for` loop can directly iterate over the characters of a string.
+
+```python
+# File: string_iterate.py
+word = "PYTHON"
+
+print(f"Iterating through the characters of '{word}':")
+for char in word:
+    # 'char' holds 'P', then 'Y', then 'T', etc. in successive iterations
+    print(f"Character: {char}")
+
+print("\nIteration complete.")
+```
+
+### Example 3: Calculating a Sum
+<section id="calculating-a-sum"></section>
+
+Using a loop to calculate the sum of numbers from 1 to a given number.
+
+```python
+# File: sum_calc.py
+limit_str = input("Enter a positive integer limit: ")
+
+try:
+    limit = int(limit_str)
+    if limit < 1:
+        print("Limit must be 1 or greater.")
+    else:
+        total_sum = 0 # Initialize accumulator variable
+        # range(1, limit + 1) generates numbers 1, 2, ..., limit
+        for number in range(1, limit + 1):
+            # Add the current number to the running total
+            total_sum += number # total_sum = total_sum + number
+
+        print(f"The sum of numbers from 1 to {limit} is: {total_sum}")
+
+except ValueError:
+    print("Invalid input. Please enter an integer.")
+```
+
+This demonstrates a common pattern: initializing an accumulator variable before the loop and updating it within the loop.
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/for_loop";
+
+<Quiz questions={pythonQuiz} />

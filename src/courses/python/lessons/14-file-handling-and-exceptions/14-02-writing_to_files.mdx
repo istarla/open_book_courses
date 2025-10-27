@@ -1,0 +1,176 @@
+# Writing and Appending to Files
+
+## Saving Data to Files
+<section id="saving-data-to-files"></section>
+
+Yesterday, we focused on reading data from existing files using the `open()` function in read mode (`'r'`). Today, we'll learn how to write new data to files or add data to existing ones.
+
+This involves opening files using different modes:
+
+*   **Write Mode (`'w'`)**: Opens the file for writing. If the file exists, its current contents are **erased (truncated)** before writing begins. If the file does not exist, it is created.
+*   **Append Mode (`'a'`)**: Opens the file for writing, but new data is added (appended) to the **end** of the file. If the file exists, its original content is preserved. If the file does not exist, it is created.
+
+As with reading, it's recommended to specify the encoding, usually `encoding="utf-8"`, and crucial to `close()` the file afterwards.
+
+## Writing Content: **write()** and **writelines()**
+<section id="writing-content-write-and-writelines"></section>
+
+When a file is opened in write (`'w'`) or append (`'a'`) mode, the file object provides methods for writing strings:
+
+*   `write(string)`: Writes the specified `string` to the file at the current cursor position. It returns the number of characters written. **Important:** This method does **not** automatically add a newline character (`\n`). You must include it explicitly in the string if you want subsequent writes to start on a new line.
+*   `writelines(list_of_strings)`: Writes each string from the `list_of_strings` to the file. Like `write()`, it does **not** automatically add newlines between the strings; the strings in the list should typically include their own trailing `\n` if desired.
+
+### Example 1: Writing to a New File (**'w'** mode)
+<section id="example-1-writing-to-a-new-file-w-mode"></section>
+
+This will create a file named `output.txt` or overwrite it if it already exists.
+
+
+* **File: write_new_file.py**
+```python
+
+lines_to_write = [
+    "First line of text.\n", # Include newline character \n
+    "Second line here.\n",
+    "Third and final line." # No newline on the last line
+]
+
+try:
+    # Open in write mode ('w') - erases existing file or creates new one
+    file_out = open("output.txt", mode="w", encoding="utf-8")
+    print("File 'output.txt' opened in write mode.")
+```
+    * **Method 1: Using write() in a loop**
+    ```python
+
+    # for line in lines_to_write:
+    #     num_chars = file_out.write(line)
+    #     print(f"  Wrote {num_chars} characters: {line.strip()}")
+```
+
+    * **Method 2: Using writelines()**
+    ```python
+    # Method 2: Using writelines()
+    file_out.writelines(lines_to_write)
+    print("  Wrote lines using writelines().")
+
+    # You can still use write() for additional content
+    file_out.write("\n\nAn extra note added later.")
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+finally:
+    if 'file_out' in locals() and not file_out.closed:
+        file_out.close()
+        print("File closed.")
+
+# Check the contents of output.txt after running the script!
+```
+
+After running this script, inspect the **output.txt** file. It should contain the specified lines.
+
+### Example 2: Appending to an Existing File (**'a'** mode)
+<section id="example-2-appending-to-an-existing-file-a-mode"></section>
+
+
+This will add data to the end of `output.txt` without erasing its previous content. If `output.txt` doesn't exist, it will be created.
+
+
+* **File: append_to_file.py**
+```python
+
+try:
+    # Open in append mode ('a') - adds to the end or creates new file
+    file_append = open("output.txt", mode="a", encoding="utf-8")
+    print("File 'output.txt' opened in append mode.")
+
+    # Append some new lines (remember newline characters!)
+    file_append.write("\n--- Appended Section ---")
+    file_append.write("\nThis line was appended.")
+    file_append.write("\nAppending another line.")
+
+    print("  Appended new lines to the file.")
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+finally:
+    if 'file_append' in locals() and not file_append.closed:
+        file_append.close()
+        print("File closed.")
+
+# Check the contents of output.txt again. The new lines should be at the end.
+```
+
+ **Data Types for Writing:** The `write()` and `writelines()` methods expect **string** arguments. If you want to write non-string data (like numbers or booleans), you must first convert it to a string using `str()`.
+ 
+ 
+ * **File: write_non_string.py**
+```python
+ count = 100
+ pi_approx = 3.14159
+ is_valid = True
+ 
+ try:
+     f = open("data_output.txt", "w", encoding="utf-8")
+     # Convert numbers and boolean to string before writing
+     f.write("Count: " + str(count) + "\n")
+     f.write("Pi Approx: " + str(pi_approx) + "\n")
+     f.write("Is Valid: " + str(is_valid) + "\n")
+
+     # Using f-strings is often easier for formatting
+     f.write(f"\nFormatted Data:\n")
+     f.write(f"Count={count}, Pi={pi_approx:.2f}, Valid={is_valid}\n")
+ 
+     # Trying to write non-string directly causes TypeError
+     # f.write(count) # TypeError: write() argument must be str, not int
+ except Exception as e:
+     print(f"An error occurred: {e}")
+finally:
+     if 'f' in locals() and not f.closed:
+        f.close()
+        print("File closed.")
+```
+
+###  Example 3: Saving User Input to a Log File
+<section id="example-3-saving-user-input-to-a-log-file"></section>
+
+* **File: user_log.py**
+```python
+import datetime
+
+log_filename = "user_activity.log"
+
+try:
+    # Open in append mode to add to existing log or create new
+    log_file = open(log_filename, "a", encoding="utf-8")
+
+    while True:
+        user_input = input("Enter activity (or type 'quit' to exit): ")
+        if user_input.lower() == 'quit':
+            break
+
+        # Get current timestamp
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        # Format log entry and write to file
+        log_entry = f"[{timestamp}] - {user_input}\n"
+        log_file.write(log_entry)
+        print("  Activity logged.")
+
+except Exception as e:
+    print(f"An error occurred during logging: {e}")
+finally:
+    if 'log_file' in locals() and not log_file.closed:
+        log_file.close()
+        print("\nLog file closed.")
+
+# Check the contents of user_activity.log
+```
+
+This example continuously prompts the user and appends their input along with a timestamp to a log file until they type 'quit'.
+
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/writing_files";
+
+<Quiz questions={pythonQuiz} />

@@ -1,0 +1,129 @@
+# 02-basic/02-elements.mdx
+
+<section id="nested-elements">
+## Nested Elements
+
+HTML elements can contain other elements, creating a hierarchical structure. Proper nesting is essential for valid HTML and accessibility.
+
+```html
+<!-- Basic nesting example -->
+<div class="container">
+    <header>
+        <h1>Website Title</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li>
+                    <a href="#services">Services</a>
+                    <ul class="submenu">
+                        <li><a href="#web-design">Web Design</a></li>
+                        <li><a href="#development">Development</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+</div>
+
+<!-- Complex nested structure -->
+<article class="blog-post">
+    <header>
+        <h2>Understanding HTML Nesting</h2>
+        <div class="meta">
+            <time datetime="2024-01-15">January 15, 2024</time>
+            <address>By <a href="mailto:author@example.com">John Doe</a></address>
+        </div>
+    </header>
+    
+    <section class="content">
+        <p>HTML nesting allows you to create <strong>complex structures</strong> by 
+           placing elements <em>inside other elements</em>.</p>
+        
+        <figure>
+            <img src="diagram.jpg" alt="HTML nesting diagram">
+            <figcaption>
+                Figure 1: Visual representation of <code>HTML nesting</code>
+            </figcaption>
+        </figure>
+        
+        <div class="code-example">
+            <pre><code>&lt;div&gt;
+    &lt;p&gt;Nested paragraph&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+    </section>
+</article>
+```
+
+Elements must be properly closed in reverse order of opening. Invalid nesting can cause rendering issues and accessibility problems.
+</section>
+
+<section id="block-vs-inline">
+## Block vs Inline Elements
+
+HTML elements are categorized as block-level or inline elements, which affects their layout behavior and what elements they can contain.
+
+```html
+<!-- Block-level elements -->
+<div>Block elements take full width and start on new lines</div>
+<p>Paragraphs are block elements that stack vertically</p>
+<h1>Headings are also block-level</h1>
+
+<section>
+    <h2>Block Elements Examples</h2>
+    <article>
+        <header>Article header (block)</header>
+        <p>Article content paragraph (block)</p>
+        <aside>Sidebar content (block)</aside>
+        <footer>Article footer (block)</footer>
+    </article>
+    
+    <blockquote>
+        <p>Blockquotes are block elements used for quotations</p>
+    </blockquote>
+    
+    <ul>
+        <li>List items are block elements</li>
+        <li>They stack vertically</li>
+    </ul>
+</section>
+
+<!-- Inline elements -->
+<p>Inline elements like <span>spans</span>, <strong>strong text</strong>, 
+   <em>emphasized text</em>, and <a href="#">links</a> flow within text content.
+   You can also use <code>code</code> elements, <kbd>keyboard input</kbd>, 
+   <samp>sample output</samp>, and <var>variables</var> inline.</p>
+
+<!-- Mixed usage -->
+<div class="content-block">
+    <h3>Mixing Block and Inline Elements</h3>
+    <p>This paragraph <span class="highlight">contains inline elements</span> 
+       like <strong>bold text</strong> and <a href="#link">links</a>. 
+       You can also include <img src="icon.png" alt="icon"> images inline.</p>
+    
+    <p>Block elements like paragraphs can contain inline elements, 
+       but inline elements cannot contain block elements.</p>
+</div>
+
+<!-- CSS can change display behavior -->
+<style>
+/* Making inline elements behave like blocks */
+.block-span {
+    display: block;
+    padding: 10px;
+    background: #f0f0f0;
+}
+
+/* Making block elements behave inline */
+.inline-div {
+    display: inline;
+}
+</style>
+
+<span class="block-span">This span behaves like a block</span>
+<div class="inline-div">This div behaves inline</div>
+<div class="inline-div">Another inline div</div>
+```
+
+Block elements create new lines and take full available width, while inline elements flow within text content and only take necessary space.
+</section>

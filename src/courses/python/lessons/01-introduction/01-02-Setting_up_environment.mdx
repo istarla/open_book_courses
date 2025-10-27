@@ -1,0 +1,244 @@
+<div class="day-container"> 
+      
+      # &#10;        Setting Up Your Python Environment&#10;      
+
+      ## why set up environment
+      
+      ## <section id="why-set-up-environment"></section>
+      &#10;        Before you start writing Python code, you need to ensure Python is
+        installed on your computer and you have the right tools to write and run
+        your programs efficiently. This setup is called your development
+        environment.
+      
+
+      
+      ## <section id="Installation"></section>
+      &#10;        Python might already be installed on your system, especially if you're
+        using Linux or macOS. However, it might be an older version (Python 2).
+        We need Python 3.
+      
+      
+     ## Installation
+      Open your terminal or command prompt and type:
+          python <span class="token operator">-</span><span class="token operator">-</span>version
+    <span class="token comment"># or maybe</span>
+    python3 <span class="token operator">-</span><span class="token operator">-</span>version<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span>
+      &#10;        If you see a version number starting with 3 (e.g., Python 3.10.4),
+        you're likely good to go. If not, or if the command isn't found, you
+        need to install it.
+      
+
+      
+      ### 1. Installation Steps
+      <section id="Installation-Steps"></section>
+
+        
+              **Windows:**
+              
+Python doesn't come prepackaged in Windows, but that doesn’t mean Windows users cannot be flexible with Python.  
+Some operating systems such as **Linux** come with the Python package manager pre-installed, which can be used to install and manage Python easily.
+
+              
+                    **Step 1: Go to the official Python website:**
+                      [python.org/downloads/windows/](https://www.python.org/downloads/windows/)
+                      
+                     ![downloaded](/images/download_pythonlink.png)
+
+                    
+                    **Step 2: Download the latest stable release installer:**
+                      Download the latest stable release installer (e.g., Python 3.x.y).
+                      Choose the 64-bit installer if you have a 64-bit system.
+                    ![downloaded](/images/Download_py.png)
+
+                    **Step 3: Run the installer:**
+                      Run the installer.
+                      **Crucially, check the box that says "Add Python 3.x to
+                        PATH"**
+                      during the installation. This makes Python accessible from the
+                      command line.
+                      ![downloaded](/images/images.png)
+                    
+                        1. Choose "Install Now" for the recommended setup.
+                         ![downloaded](/images/Set_up.png)
+                        2. Verify the installation by opening Command Prompt or PowerShell
+                      and typing **python --version**.
+                           ![downloaded](/images/sucessfully_py.png)
+                    
+              **macOS:**
+
+              
+                    **Step 1: Go to the official Python website:**
+                      [python.org/downloads/macos/](https://www.python.org/downloads/macos/)
+                      ![downloaded](/images/Mac_os.png)
+                    
+                    **Step 2: Download the macOS 64-bit installer package:**
+                      Download the macOS 64-bit installer package.
+                     ![downloaded](/images/Mac_version.png)
+                    **Step 3: Run the installer package:**
+                      Run the installer package, following the prompts.
+                    ![downloaded](/images/sucessful_macos.png)
+                    **Step 4: Verify the installation:**
+                      Verify the installation by opening Terminal (Applications &gt;
+                      Utilities &gt; Terminal) and typing
+                      **python3 --version**. (macOS often comes with Python
+                      2 accessible via **python**, so use
+                      **python3**).
+                      ![downloaded](/images/installer_macos.png)
+                    
+                        
+                    
+                     
+                  
+            
+     
+              **Linux (Debian/Ubuntu):**
+              
+                        
+                      ![downloaded](/images/Linux.png)
+                    
+
+                    
+                        **Step 2: Install Python 3 if not installed:**
+                      If not installed or you need a specific version, use the package
+                      manager:
+                     ![downloaded](/images/Linux_step.png)
+                  
+              
+            
+        
+              **Linux (Fedora):**
+              
+                        1. Check with **python3 --version**.
+                        ![downloaded](/images/python_linux.png)
+                        1. Install using dnf:
+                         ![downloaded](/images/Dnf_image.png)
+             
+      
+
+      
+      ## &#10;        2. Writing Code: Text Editors vs. IDEs&#10; 
+      <section id="TestEditor"></section>
+     
+      &#10;        You need a place to write your Python code (.py files). You have several
+        options:
+         
+   1. **Simple Text Editors:** Notepad (Windows), TextEdit (Mac), Gedit (Linux). Functional, but lack helpful features for coding.
+   2. **Code Editors:** Offer syntax highlighting, code completion suggestions, and often terminal integration. Great choices include.
+         * Visual Studio Code (VS Code)](https://code.visualstudio.com/) – Free, highly popular, extensible.(Recommended)
+         * Sublime Text](https://www.sublimetext.com/) – Fast, powerful, paid with free trial.
+         * Atom](https://atom.io/) – Free, customizable, developed by GitHub.
+3. **Integrated Development Environments (IDEs):** Provide a full suite of tools including code editors, debuggers, project management, version control integration, etc. Often more resource-intensive but very powerful for larger projects.
+         * PyCharm](https://www.jetbrains.com/pycharm/) – Very popular, feature-rich Python IDE. Has a free Community edition and a paid Professional edition.(Highly Recommended for larger projects)
+         * Spyder](https://www.spyder-ide.org/) – Often included with Anaconda, focused on scientific computing.
+4. **Recommendation for Beginners:** Start with a good code
+editor like VS Code. It's powerful yet relatively easy to learn. Install
+        the official Python extension for the best experience.
+      
+</div>
+      
+      ## 3. Running Python Code
+      <section id="Running-Python-Code"></section>
+      &#10;        There are two primary ways to run Python code: 
+      
+      ### a) Interactive Mode (REPL)
+      &#10;        REPL stands for Read-Eval-Print Loop. It's a quick way to test small
+        snippets of Python code without creating a file.
+      
+      &#10;        Open your terminal or command prompt and type **python** or
+        **python3**
+        (depending on your system/installation):
+          ```python
+python3
+Python 3.10.4 (...) on ...
+Type "help", "copyright", "credits" or "license" for more information.
+>>> print("Hello from the REPL!")
+Hello from the REPL!
+>>> 5 * 8
+40
+>>> exit()
+```
+The `>>>` is the Python prompt waiting for your command.  
+Type **exit()** or press **Ctrl + D** (Linux/Mac) or **Ctrl + Z** then **Enter** (Windows) to leave the REPL.
+
+---
+
+### b) Running Python Files
+
+This is how you'll typically run your programs.
+
+1. Create a file using your text/code editor (e.g., `hello.py`).
+2. Write your Python code in the file.
+3. Save the file.
+4. Open your terminal or command prompt.
+5. Navigate to the directory where you saved the file using the `cd` (change directory) command.
+6. Run the file using the Python interpreter:
+
+```bash
+# Assuming hello.py is in the current directory
+python3 hello.py
+```
+## Example 1: Running the REPL
+
+Follow the steps above to open the REPL and try typing a few commands like `2 + 2` or `print('Test')`.
+
+```bash
+# No code file here - this is done in the terminal directly.
+# Open terminal -> type 'python3' -> press Enter
+# Then type:
+2 + 2
+# Press Enter. You should see '4'.
+
+print("This is interactive!")
+# Press Enter. You should see the text.
+
+exit()
+# Press Enter to leave.
+```
+## Example 2: Creating and Running a .py File
+
+1.Create a file named greeting.py.
+
+2.Put the following code inside:
+```python
+# greeting.py
+name = "Alice"
+print(f"Hello, {name}!")  # We'll learn about f-strings later
+print("Welcome to Day 2.")
+```
+3.Save the file.
+
+4.Open  your terminal or command prompt.
+
+5.Run:
+python3 greeting.py
+
+Output in terminal:
+```python
+# greeting.py
+Hello, Alice!
+Welcome to Day 2.
+```
+## Example 3: Verifying Installation Path (Conceptual)
+
+Sometimes you need to know where Python is installed.
+The specific command varies by OS, but conceptually, you're asking the system "where is python3?". 
+On Linux/macOS:
+
+```bash
+which python3
+Example Output: /usr/bin/python3 or /usr/local/bin/python3
+```
+On Windows:
+
+```bash
+where python3
+C:\Users\YourUser\AppData\Local\Programs\Python\Python310\python.exe
+```
+ 
+Do you want me to also make the examples inline code styled consistently?
+   
+
+import Quiz from '../../../../components/Quiz'
+import pythonQuiz from '../../../../Data/setup_question'
+
+<Quiz questions={pythonQuiz} />

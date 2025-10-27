@@ -1,0 +1,234 @@
+# Inheritance
+
+## Building on Existing Classes: "Is-A" Relationship
+<section id="building-on-existing-classes-is-a-relationship"></section>
+
+Object-Oriented Programming allows us to model relationships between classes. One fundamental relationship is inheritance, which represents an "is-a" relationship. For example, a Dog is a type of Animal, a Car is a type of Vehicle, a CheckingAccount is a type of BankAccount.
+
+Inheritance allows a new class (the child class, subclass, or derived class) to inherit attributes and methods from an existing class (the parent class, superclass, or base class).
+
+Benefits of inheritance:
+
+*   **Code Reusability:** Common attributes and methods defined in the parent class are automatically available to the child class, avoiding repetition.
+*   **Extensibility:** Child classes can add their own unique attributes and methods.
+*   **Specialization:** Child classes can override inherited methods to provide a more specific implementation while maintaining the same interface.
+*   **Hierarchical Classification:** Models real-world hierarchies and relationships naturally.
+
+## Syntax for Inheritance
+<section id="syntax-for-inheritance"></section>
+
+To make a class inherit from another, you specify the parent class name(s) in parentheses after the child class name in the definition:
+
+```python
+class ParentClass:
+    # Parent attributes and methods
+    pass
+
+class ChildClass(ParentClass): # Child inherits from Parent
+    # Child can add its own attributes and methods
+    # or override parent methods
+    pass
+```
+
+The **ChildClass** now automatically has access to all non-private attributes and methods of **ParentClass**.
+
+### Example 1: Basic Animal Hierarchy
+<section id="example-1-basic-animal-hierarchy"></section>
+
+
+* **File: inheritance_basic.py**
+```python
+
+
+
+# Parent/Base/Super Class
+class Animal:
+    def __init__(self, name, species):
+        self.name = name
+        self.species = species
+        print(f"Animal '{name}' ({species}) created.")
+
+    def speak(self):
+        print(f"{self.name} makes a generic animal sound.")
+
+    def move(self):
+        print(f"{self.name} moves.")
+```
+* **Child/Derived/Sub Class inheriting from Animal**
+```python
+class Dog(Animal): # Dog 'is-a' Animal
+    def __init__(self, name, breed):
+        # Call the parent class's __init__ method to initialize common attributes
+        super().__init__(name, species="Dog") # Use super() to call parent method
+        self.breed = breed # Add a Dog-specific attribute
+        print(f"-> It's a {self.breed}.")
+
+    # Override the parent's speak method
+    def speak(self):
+        print(f"{self.name} says Woof!")
+
+    # Add a new method specific to Dog
+    def wag_tail(self):
+        print(f"{self.name} wags its tail.")
+```
+* **--- Using the classes ---**
+```python
+print("Creating generic animal:")
+generic_animal = Animal("Creature", "Unknown")
+generic_animal.speak()
+generic_animal.move()
+
+print("\nCreating a Dog:")
+my_dog = Dog("Buddy", "Golden Retriever")
+my_dog.speak()      # Calls the overridden Dog version
+my_dog.move()       # Calls the inherited Animal version
+my_dog.wag_tail()   # Calls the Dog-specific method
+```
+* **Accessing attributes**
+```python
+print(f"\n{my_dog.name} is species: {my_dog.species}, breed: {my_dog.breed}")
+```
+
+## Overriding Methods and **super()**
+
+*   **Overriding:** A child class can provide its own specific implementation of a method that is already defined in its parent class. When the method is called on an instance of the child class, the child's version is executed instead of the parent's. (We saw this with **speak()** in the example).
+*   **`super()`:** Often, when overriding a method (especially **__init__**), you still want to execute the logic from the parent class's version first. The built-in `super()` function provides a way to call methods from the parent class. `super().__init__(...)` is commonly used in the child's **__init__** to ensure the parent's initialization logic runs.
+
+## Method Resolution Order (MRO)
+<section id="method-resolution-order-mro"></section>
+
+Python supports multiple inheritance (inheriting from more than one parent class), though it can add complexity. When a method or attribute is accessed, Python follows a specific **Method Resolution Order (MRO)** to find it. It checks:
+
+1.  The instance itself.
+2.  The instance's class.
+3.  The parent classes of the instance's class (following a specific algorithm, C3 linearization, to handle complex inheritance graphs).
+
+You can inspect the MRO of a class using `ClassName.mro()` or `ClassName.__mro__`.
+
+```python
+# Continuing from inheritance_basic.py
+print("\nMethod Resolution Order for Dog:")
+print(Dog.mro())
+# Output might look like:
+# [<class '__main__.Dog'>, <class '__main__.Animal'>, <class 'object'>]
+# This shows Python looks in Dog, then Animal, then the base 'object' class.
+```
+
+### Example 2: Vehicle Hierarchy
+<section id="example-2-vehicle-hierarchy"></section>
+* **File: vehicles.py**
+```python
+class Vehicle:
+    """Base class for vehicles."""
+    def __init__(self, make, model, year):
+        self.make = make
+        self.model = model
+        self.year = year
+        self.started = False
+
+    def start(self):
+        if not self.started:
+            self.started = True
+            print(f"{self.year} {self.make} {self.model} started.")
+        else:
+            print("Vehicle already running.")
+
+    def stop(self):
+         if self.started:
+            self.started = False
+            print(f"{self.year} {self.make} {self.model} stopped.")
+         else:
+            print("Vehicle already stopped.")
+```
+* **class Car(Vehicle):**
+```python
+class Car(Vehicle):
+    """A car is a type of vehicle."""
+    def __init__(self, make, model, year, num_doors):
+        super().__init__(make, model, year) # Initialize parent attributes
+        self.num_doors = num_doors # Car-specific attribute
+
+    # Override stop method slightly
+    def stop(self):
+        super().stop() # Call parent's stop method first
+        print(" -> Parking brake engaged.") # Add car-specific action
+
+class Motorcycle(Vehicle):
+     """A motorcycle is a type of vehicle."""
+     def __init__(self, make, model, year, has_sidecar):
+        super().__init__(make, model, year)
+        self.has_sidecar = has_sidecar
+
+     def wheelie(self): # Motorcycle-specific method
+        if self.started:
+            print(f"{self.make} {self.model} does a wheelie!")
+        else:
+            print("Need to start the engine first!")
+
+```
+* **--- Usage ---**
+```python
+my_car = Car("Toyota", "Camry", 2022, 4)
+my_bike = Motorcycle("Harley-Davidson", "Sportster", 2021, False)
+
+my_car.start()
+my_bike.start()
+my_bike.wheelie()
+my_car.stop()
+my_bike.stop()
+```
+
+### Example 3: Different Account Types
+* **File: account_inheritance.py**
+```python
+class BankAccount: # Base class (from previous lesson)
+    def __init__(self, account_holder, initial_balance=0.0):
+        self.account_holder = account_holder
+        if initial_balance < 0: raise ValueError("Initial balance cannot be negative.")
+        self.balance = initial_balance
+        print(f"Account created for {self.account_holder}, Balance: ${self.balance:.2f}")
+
+    def deposit(self, amount):
+        if amount <= 0: print("Deposit amount must be positive."); return
+        self.balance += amount
+        print(f"Deposited ${amount:.2f}. New balance: ${self.balance:.2f}")
+
+    def withdraw(self, amount):
+        if amount <= 0: print("Withdrawal amount must be positive."); return False
+        if amount > self.balance: print(f"Insufficient funds."); return False
+        self.balance -= amount
+        print(f"Withdrew ${amount:.2f}. New balance: ${self.balance:.2f}")
+        return True
+
+    def get_balance(self): return self.balance
+
+class SavingsAccount(BankAccount): # Inherits from BankAccount
+    def __init__(self, account_holder, initial_balance=0.0, interest_rate=0.01):
+        super().__init__(account_holder, initial_balance) # Call parent __init__
+        self.interest_rate = interest_rate # Add specific attribute
+
+    def add_interest(self):
+        """Adds interest to the balance."""
+        interest = self.balance * self.interest_rate
+        print(f"Adding interest: ${interest:.2f}")
+        self.deposit(interest) # Use inherited deposit method
+```
+* **--- Usage ---**
+```python
+basic_acc = BankAccount("John Doe", 100)
+savings_acc = SavingsAccount("Jane Smith", 1000, 0.02) # 2% interest
+
+basic_acc.deposit(50)
+savings_acc.deposit(200)
+savings_acc.add_interest() # Call method specific to SavingsAccount
+basic_acc.withdraw(30)
+savings_acc.withdraw(100)
+
+print(f"\nJohn's final balance: ${basic_acc.get_balance():.2f}")
+print(f"Jane's final balance: ${savings_acc.get_balance():.2f}")        
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/inheritance";
+
+<Quiz questions={pythonQuiz} />

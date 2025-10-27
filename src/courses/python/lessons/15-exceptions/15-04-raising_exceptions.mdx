@@ -1,0 +1,154 @@
+
+# Raising Exceptions (raise)
+
+## Signaling Errors Explicitly
+<section id="signaling-errors-explicitly"></section>
+
+
+We've learned how to handle exceptions that Python raises automatically when it encounters runtime errors (like ValueError, TypeError, ZeroDivisionError) using try...except blocks.
+
+However, sometimes your own code needs to signal that an error condition has occurred based on logic specific to your program. For example, a function might receive invalid input according to its own rules (even if the data type is correct), or an operation might fail due to an external condition that Python itself doesn't automatically detect as an error.
+
+In these situations, you can explicitly trigger or raise an exception using the raise statement.
+
+## The **raise** Statement Syntax
+<section id="the-raise-statement-syntax"></section>
+
+* **The basic syntax is:**
+
+```python
+raise ExceptionType("Optional descriptive error message")
+```
+
+1. **raise**: The keyword used to trigger an exception.
+2. **ExceptionType**: The type of exception you want to raise. This should typically be one of Python's built-in exception classes (like ValueError, TypeError, RuntimeError, etc.) or a custom exception class you define (a more advanced topic).
+3.  **("Optional message")**: You can optionally provide a string argument to the exception constructor, which usually serves as a descriptive error message. This message will be displayed as part of the traceback if the exception isn't handled.
+
+* **When a raise statement is executed:**
+
+1.  An exception object of the specified type is created.
+2.  The normal execution flow stops immediately.
+3.  Python starts looking for a suitable except block to handle the raised exception, moving up the call stack if necessary.
+4.  If no handler is found, the program terminates and prints a traceback, just like with built-in exceptions.
+
+## Why Raise Exceptions?
+<section id="why-raise-exceptions"></section>
+
+*   **Input Validation:** Signal that function arguments are invalid according to the function's specific requirements (e.g., a negative number passed to a function expecting only positive values).
+*   **Enforcing Preconditions/Postconditions:** Indicate that a required state is not met before or after an operation.
+*   **Reporting Specific Errors:** Provide more context-specific error information than a generic built-in exception might offer.
+*   **Controlling Program Flow:** Use exceptions (sometimes custom ones) to signal specific conditions that need to be handled further up the call stack.
+
+Choosing the right ExceptionType is important. Use the most specific built-in exception that semantically fits the error (e.g., ValueError for bad input value, TypeError for wrong input type, RuntimeError for general runtime issues that don't fit elsewhere). Avoid raising overly generic exceptions like Exception unless necessary.
+
+### Example 1: Validating Function Input
+<section id="example-1-validating-function-input"></section>
+
+
+* **File: input_validation_raise.py**
+```python
+import math
+
+def calculate_sqrt(number):
+    """Calculates the square root, requires non-negative input."""
+    if number < 0:
+        # Raise ValueError if input is invalid for this function's logic
+        raise ValueError("Input number cannot be negative for square root.")
+    return math.sqrt(number)
+
+# --- Calling the function ---
+try:
+    result1 = calculate_sqrt(25)
+    print(f"Square root of 25: {result1}")
+
+    result2 = calculate_sqrt(-10) # This will raise the ValueError
+    print(f"Square root of -10: {result2}") # This line won't be reached
+
+except ValueError as e: # Catch the specific error we raised
+    print(f"Error: {e}")
+
+print("\nProgram finished.")
+```
+
+Run this. The first call succeeds, but the second call triggers the **raise** statement, which is then caught by the **except ValueError** block.
+
+### Example 2: Raising Error for Unimplemented Feature
+<section id="example-2-raising-error-for-unimplemented-feature"></section>
+* **File: not_implemented.py**
+```python
+
+def process_data(data, format="csv"):
+    """Processes data based on format."""
+    if format == "csv":
+        print(f"Processing CSV data: {data}")
+        # ... csv processing logic ...
+    elif format == "json":
+        print(f"Processing JSON data: {data}")
+        # ... json processing logic ...
+    else:
+        # Signal that this format is not supported yet
+        raise NotImplementedError(f"Processing for format '{format}' is not implemented.")
+
+# --- Calling the function ---
+try:
+    process_data(["row1", "row2"], format="csv")
+    process_data({"key": "value"}, format="json")
+    process_data("<xml>data</xml>", format="xml") # This will raise NotImplementedError
+
+except NotImplementedError as e:
+    print(f"\nCaught Error: {e}")
+except Exception as e:
+    print(f"\nCaught unexpected error: {e}")
+
+print("\nProgram finished.")
+```
+
+NotImplementedError is a suitable built-in exception for features planned but not yet coded.
+
+### Example 3: Re-raising Exceptions
+<section id="example-3-re-raising-exceptions"></section>
+
+Sometimes, an except block might perform some logging or partial handling but then decide that the error needs to be handled further up the call stack. You can re-raise the caught exception using a bare raise statement inside the except block.
+
+* **File: reraise_exception.py**
+```python
+
+
+def inner_function(x):
+    print("  Inside inner_function...")
+    if x == 0:
+        raise ValueError("Value cannot be zero in inner_function")
+    return 10 / x # Could also raise ZeroDivisionError implicitly
+
+def outer_function(val):
+    print("Entering outer_function...")
+    try:
+        result = inner_function(val)
+        print(f"  Inner function returned: {result}")
+        return result
+    except ValueError as e:
+        print(f"  Outer function caught ValueError: {e}")
+        print("  Logging the error and re-raising...")
+        # Perform logging or cleanup here...
+        raise # Re-raise the **original**ValueError exception
+    finally:
+        print("  Exiting outer_function (finally)")
+
+# --- Calling the outer function ---
+try:
+    print("Calling outer_function with 5:")
+    outer_function(5)
+    print("\nCalling outer_function with 0:")
+    outer_function(0) # This will trigger the re-raise
+except ValueError:
+    print("Main script caught the re-raised ValueError.")
+
+print("\nProgram finished.")
+```
+
+Notice how the ValueError raised in inner_function is caught by outer_function, logged, and then re-raised to be caught by the try...except block in the main part of the script.
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/raising_exceptions";
+
+<Quiz questions={pythonQuiz} />

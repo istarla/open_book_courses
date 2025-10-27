@@ -1,0 +1,283 @@
+# Inputs
+
+In this lesson, we'll explore different types of HTML input elements that allow users to interact with your web forms. Input elements are essential for collecting user data and creating interactive web experiences.
+
+<section id="text-input">
+
+## Text Input
+
+Text inputs are the most common form elements used to collect text-based information from users. HTML provides several types of text inputs for different purposes.
+
+### Basic Text Input
+
+The basic text input allows users to enter single-line text:
+
+```html
+<form>
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username" placeholder="Enter your username">
+  
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" placeholder="user@example.com" required>
+  
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" minlength="8" required>
+</form>
+```
+
+### Text Input Attributes
+
+Common attributes for text inputs:
+
+```html
+<input type="text" 
+       id="fullname" 
+       name="fullname" 
+       placeholder="Enter full name"
+       maxlength="50"
+       minlength="2"
+       pattern="[A-Za-z\s]+"
+       autocomplete="name"
+       required>
+```
+
+- `placeholder`: Shows hint text when input is empty
+- `maxlength`: Limits maximum number of characters
+- `minlength`: Sets minimum required characters
+- `pattern`: Defines a regular expression for validation
+- `required`: Makes the field mandatory
+- `autocomplete`: Helps browsers auto-fill common fields
+
+### Textarea for Multi-line Text
+
+For longer text input, use the `textarea` element:
+
+```html
+<label for="message">Message:</label>
+<textarea id="message" 
+          name="message" 
+          rows="4" 
+          cols="50" 
+          placeholder="Enter your message here..."
+          maxlength="500"></textarea>
+```
+
+</section>
+
+<section id="checkbox-radio">
+
+## Checkboxes & Radio Buttons
+
+Checkboxes and radio buttons provide users with predefined options to select from.
+
+### Checkboxes
+
+Checkboxes allow users to select multiple options from a list:
+
+```html
+<fieldset>
+  <legend>Select your interests:</legend>
+  
+  <input type="checkbox" id="web-dev" name="interests" value="web-development">
+  <label for="web-dev">Web Development</label>
+  
+  <input type="checkbox" id="design" name="interests" value="design">
+  <label for="design">UI/UX Design</label>
+  
+  <input type="checkbox" id="mobile" name="interests" value="mobile-dev">
+  <label for="mobile">Mobile Development</label>
+  
+  <input type="checkbox" id="data-science" name="interests" value="data-science">
+  <label for="data-science">Data Science</label>
+</fieldset>
+```
+
+### Radio Buttons
+
+Radio buttons allow users to select only one option from a group:
+
+```html
+<fieldset>
+  <legend>Choose your experience level:</legend>
+  
+  <input type="radio" id="beginner" name="experience" value="beginner" checked>
+  <label for="beginner">Beginner</label>
+  
+  <input type="radio" id="intermediate" name="experience" value="intermediate">
+  <label for="intermediate">Intermediate</label>
+  
+  <input type="radio" id="advanced" name="experience" value="advanced">
+  <label for="advanced">Advanced</label>
+</fieldset>
+```
+
+### Styling Checkboxes and Radio Buttons
+
+You can enhance the appearance with CSS:
+
+```html
+<style>
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  margin-right: 8px;
+  transform: scale(1.2);
+}
+
+.custom-radio {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+}
+</style>
+
+<div class="custom-checkbox">
+  <input type="checkbox" id="newsletter" name="newsletter" value="yes">
+  <label for="newsletter">Subscribe to newsletter</label>
+</div>
+```
+
+</section>
+
+<section id="date-range">
+
+## Date & Range Inputs
+
+HTML5 introduced specialized input types for dates, times, and numeric ranges that provide better user experience and built-in validation.
+
+### Date Inputs
+
+Different date and time input types:
+
+```html
+<form>
+  <label for="birthdate">Birth Date:</label>
+  <input type="date" id="birthdate" name="birthdate" min="1900-01-01" max="2023-12-31">
+  
+  <label for="appointment-time">Appointment Time:</label>
+  <input type="datetime-local" id="appointment-time" name="appointment-time">
+  
+  <label for="meeting-time">Meeting Time:</label>
+  <input type="time" id="meeting-time" name="meeting-time" min="09:00" max="18:00">
+  
+  <label for="project-month">Project Month:</label>
+  <input type="month" id="project-month" name="project-month">
+  
+  <label for="event-week">Event Week:</label>
+  <input type="week" id="event-week" name="event-week">
+</form>
+```
+
+### Range Inputs
+
+Range inputs create sliders for selecting numeric values:
+
+```html
+<form>
+  <label for="volume">Volume (0-100):</label>
+  <input type="range" id="volume" name="volume" min="0" max="100" value="50" step="5">
+  <output for="volume" id="volume-output">50</output>
+  
+  <label for="price-range">Price Range ($0-$1000):</label>
+  <input type="range" id="price-range" name="price-range" min="0" max="1000" value="500" step="50">
+  <span id="price-display">$500</span>
+  
+  <label for="rating">Rate this product (1-10):</label>
+  <input type="range" id="rating" name="rating" min="1" max="10" value="5">
+</form>
+```
+
+### Number Inputs
+
+For precise numeric input:
+
+```html
+<form>
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" name="quantity" min="1" max="100" step="1" value="1">
+  
+  <label for="price">Price ($):</label>
+  <input type="number" id="price" name="price" min="0" max="9999.99" step="0.01" placeholder="0.00">
+  
+  <label for="age">Age:</label>
+  <input type="number" id="age" name="age" min="13" max="120" required>
+</form>
+```
+
+### Adding Interactivity with JavaScript
+
+Make range inputs more interactive:
+
+```html
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const volumeSlider = document.getElementById('volume');
+  const volumeOutput = document.getElementById('volume-output');
+  
+  volumeSlider.addEventListener('input', function() {
+    volumeOutput.textContent = this.value;
+  });
+  
+  const priceSlider = document.getElementById('price-range');
+  const priceDisplay = document.getElementById('price-display');
+  
+  priceSlider.addEventListener('input', function() {
+    priceDisplay.textContent = '$' + this.value;
+  });
+});
+</script>
+```
+
+### Complete Example
+
+Here's a comprehensive form using various input types:
+
+```html
+<form class="user-preferences">
+  <h2>User Preferences</h2>
+  
+  <div class="form-group">
+    <label for="full-name">Full Name:</label>
+    <input type="text" id="full-name" name="fullName" required>
+  </div>
+  
+  <div class="form-group">
+    <label for="birth-date">Date of Birth:</label>
+    <input type="date" id="birth-date" name="birthDate">
+  </div>
+  
+  <fieldset class="form-group">
+    <legend>Notification Preferences:</legend>
+    <input type="checkbox" id="email-notif" name="notifications" value="email">
+    <label for="email-notif">Email notifications</label>
+    
+    <input type="checkbox" id="sms-notif" name="notifications" value="sms">
+    <label for="sms-notif">SMS notifications</label>
+  </fieldset>
+  
+  <div class="form-group">
+    <label for="theme-preference">Theme Preference:</label>
+    <input type="radio" id="light-theme" name="theme" value="light" checked>
+    <label for="light-theme">Light</label>
+    
+    <input type="radio" id="dark-theme" name="theme" value="dark">
+    <label for="dark-theme">Dark</label>
+  </div>
+  
+  <div class="form-group">
+    <label for="font-size">Font Size:</label>
+    <input type="range" id="font-size" name="fontSize" min="12" max="24" value="16">
+    <span id="font-size-display">16px</span>
+  </div>
+  
+  <button type="submit">Save Preferences</button>
+</form>
+```
+
+</section>
+
+Understanding different input types helps you create more user-friendly and accessible forms. Each input type comes with built-in validation and specialized interfaces that improve the user experience across different devices and browsers.

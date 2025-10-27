@@ -1,0 +1,145 @@
+# Control Flow - The **if** Statement
+
+## Introduction to Control Flow
+<section id="control-flow"></section>
+
+<span className="highlight">Control flow</span> refers to the order in which the statements in your program are executed. So far, our programs have executed sequentially, one statement after another from top to bottom.
+
+However, most programs need to make decisions and execute different code blocks based on whether certain conditions are met. This is where control flow statements come in. They allow you to alter the sequence of execution.
+
+The most fundamental control flow statement is the `if` statement, which allows you to execute a block of code only if a specific condition is true.
+<img src="/images/control_flow.png" alt="variable" className="w-150 h-100 mx-auto" />
+## The if Statement Syntax
+<section id="if-statement"></section>
+
+The basic structure of an `if` statement in Python is:
+
+```python
+if condition:
+    # Code block to execute if condition is True
+    statement1
+    statement2
+    # ... more statements indented at the same level
+# Code here is executed regardless of the condition (it's outside the if block)
+statement_after_if
+```
+
+* **Key components:**
+*   **if**: The keyword that starts the statement.
+*   **condition**: An expression that evaluates to a Boolean value (`True` or `False`). This typically involves comparison or logical operators.
+*   **::** A colon marks the end of the condition line.
+*   **Indented Block**: One or more statements indented (usually by 4 spaces) underneath the `if` line. This block of code is <span className="highlight">only executed if the condition evaluates to `True`</span>.
+
+<div className="note">
+  **Indentation is Crucial!** Python uses indentation to define code blocks. All statements within the **if** block must have the same level of indentation. The first statement that is not indented at this level marks the end of the **if** block.
+</div>
+
+## How it Works
+<section id="how-it-works"></section>
+
+1.  The `condition` associated with the `if` statement is evaluated.
+2.  If the condition is `True`, the indented code block immediately following the `if` line is executed.
+3.  If the condition is `False`, the indented code block is skipped entirely.
+4.  Execution continues with the next statement after the **if** block (the first unindented line after the block).
+
+### Example 1: Simple Temperature Check
+
+```python
+# File: temp_check.py
+temperature = 25 # degrees Celsius
+
+print("Checking temperature...")
+
+# Condition: Is the temperature greater than 20?
+if temperature > 20:
+    # This block executes because 25 > 20 is True
+    print("It's a warm day!")
+    print("Remember to stay hydrated.")
+
+print("Weather check complete.") # This line always executes
+```
+
+Run this. Then, change **temperature** to 15 and run it again. Notice how the messages inside the **if** block are skipped in the second run.
+
+### Example 2: Checking User Input
+
+```python
+# File: password_check.py
+correct_password = "python_rocks"
+
+entered_password = input("Enter the password: ")
+
+# Condition: Does the entered password match the correct one?
+if entered_password == correct_password:
+    # This block executes only if the passwords match
+    print("Access Granted!")
+    print("Welcome to the system.")
+
+# This message always prints, indicating the program finished
+print("Login attempt finished.")
+```
+
+Try running this with the correct password ("python\_rocks") and then with an incorrect one.
+
+### Example 3: Using Boolean Variables in Conditions
+
+```python
+# File: boolean_condition.py
+is_logged_in = False # Start as False
+user_role = "guest"
+
+# Simulate logging in (in a real app, this would be more complex)
+print("Attempting login...")
+# Let's pretend login succeeded for this example run
+is_logged_in = True
+user_role = "admin"
+
+# Condition: Is the user logged in?
+if is_logged_in:
+    # This block executes because is_logged_in is now True
+    print("User is successfully logged in.")
+    print(f"User role: {user_role}")
+
+print("Program continues...") # This always executes
+```
+
+The condition itself can simply be a boolean variable.
+
+## Truthy and Falsy Values
+<section id="truthy-falsy"></section>
+In Python, conditions don't strictly need to evaluate to the exact Boolean values `True` or `False`. Python considers certain values "truthy" (treated as True in a boolean context) and others "falsy" (treated as False).
+
+*   **Falsy Values:**
+    *   The boolean `False`
+    *   The number zero (integer `0`, float `0.0`)
+    *   Empty sequences (empty string `""`, empty list `[]`, empty tuple `()`)
+    *   Empty mappings (empty dictionary `{}`)
+    *   The special value `None`
+*   **Truthy Values:** Pretty much everything else! Any non-zero number, any non-empty string or sequence, etc.
+
+```python
+# File: truthy_falsy.py
+
+name = input("Enter your name (leave blank if anonymous): ")
+
+# Condition: Is the name string non-empty? (Non-empty strings are truthy)
+if name: # This is shorthand for 'if name != ""':
+    print(f"Hello, {name}!")
+# If the user just pressed Enter, name is "" (falsy), so the block is skipped.
+
+
+items_in_cart = 0
+# Condition: Is items_in_cart non-zero? (Zero is falsy)
+if items_in_cart: # This is shorthand for 'if items_in_cart != 0':
+     print("You have items in your cart.")
+# Since items_in_cart is 0, the block is skipped.
+
+print("Checking complete.")
+```
+
+Using truthy/falsy checks can make code more concise, especially when checking for empty strings or zero values.
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/if_Statement";
+
+<Quiz questions={pythonQuiz} />

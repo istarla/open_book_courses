@@ -1,0 +1,302 @@
+
+# Standard Library Overview Pt 2 (datetime, json)
+
+## Continuing Our Standard Library Tour
+<section id="continuing-our-standard-library-tour"></section>
+Yesterday, we explored the **os**, **sys**, and **math** modules from Python's standard library. Today, we'll continue this overview by looking at two more incredibly useful modules:
+
+* `datetime`: For working with dates and times.
+* `json`: For encoding and decoding JSON (JavaScript Object Notation) data.
+
+These modules are frequently used in various applications, from logging and scheduling to data exchange and web development.
+
+## The **datetime** Module: Handling Dates and Times
+<section id="the-datetime-module-handling-dates-and-times"></section>
+
+The **datetime** module provides classes for manipulating dates and times in both simple and complex ways.
+
+### Key Classes in **datetime**:
+
+* `datetime.date`: Represents a date (year, month, day).
+* `datetime.time`: Represents a time (hour, minute, second, microsecond).
+* `datetime.datetime`: Represents a combination of date and time.
+* `datetime.timedelta`: Represents a duration, the difference between two dates or times.
+
+### Common Operations:
+<section id="common-operations"></section>
+1. Getting current date/time: `date.today()`, `datetime.now()`, `datetime.utcnow()`.
+2. Creating specific dates/times: `date(y, m, d)`, `time(H, M, S)`, `datetime(y, m, d, H, M, S)`.
+3. Formatting dates/times into strings: `strftime(format_code)` method.
+4. Parsing strings into dates/times: `datetime.strptime(date_string, format_code)` class method.
+5. performing date/time arithmetic using `timedelta`.
+
+
+* **File: datetime_examples.py**
+```python
+import datetime
+
+# --- Current Date and Time ---
+print("--- Current Date/Time ---")
+today = datetime.date.today()
+now = datetime.datetime.now()
+utcnow = datetime.datetime.utcnow() # UTC time
+print(f"Today's Date: {today}")
+print(f"Current Local DateTime: {now}")
+print(f"Current UTC DateTime: {utcnow}")
+```
+* **--- Creating Specific Dates/Times ---**
+```python
+# --- Creating Specific Dates/Times ---
+print("\n--- Specific Dates/Times ---")
+d1 = datetime.date(2025, 7, 4) # July 4, 2025
+t1 = datetime.time(14, 30)     # 2:30 PM
+dt1 = datetime.datetime(2025, 10, 31, 9, 0, 0) # Oct 31, 2025, 9:00:00 AM
+print(f"Specific Date: {d1}")
+print(f"Specific Time: {t1}")
+print(f"Specific DateTime: {dt1}")
+```
+* **--- Formatting (strftime - object to string) ---**
+```python
+print("\n--- Formatting (strftime) ---")
+# Common format codes: %Y (Year), %m (month#), %d (day#), %H (24hr), %M (min), %S (sec), %A (Weekday), %B (Month name)
+print(f"Formatted date (YYYY-MM-DD): {today.strftime('%Y-%m-%d')}")
+print(f"Formatted time (HH:MM:SS): {now.strftime('%H:%M:%S')}")
+print(f"Formatted full: {now.strftime('%A, %B %d, %Y at %I:%M:%S %p')}") # %I (12hr), %p (AM/PM)
+```
+* **--- Parsing (strptime - string to object) ---**
+```python
+print("\n--- Parsing (strptime) ---")
+date_string = "2024-12-25"
+parsed_date = datetime.datetime.strptime(date_string, "%Y-%m-%d").date() # Convert to date object
+print(f"Parsed date from '{date_string}': {parsed_date}")
+print(f"Type: {type(parsed_date)}")
+```
+* **--- Time Deltas ---**
+```python
+print("\n--- Time Deltas ---")
+one_day = datetime.timedelta(days=1)
+three_weeks = datetime.timedelta(weeks=3)
+two_hours_thirty_mins = datetime.timedelta(hours=2, minutes=30)
+
+tomorrow = today + one_day
+print(f"Tomorrow: {tomorrow}")
+
+past_date = now - three_weeks
+print(f"Three weeks ago: {past_date.strftime('%Y-%m-%d %H:%M')}")
+
+duration = dt1 - now # Difference between two datetimes
+print(f"Time until {dt1}: {duration}")
+print(f"Duration in days: {duration.days}")
+```
+
+## The **json** Module: Working with JSON Data
+
+JSON (JavaScript Object Notation) is a lightweight, human-readable data-interchange format. It's widely used for configuration files, storing data, and transmitting data between web servers and clients (APIs).
+
+JSON syntax looks very similar to Python dictionaries and lists. The **json** module allows you to easily convert between Python objects (like dictionaries, lists, strings, numbers, booleans, **None**) and JSON formatted strings.
+
+### Key **json** Functions:
+
+*   `json.dumps(obj, indent=None)`: **Dump String** - Serializes a Python object (`obj`) into a JSON formatted string. The optional `indent` argument (e.g., **indent=4**) makes the output string pretty-printed and more readable.
+*   `json.loads(s)`: **Load String** - Parses a JSON formatted string (`s`) and converts it back into a Python object.
+*   `json.dump(obj, fp, indent=None)`: Serializes a Python object (`obj`) and writes it directly to a file-like object (`fp`, opened for writing).
+*   `json.load(fp)`: Reads JSON data from a file-like object (`fp`, opened for reading) and parses it into a Python object.
+
+JSON supports these basic types, which map directly to Python types:
+1. objects (**{}**) -> Python **dict**
+2. arrays (**[]**) -> Python **list**
+3.  strings (**""**) -> Python **str**
+4.  numbers -> Python **int** or **float**
+5.  booleans (**true**, **false**) -> Python **True**, **False**
+6.  null -> Python **None**
+
+
+* **File: json_examples.py**
+```python
+import json
+
+# Python dictionary to work with
+python_data = {
+    "name": "Example Widget",
+    "id": 12345,
+    "available": True,
+    "components": [
+        {"type": "bolt", "quantity": 10},
+        {"type": "nut", "quantity": 10}
+    ],
+    "notes": None
+}
+print("--- Original Python Dictionary ---")
+print(python_data)
+```
+* ** --- Convert Python object to JSON string (dumps) ---**
+```python
+print("\n--- Python to JSON String (dumps) ---")
+# Compact JSON string
+json_string_compact = json.dumps(python_data)
+print("Compact JSON:")
+print(json_string_compact)
+
+# Pretty-printed JSON string
+json_string_pretty = json.dumps(python_data, indent=4, sort_keys=True) # indent=4 for readability, sort_keys optional
+print("\nPretty JSON:")
+print(json_string_pretty)
+
+# --- Convert JSON string back to Python object (loads) ---
+print("\n--- JSON String to Python Object (loads) ---")
+# Assume json_string_compact was received or read from somewhere
+reloaded_data = json.loads(json_string_compact)
+print("Reloaded Python object:")
+print(reloaded_data)
+print(f"Type of reloaded data: {type(reloaded_data)}")
+print(f"Accessing item: {reloaded_data['components'][0]['type']}")
+
+# --- Writing JSON to a file (dump) ---
+print("\n--- Writing JSON to File (dump) ---")
+filename = "data.json"
+try:
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump(python_data, f, indent=4) # Write pretty-printed JSON to file
+    print(f"Data successfully written to '{filename}'")
+except Exception as e:
+    print(f"Error writing file: {e}")
+
+# --- Reading JSON from a file (load) ---
+print("\n--- Reading JSON from File (load) ---")
+try:
+    with open(filename, "r", encoding="utf-8") as f:
+        loaded_from_file = json.load(f) # Read and parse JSON from file
+    print("Data loaded from file:")
+    print(loaded_from_file)
+    print(f"Name from file data: {loaded_from_file['name']}")
+except FileNotFoundError:
+    print(f"Error: File '{filename}' not found.")
+except json.JSONDecodeError as e: # Catch potential errors in JSON format
+    print(f"Error decoding JSON from file: {e}")
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")         
+```
+
+### Example 1: Logging Events with Timestamps
+<section id="example-1-logging-events-with-timestamps"></section>
+
+```python
+# File: timestamped_log.py
+import datetime
+import json
+
+def log_event(event_description, log_file="events.log"):
+    """Logs an event with timestamp to a file."""
+    log_entry = {
+        "timestamp": datetime.datetime.now().isoformat(), # ISO format is good for logs
+        "event": event_description
+    }
+    try:
+        # Append - requires careful handling if file isn't valid JSON array
+        # For simplicity, let's just append JSON lines (each line is a JSON object)
+        with open(log_file, "a", encoding="utf-8") as f:
+             json.dump(log_entry, f) # Write compact JSON object
+             f.write("\n") # Add newline to separate JSON objects per line
+        print(f"Event logged: {event_description}")
+    except Exception as e:
+        print(f"Failed to log event: {e}")
+
+# Log some events
+log_event("User logged in")
+log_event("Configuration updated")
+log_event("Data processing started")    
+```
+
+(Note: Reading this "JSON lines" format requires reading line-by-line and using **json.loads()** on each line.)
+
+### Example 2: Calculating Time Differences
+<section id="example-2-calculating-time-differences"></section>
+
+```python
+# File: time_difference.py
+import datetime
+
+# Create two datetime objects
+start_time_str = "2025-05-03 10:00:00"
+end_time_str = "2025-05-03 12:45:30"
+
+date_format = "%Y-%m-%d %H:%M:%S"
+
+try:
+    start_dt = datetime.datetime.strptime(start_time_str, date_format)
+    end_dt = datetime.datetime.strptime(end_time_str, date_format)
+
+    # Calculate the difference
+    time_diff = end_dt - start_dt
+
+    print(f"Start Time: {start_dt}")
+    print(f"End Time:   {end_dt}")
+    print(f"Time Difference: {time_diff}")
+
+    # Get difference in specific units
+    total_seconds = time_diff.total_seconds()
+    total_minutes = total_seconds / 60
+    print(f"Difference in Total Seconds: {total_seconds}")
+    print(f"Difference in Total Minutes: {total_minutes:.2f}")
+
+except ValueError:
+    print("Error parsing date/time strings.")        
+```
+
+### Example 3: Loading Configuration from JSON File
+<section id="example-3-loading-configuration-from-json-file"></section>
+
+Assume **config.json** exists with content like:
+
+```json
+{
+    "server_address": "192.168.1.100",
+    "port": 8080,
+    "api_key": "your_secret_key_here",
+    "feature_flags": {
+        "new_dashboard": true,
+        "beta_feature": false
+    }
+}       
+```
+
+Python script:
+
+```python
+# File: load_config.py
+import json
+
+config_file = "config.json"
+config = {} # Default empty config
+
+try:
+    with open(config_file, "r", encoding="utf-8") as f:
+        config = json.load(f) # Load config from file
+    print("Configuration loaded successfully.")
+
+except FileNotFoundError:
+    print(f"Warning: Config file '{config_file}' not found. Using defaults.")
+except json.JSONDecodeError:
+     print(f"Error: Could not parse '{config_file}'. Invalid JSON format.")
+except Exception as e:
+     print(f"Error loading config: {e}")
+
+
+# Use the loaded configuration (use .get for safety)
+server = config.get("server_address", "localhost")
+port = config.get("port", 9000)
+api_key = config.get("api_key") # Might be None if not found
+feature_flags = config.get("feature_flags", {})
+new_dashboard_enabled = feature_flags.get("new_dashboard", False)
+
+
+print(f"\nServer Address: {server}")
+print(f"Port: {port}")
+print(f"API Key present: {api_key is not None}")
+print(f"New Dashboard Enabled: {new_dashboard_enabled}")       
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/standard_library_pt2";
+
+<Quiz questions={pythonQuiz} />

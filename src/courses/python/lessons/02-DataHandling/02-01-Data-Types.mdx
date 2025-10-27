@@ -1,0 +1,243 @@
+
+
+
+### What is Data?
+<section id="What-is-data?"></section>
+Data is the information we store and manipulate in a Python program. Example: numbers (10), text ("Hello"), lists ([1,2,3]) etc. In Python, everything is treated as an object.
+
+Every value in Python, from a simple number to a complex object, has a specific data type. This classification tells the interpreter what kind of value a variable holds, which is crucial because it determines the operations you can perform. You can check the type of any object using the built-in `type()` function.
+
+<img src="/images/data_img.jpg" alt="variable" className="w-150 h-100 mx-auto" />
+
+### Introduction to Data Types
+<section id="Introduction-to-data-types"></section>
+
+Data types are classifications that specify which type of value a variable can hold and what type of mathematical, relational, or logical operations can be applied to it without causing an error. Since Python is dynamically typed, we don't declare the type, but the values we assign still have inherent types.
+
+Understanding data types is fundamental because the type of data dictates how it can be stored, manipulated, and used in operations. Today, we'll cover the most common built-in scalar types: integers, floating-point numbers, booleans, and strings.
+
+You can always check the type of a variable or value using the built-in `type()` function.
+
+```python
+value = 100
+print(type(value)) # Output: <class 'int'>
+
+value = "Hello"
+print(type(value)) # Output: <class 'str'>
+```
+<img src="/images/1.jpg" alt="variable" className="w-150 h-100 mx-auto" />
+### 1. Integers (`int`)
+<section id="Integers"></section>
+Integers represent whole numbers, both positive and negative, without any decimal points. Python integers have arbitrary precision, meaning they can be as large as your computer's memory allows.
+
+* **Integer examples**
+```python
+age = 30
+year = 2025
+count = -50
+very_large_number = 1_000_000_000_000 # Underscores can be used for readability
+
+print(age, type(age))
+print(count, type(count))
+print(very_large_number, type(very_large_number))
+```
+Common operations include standard arithmetic: addition (+), subtraction (-), multiplication (*), division (/), floor division (//), modulo (%), exponentiation (**).
+
+### 2. Floating-Point Numbers (`float`)
+<section id="Floating-Point-Numbers"></section>
+Floats represent real numbers, including those with decimal points. They are used for values that require more precision than integers can provide, like measurements or calculations involving fractions.
+
+Note that floating-point arithmetic can sometimes have small precision issues due to how computers store these numbers internally (using binary approximations).
+
+
+* **Float examples**
+```python
+price = 99.99
+temperature = -5.5
+pi_approx = 3.14159
+scientific_notation = 6.022e23 # Represents 6.022 * 10^23
+
+print(price, type(price))
+print(temperature, type(temperature))
+print(pi_approx, type(pi_approx))
+print(scientific_notation, type(scientific_notation))
+
+# Integer division results in a float
+result = 10 / 4
+print(result, type(result)) # Output: 2.5 <class 'float'>
+```
+
+### 3. Booleans (`bool`)
+<section id="Booleans"></section>
+Booleans represent one of two possible values: **True** or **False** (note the capitalization). They are fundamental for control flow (e.g., deciding whether to execute a block of code) and logical operations.
+
+Boolean values often result from comparison operations (like `==`, `!=`, `<`, `>`).
+
+* **Boolean examples**
+```python
+is_logged_in = True
+has_permission = False
+is_greater = 10 > 5 # Comparison results in a boolean
+
+print(is_logged_in, type(is_logged_in))
+print(has_permission, type(has_permission))
+print(f"Is 10 greater than 5? {is_greater}", type(is_greater))
+
+# Booleans in conditional logic (preview)
+if is_logged_in:
+    print("Welcome back!")
+else:
+    print("Please log in.")
+```
+Internally, `True` is treated like the integer 1, and `False` like the integer 0 in numeric contexts.
+
+### 4. Complex Numbers (`complex`)
+<section id="Complex-Numbers"></section>
+Complex numbers are used to represent numbers with both a real and an imaginary part. They are written in the form `a + bj`, where 'a' is the real part and 'b' is the imaginary part, and 'j' is the imaginary unit ($\sqrt{-1}$).
+
+
+* **Complex number examples**
+```python
+complex_num1 = 3 + 4j
+complex_num2 = 1.5 + 2j
+complex_num3 = 5j # A complex number with a real part of 0
+
+print(complex_num1, type(complex_num1))
+print(complex_num2, type(complex_num2))
+print(complex_num3, type(complex_num3))
+```
+* **Accessing the real and imaginary parts**
+```python
+print(f"Real part of {complex_num1}: {complex_num1.real}")
+print(f"Imaginary part of {complex_num1}: {complex_num1.imag}")
+```
+* **Performing operations with complex numbers**
+```python
+sum_result = complex_num1 + complex_num2
+product_result = complex_num1 * complex_num2
+
+print(f"Sum of complex numbers: {sum_result}")
+print(f"Product of complex numbers: {product_result}")
+```
+
+### 5. Strings (`str`)
+<section id="Strings"></section>
+Strings represent sequences of characters. They are used to store text data. In Python, strings are immutable, meaning once a string is created, it cannot be changed directly (though you can create new strings based on existing ones).
+
+Strings can be defined using single quotes (`'...'`), double quotes (`"..."`), or triple quotes (`'''...'''` or `"""..."""`) for multi-line strings.
+
+
+* **String examples**
+```python
+greeting = "Hello, Python!"
+name = 'Alice'
+multi_line_poem = """
+Roses are red,
+Violets are blue,
+Python is fun,
+And so are you!
+
+print(greeting, type(greeting))
+print(name, type(name))
+print(multi_line_poem, type(multi_line_poem))
+
+# Concatenation (joining strings)
+full_greeting = greeting + " Welcome, " + name + "."
+print(full_greeting)
+
+# String repetition
+separator = "-" * 20 # Creates a string of 20 hyphens
+print(separator)
+```
+We will cover many more string operations (like finding length, accessing characters, slicing, methods) in a later lesson.
+
+## Type Conversion
+<section id="Type-Conversion"></section>
+Sometimes you need to convert a value from one type to another. Python provides built-in functions for this: `int()`, `float()`, `bool()`, and `str()`.
+
+
+* **Type conversion examples**
+```python
+num_string = "123"
+num_int = int(num_string) # Convert string to integer
+print(num_int, type(num_int))
+
+price_float = 99.0
+price_int = int(price_float) # Convert float to integer (truncates decimal)
+print(price_int, type(price_int)) # Output: 99 <class 'int'>
+
+count_int = 100
+count_str = str(count_int) # Convert integer to string
+print("The count is: " + count_str) # Now can concatenate with other strings
+
+value = 0
+is_true = bool(value) # Convert integer 0 to boolean
+print(is_true, type(is_true)) # Output: False <class 'bool'>
+
+value = "Any non-empty string"
+is_true = bool(value) # Non-empty strings convert to True
+print(is_true, type(is_true)) # Output: True <class 'bool'>
+```
+**Be careful**: converting might fail if the value isn't compatible (e.g., `int("hello")` will raise a `ValueError`).
+
+### Example 1: Mixing Numeric Types
+Operations involving `int` and `float` usually result in a `float` to maintain precision.
+
+
+* **File: numeric_mixing.py**
+```python
+integer_val = 5
+float_val = 2.5
+
+sum_result = integer_val + float_val
+product_result = integer_val * float_val
+
+print(f"{integer_val} + {float_val} = {sum_result}")
+print(f"Type of sum: {type(sum_result)}") # Output: <class 'float'>
+
+print(f"{integer_val} * {float_val} = {product_result}")
+print(f"Type of product: {type(product_result)}") # Output: <class 'float'>
+```
+
+### Example 2: String Formatting with Different Types
+Using f-strings (formatted string literals) is a convenient way to embed variables of different types into strings.
+
+
+* **File: f_string_example.py**
+```python
+item = "Laptop"
+quantity = 2
+unit_price = 1200.50
+in_stock = True
+
+# Create a summary string using an f-string
+summary = f"Item: {item}, Quantity: {quantity}, Price: ${unit_price:.2f}, In Stock: {in_stock}"
+# Note: :.2f formats the float to 2 decimal places
+
+print(summary)
+print(type(summary)) # Output: <class 'str'>
+```
+
+### Example 3: Boolean Logic Preview
+Booleans are often used with logical operators `and`, `or`, `not`.
+
+
+* **File: boolean_logic.py**
+```python
+has_key = True
+knows_password = False
+is_admin = False
+
+can_enter_basic = has_key or knows_password
+can_enter_admin = (has_key or knows_password) and is_admin
+locked_out = not (has_key or knows_password)
+
+print(f"Can enter basic area? {can_enter_basic}")  # True (because has_key is True)
+print(f"Can enter admin area? {can_enter_admin}") # False (because is_admin is False)
+print(f"Is locked out? {locked_out}")            # False (because can_enter_basic is True)
+```
+
+import Quiz from '../../../../components/Quiz'
+import pythonQuiz from '../../../../Data/datatypes_questions'
+
+<Quiz questions={pythonQuiz} />

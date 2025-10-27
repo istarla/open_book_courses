@@ -1,0 +1,266 @@
+# Working with Tuples (Packing, Unpacking)
+
+## Recap: Tuple Basics
+<section id="tuple-basics"></section>
+
+Before we introduced tuples as ordered, immutable sequences, typically created with parentheses `()`. We saw how to access elements using indexing and slicing, similar to lists, but noted that **tuples cannot be changed after creation.**
+
+```python
+point = (10, 25, -5) # A 3D point coordinate
+print(f"Point: {point}")
+print(f"Y-coordinate: {point[1]}") # Accessing the second element
+```
+
+## Tuple Packing
+<section id="tuple-packing"></section>
+
+
+We briefly saw before that parentheses are often optional when creating tuples. When you list comma-separated values without enclosing them in brackets or parentheses, Python automatically "packs" them into a tuple.
+
+* **Tuple packing**
+```python
+my_packed_tuple = 100, "hello", True # No parentheses needed here
+print(f"Packed tuple: {my_packed_tuple}")
+print(f"Type: {type(my_packed_tuple)}") # Output: <class 'tuple'>
+```
+* **Commonly seen when returning multiple values from a function**
+```python
+def get_coordinates():
+    x = 5
+    y = -3
+    return x, y # Returns the tuple (5, -3)
+
+coords = get_coordinates() # coords becomes (5, -3)
+print(f"Coordinates from function: {coords}")
+```
+
+This packing behavior makes tuples convenient for grouping related data without explicit syntax.
+
+## Tuple Unpacking
+<section id="tuple-unpacking"></section>
+
+The reverse operation, tuple unpacking (also known as sequence unpacking), allows you to assign the individual items within a tuple (or any sequence like a list) to a sequence of variables on the left side of an assignment.
+
+The number of variables on the left must match the number of items in the tuple on the right.
+* **Tuple to unpack**
+```python
+rgb_color = (255, 128, 0) # Orange color
+```
+* **Unpacking into separate variables**
+```python
+red, green, blue = rgb_color # Assigns 255 to red, 128 to green, 0 to blue
+
+print(f"Red component: {red}") # Output: Red component: 255
+print(f"Green component: {green}") # Output: Green component: 128
+print(f"Blue component: {blue}") # Output: Blue component: 0
+```
+* **Using a hypothetical result from a function**
+```python
+def get_coordinates():
+    return (5, -3)
+
+coords = get_coordinates() # coords is (5, -3)
+x_val, y_val = coords       # Unpack the tuple
+print(f"Unpacked x: {x_val}, Unpacked y: {y_val}")
+```
+* **Unpacking works with other sequences too**
+```python
+name_list = ["Alice", "Smith"]
+first_name, last_name = name_list
+print(f"First: {first_name}, Last: {last_name}") # Output: First: Alice, Last: Smith
+```
+Trying to unpack with the wrong number of variables causes ValueError
+a, b = rgb_color # Raises ValueError: too many values to unpack (expected 2)
+r, g, b, alpha = rgb_color # Raises ValueError: not enough values to unpack (expected 4, got 3)
+
+
+Unpacking is extremely useful for accessing tuple elements without needing indices, especially when dealing with fixed structures like coordinates or function return values.
+
+## Using Unpacking in `for` Loops
+<section id="using-unpacking-in-for-loops"></section>
+
+Unpacking is particularly elegant when iterating over a list of tuples (or lists). You can unpack each tuple directly in the `for` loop statement.
+* **List of tuples, each representing (name, age)**
+```python
+people = [("Alice", 30), ("Bob", 25), ("Charlie", 35)]
+print("People and their ages:")
+```
+* **Unpack each tuple directly into 'name' and 'age' variables**
+```python
+for name, age in people:
+    print(f"- {name} is {age} years old.")
+
+Compare without unpacking:
+for person_tuple in people:
+     name = person_tuple[0]
+     age = person_tuple[1]
+     print(f"- {name} is {age} years old.") # More verbose
+
+```
+## Swapping Variables using Packing/Unpacking
+<section id="swapping-variables-using-packing-unpacking"></section>
+
+A classic Python idiom uses tuple packing and unpacking to swap the values of two variables in a single line, without needing a temporary variable.
+
+```python
+a = 10
+b = 20
+print(f"Before swap: a = {a}, b = {b}")
+
+# Swap using tuple packing and unpacking
+a, b = b, a # 1. Right side (b, a) creates the tuple (20, 10)
+            # 2. Left side (a, b) unpacks (20, 10), assigning 20 to a and 10 to b
+
+print(f"After swap:  a = {a}, b = {b}")
+```
+
+### Example 1: Processing Point Data
+<section id="example-1-processing-point-data"></section>
+* **File: process_points.py**
+```python
+points = [(1, 2), (5, -1), (0, 8), (-3, 4)]
+```
+```python
+print("Processing points (x, y):")
+for x, y in points:
+    # Unpack each point tuple
+    distance_sq = x**2 + y**2 # Calculate squared distance from origin
+    print(f" - Point ({x}, {y}): Squared distance = {distance_sq}")
+```
+
+### Example 2: Returning Multiple Results from a Calculation
+<section id="example-2-returning-multiple-results-from-a-calculation"></section>
+* **File: circle_stats.py**
+```python
+import math
+def calculate_circle_properties(radius):
+    """Calculates area and circumference and returns them as a tuple."""
+    if radius < 0:
+        return None # Indicate invalid input
+    area = math.pi * radius**2
+    circumference = 2 * math.pi * radius
+    return area, circumference # Tuple packing happens here
+
+radius_input = 5.0
+stats = calculate_circle_properties(radius_input)
+
+if stats: # Check if stats is not None
+    # Unpack the returned tuple
+    circle_area, circle_circumference = stats
+    print(f"Circle with radius {radius_input}:")
+    print(f"  Area: {circle_area:.2f}")
+    print(f"  Circumference: {circle_circumference:.2f}")
+else:
+    print("Invalid radius provided.")
+```
+
+### Example 3: Basic Record Handling
+<section id="example-3-basic-record-handling"></section>
+* **File: student_record.py**
+```python
+# Each tuple represents (student_id, name, major)
+student_data = (101, "Alice", "Computer Science")
+```
+* **Unpack the record**
+```python
+student_id, name, major = student_data
+
+print("Student Information:")
+print(f"ID: {student_id}")
+print(f"Name: {name}")
+print(f"Major: {major}")
+```
+
+## Concatenation (`+`)
+
+The plus operator `+` is used to join two or more tuples together. It creates a new tuple containing all the elements from the original tuples.
+
+```python
+tuple1 = (1, 2, 3)
+tuple2 = ('a', 'b', 'c')
+combined_tuple = tuple1 + tuple2
+print(combined_tuple)  # Output: (1, 2, 3, 'a', 'b', 'c')
+```
+* **You can also concatenate multiple tuples**
+```python
+tuple3 = (7, 8)
+more_combined = tuple1 + tuple2 + tuple3
+print(more_combined) # Output: (1, 2, 3, 'a', 'b', 'c', 7, 8)
+```
+
+## Repetition (`*`)
+
+The repetition operator `*` is used to repeat the elements of a tuple a specified number of times. It creates a new tuple with the repeated elements.
+
+```python
+my_tuple = ('repeat',)
+repeated_tuple = my_tuple * 3
+print(repeated_tuple) # Output: ('repeat', 'repeat', 'repeat')
+```
+```python
+numbers = (1, 2)
+repeated_numbers = numbers * 2
+print(repeated_numbers) # Output: (1, 2, 1, 2)
+```
+
+## Membership (`in`, `not in`)
+
+
+The membership operators `in` and `not in` are used to check if an element exists within a tuple. They return a boolean value (`True` or `False`).
+
+```python
+fruits = ('apple', 'banana', 'cherry')
+print('apple' in fruits)  # Output: True
+print('grape' in fruits)  # Output: False
+print('banana' not in fruits) # Output: False
+```
+
+## Indexing (`[]`) and Slicing (`[:]`)
+
+Just like strings and lists, tuples are ordered collections, which means each element has a specific position, or index.
+
+*   **Indexing:** You can access a single element using its index in square brackets `[]`.
+*   **Slicing:** You can extract a sub-tuple (a slice) using the slicing syntax `[start:end:step]`.
+
+```python
+my_tuple = (10, 20, 30, 40, 50)
+print(my_tuple[1])        # Output: 20
+print(my_tuple[-1])       # Output: 50
+print(my_tuple[1:4])      # Output: (20, 30, 40)
+print(my_tuple[::2])      # Output: (10, 30, 50)
+```
+
+## Comparison (`==`, `<`, `>`)
+
+You can compare tuples using comparison operators. Python compares them element by element, from left to right. The first pair of elements that differs determines the result.
+
+```python
+tuple_a = (1, 2, 3)
+tuple_b = (1, 2, 3)
+tuple_c = (1, 2, 4)
+
+print(tuple_a == tuple_b) # Output: True (all elements are equal)
+print(tuple_a == tuple_c) # Output: False (the third element differs)
+print(tuple_a < tuple_c)  # Output: True (3 is less than 4)
+```
+
+## Iteration (Looping)
+
+You can easily iterate over the elements of a tuple using a `for` loop.
+
+```python
+my_tuple = ('a', 'b', 'c')
+for item in my_tuple:
+    print(item)
+# Output:
+# a
+# b
+# c
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/working_with_tuples";
+
+<Quiz questions={pythonQuiz} />
+
+

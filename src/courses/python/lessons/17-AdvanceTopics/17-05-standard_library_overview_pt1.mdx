@@ -1,0 +1,168 @@
+# Standard Library Overview Pt 1 (os, sys, math)
+
+## Python's "Batteries Included" Philosophy
+<section id="python-batteries-included-philosophy"></section>
+
+One of Python's great strengths is its extensive **Standard Library** – a large collection of modules included with every Python installation. This "batteries included" philosophy means you often don't need to install external packages for many common programming tasks.
+
+We've already encountered some standard library modules like **math**, **random**, and **datetime**. Over the next two days, we'll briefly explore a few more essential modules to give you a sense of the breadth of tools available. Remember, this is just a small sample; exploring the full [Python Standard Library documentation](https://docs.python.org/3/library/index.html) is highly recommended as you progress.
+
+Today, we'll look at:
+
+*   `os`: Interacting with the operating system (files, directories, environment variables).
+*   `sys`: Accessing Python interpreter variables and functions.
+*   `math`: Advanced mathematical functions and constants.
+
+## The **os** Module: Operating System Interface
+<section id="the-os-module-operating-system-interface"></section>
+
+The **os** module provides a way of using operating system-dependent functionality like reading or writing to the file system, accessing environment variables, and managing processes. Its functions often behave differently depending on whether you're running on Windows, macOS, or Linux, but it provides a portable interface where possible.
+
+### Common **os** Functions:
+
+*   `os.getcwd()`: Get Current Working Directory (returns the path of the directory your script is running from).
+*   `os.listdir(path='.')`: Returns a list of names of the files and directories within the specified path (defaults to the current directory).
+*   `os.path.join(path1, path2, ...)`: Intelligently joins path components using the correct separator for the current OS (e.g., **/** for Linux/macOS, **\** for Windows). **This is the recommended way to build paths.**
+*   `os.path.exists(path)`: Returns **True** if the path exists (can be a file or directory).
+*   `os.path.isfile(path)`: Returns **True** if the path exists and is a regular file.
+*   `os.path.isdir(path)`: Returns **True** if the path exists and is a directory.
+*   `os.makedirs(path, exist_ok=False)`: Creates a directory, including any necessary parent directories. If **exist_ok=True**, it doesn't raise an error if the directory already exists.
+*   `os.remove(path)` or `os.unlink(path)`: Removes (deletes) a file.
+*   `os.rmdir(path)`: Removes (deletes) an empty directory.
+*   `os.rename(src, dst)`: Renames a file or directory from **src** to **dst**.
+*   `os.environ`: A dictionary-like object representing environment variables. (e.g., **os.environ.get('PATH')**).
+*   `os.system(command)`: Executes a command in the system's shell (use with caution, especially with user input, due to security risks).
+
+```python
+# File: os_module_examples.py
+import os
+
+# --- Path Operations ---
+print("--- Path Operations ---")
+current_dir = os.getcwd()
+print(f"Current Directory: {current_dir}")
+
+# Build a platform-independent path
+# Avoid manual concatenation like current_dir + "/" + "new_dir"
+new_dir_path = os.path.join(current_dir, "my_temp_files")
+print(f"Path to create/check: {new_dir_path}")
+
+# --- Directory Operations ---
+print("\n--- Directory Operations ---")
+# Create directory (and parent if needed), ignore if exists
+os.makedirs(new_dir_path, exist_ok=True)
+print(f"Directory '{new_dir_path}' exists or was created.")
+
+print("\nContents of current directory:")
+try:
+    for item in os.listdir('.'): # '.' refers to the current directory
+        full_path = os.path.join(current_dir, item)
+        item_type = "Dir" if os.path.isdir(full_path) else "File" if os.path.isfile(full_path) else "Other"
+        print(f"- {item} ({item_type})")
+except Exception as e:
+    print(f"Error listing directory: {e}")
+
+# --- Environment Variables ---
+print("\n--- Environment Variables ---")
+# Get PATH environment variable (example) - might be None if not set
+path_var = os.environ.get('PATH')
+if path_var:
+    print(f"First few chars of PATH: {path_var[:50]}...")
+else:
+    print("PATH environment variable not found.")
+
+# Get USERNAME (common on Windows) or USER (common on Linux/macOS)
+user_var = os.environ.get('USERNAME') or os.environ.get('USER')
+print(f"Current User (best guess): {user_var}")
+
+# --- Cleanup (Optional) ---
+# try:
+#     os.rmdir(new_dir_path) # Remove the empty directory
+#     print(f"\nRemoved directory '{new_dir_path}'.")
+# except OSError as e:
+#     print(f"\nError removing directory (maybe not empty?): {e}")        
+```
+
+## The **sys** Module: System-Specific Parameters and Functions
+<section id="the-sys-module-system-specific-parameters-and-functions"></section>
+The **sys** module provides access to variables used or maintained by the Python interpreter and to functions that interact strongly with the interpreter.
+
+### Common **sys** Attributes/Functions:
+
+
+*   `sys.argv`: A list of command-line arguments passed to a Python script. **sys.argv[0]** is the script name itself.
+*   `sys.path`: A list of strings specifying the search path for modules.
+*   `sys.platform`: A string identifying the platform (e.g., 'win32', 'linux', 'darwin' for macOS).
+*   `sys.version`: A string containing the Python interpreter version information.
+*   `sys.exit(arg=0)`: Exits the Python interpreter. You can optionally provide an integer exit status code (0 usually means success, non-zero indicates an error).
+
+```python
+# File: sys_module_examples.py
+import sys
+
+print("--- sys Module Info ---")
+print(f"Python Version: {sys.version}")
+print(f"Platform: {sys.platform}")
+
+print("\nCommand Line Arguments (sys.argv):")
+# When running 'python sys_module_examples.py arg1 arg2'
+# sys.argv will be ['sys_module_examples.py', 'arg1', 'arg2']
+print(sys.argv)
+
+if len(sys.argv) > 1:
+    print(f"First argument passed: {sys.argv[1]}")
+
+print("\nModule Search Path (sys.path) - showing first few:")
+for i, path in enumerate(sys.path):
+    if i >= 5: break
+    print(f"- {path}")
+
+# Example of exiting based on condition
+# Uncomment the following lines to test exiting
+# print("\nTesting sys.exit()...")
+# check_condition = False
+# if not check_condition:
+#     print("Condition not met, exiting script.")
+#     sys.exit(1) # Exit with status code 1 (indicating an error)
+
+print("\nScript finished normally.") # This won't print if sys.exit() is called
+```
+
+## The **math** Module Revisited
+<section id="the-math-module-revisited"></section>
+We've used **math** before, but let's highlight some more of its capabilities beyond basic **sqrt**. It provides access to many standard mathematical functions and constants.
+
+### Common **math** Functions/Constants:
+
+*   Constants: `math.pi`, `math.e`
+*   Power/Logarithmic: `math.pow(x, y)` (x^y), `math.sqrt(x)`, `math.exp(x)` (e^x), `math.log(x, [base])`, `math.log10(x)`, `math.log2(x)`
+*   Trigonometric: `math.sin(x)`, `math.cos(x)`, `math.tan(x)`, `math.asin(x)`, `math.degrees(x)`, `math.radians(x)` (angles are in radians by default)
+*   Rounding/Number Theoretic: `math.ceil(x)` (round up), `math.floor(x)` (round down), `math.fabs(x)` (absolute value as float), `math.factorial(x)`, `math.gcd(a, b)` (greatest common divisor)
+
+```python
+# File: math_module_examples.py
+import math
+
+# Constants
+print("--- Constants ---")
+print(f"Pi: {math.pi}")
+print(f"Euler's number (e): {math.e}")
+
+# Functions
+print("\n--- Functions ---")
+angle_deg = 45
+angle_rad = math.radians(angle_deg)
+print(f"{angle_deg} degrees is {angle_rad:.4f} radians")
+print(f"Sine of {angle_deg} degrees: {math.sin(angle_rad):.4f}")
+
+print(f"Ceiling of 5.2: {math.ceil(5.2)}")   # Output: 6
+print(f"Floor of 5.8: {math.floor(5.8)}")     # Output: 5
+print(f"Factorial of 5: {math.factorial(5)}") # Output: 120
+print(f"Log base 10 of 1000: {math.log10(1000)}") # Output: 3.0
+print(f"GCD of 48 and 18: {math.gcd(48, 18)}") # Output: 6          
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/standard_library";
+
+<Quiz questions={pythonQuiz} />

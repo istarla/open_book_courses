@@ -1,0 +1,304 @@
+# Basic Testing with unittest
+<section id="testing-your-code"></section>
+
+## Why Test Your Code?
+<section id="why-test-your-code"></section>
+
+As programs become more complex, manually checking if every part works correctly after making changes becomes tedious and unreliable. **Automated testing** involves writing code that specifically checks if other parts of your code behave as expected.
+
+Benefits of testing:
+
+*   **Catching Regressions:** Ensures that changes or new features haven't broken existing functionality.
+*   **Confidence in Refactoring:** Allows you to restructure or improve code with more confidence that you haven't introduced errors.
+*   **Documentation:** Tests can serve as executable examples of how your code is intended to be used.
+*   **Design Improvement:** Writing testable code often encourages better, more modular design.
+*   **Collaboration:** Tests provide a safety net when multiple developers work on the same codebase.
+
+Python has several testing frameworks. Today, we'll introduce the one built into the standard library: **`unittest`**.
+
+## Introduction to **unittest**
+<section id="introduction-to-unittest"></section>
+
+The **unittest** module provides a framework for organizing and running tests, inspired by JUnit from the Java world. It's based on object-oriented principles.
+
+Core concepts:
+
+*   **Test Case:** A single unit of testing. You create test cases by subclassing `unittest.TestCase`.
+*   **Test Method:** Individual tests are implemented as methods within a **TestCase** subclass. Test method names must start with the prefix `test_` by convention.
+*   **Assertions:** Inside test methods, you use special assertion methods provided by **TestCase** (e.g., **assertEqual()**, **assertTrue()**, **assertRaises()**) to check if conditions are met. If an assertion fails, the test method fails.
+*   **Test Runner:** A component that discovers and runs the tests and reports the results. **unittest** provides a basic command-line runner.
+
+## Writing a Simple Test
+<section id="writing-a-simple-test"></section>
+
+Let's say we have a simple module with functions to test. Create a file named `calc.py`:
+
+```python
+# File: calc.py
+"""A very simple calculator module."""
+
+def add(x, y):
+    """Return the sum of x and y."""
+    return x + y
+
+def subtract(x, y):
+    """Return the difference of x and y."""
+    return x - y
+
+def multiply(x, y):
+    """Return the product of x and y."""
+    return x * y
+
+def divide(x, y):
+    """Return the division of x by y."""
+    if y == 0:
+        raise ValueError("Cannot divide by zero!")
+    return x / y
+```
+
+Now, create a separate file for the tests, conventionally named starting with **test_** (e.g., `test_calc.py`). Place it in the same directory.
+
+```python
+# File: test_calc.py
+import unittest # Import the framework
+import calc     # Import the module we want to test
+
+# Create a class that inherits from unittest.TestCase
+class TestCalc(unittest.TestCase):
+
+    # Test method names must start with 'test_'
+    def test_add(self):
+        """Test the add function."""
+        # Use assertion methods to check results
+        self.assertEqual(calc.add(10, 5), 15)
+        self.assertEqual(calc.add(-1, 1), 0)
+        self.assertEqual(calc.add(-5, -5), -10)
+        self.assertEqual(calc.add(2.5, 1.5), 4.0)
+
+    def test_subtract(self):
+        """Test the subtract function."""
+        self.assertEqual(calc.subtract(10, 5), 5)
+        self.assertEqual(calc.subtract(-1, 1), -2)
+        self.assertEqual(calc.subtract(-5, -5), 0)
+
+    def test_multiply(self):
+        """Test the multiply function."""
+        self.assertEqual(calc.multiply(10, 5), 50)
+        self.assertEqual(calc.multiply(-1, 1), -1)
+        self.assertEqual(calc.multiply(-5, -5), 25)
+
+    def test_divide(self):
+        """Test the divide function."""
+        self.assertEqual(calc.divide(10, 5), 2)
+        self.assertEqual(calc.divide(-1, 1), -1)
+        self.assertEqual(calc.divide(-6, -3), 2)
+        self.assertAlmostEqual(calc.divide(5, 2), 2.5) # Use for floats
+
+        # Test for expected exceptions using assertRaises
+        # Method 1: Pass function and arguments separately
+        self.assertRaises(ValueError, calc.divide, 10, 0)
+
+        # Method 2: Using a context manager (often clearer)
+        with self.assertRaises(ValueError):
+            calc.divide(10, 0) # Code that should raise the error goes here
+
+# This standard boilerplate allows running tests directly from the command line
+if __name__ == '__main__':
+    unittest.main() # Discovers and runs tests in this file
+```
+
+## Running Tests
+<section id="running-tests"></section>
+
+There are two main ways to run **unittest** tests:
+
+1.  **Running the Test File Directly:** Because we included the **if __name__ == '__main__': unittest.main()** block, you can simply run the test file from your terminal:
+    ```python
+    python test_calc.py
+    ```
+2.  **Using the `unittest` Command-Line Interface (Discovery):** This is often preferred for larger projects as it can discover tests automatically across multiple files and directories.
+    ```python
+    # This command automatically discovers tests in files named test*.py
+    python -m unittest discover
+    # Or specify directory: python -m unittest discover your_test_directory/
+    # For more verbose output: python -m unittest discover -v
+   
+
+Typical output for successful tests:
+
+```python
+.... # One dot for each successful test method
+----------------------------------------------------------------------
+Ran 4 tests in 0.000s
+
+OK
+```
+
+Typical output if a test fails (e.g., if **calc.add(10, 5)** returned 16):
+
+```python
+.F.. # F indicates a failure
+======================================================================
+FAIL: test_add (__main__.TestCalc)
+Test the add function.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "test_calc.py", line 11, in test_add
+    self.assertEqual(calc.add(10, 5), 15)
+AssertionError: 16 != 15 # Shows the failure detail
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+FAILED (failures=1)
+```
+
+## Common **unittest.TestCase** Assertions
+<section id="common-unittest-testcase-assertions"></section>
+
+*   `assertEqual(a, b)`: Checks **a == b**.
+*   `assertNotEqual(a, b)`: Checks **a != b**.
+*   `assertTrue(x)`: Checks **bool(x)** is **True**.
+*   `assertFalse(x)`: Checks **bool(x)** is **False**.
+*   `assertIs(a, b)`: Checks **a is b** (same object identity).
+*   `assertIsNot(a, b)`: Checks **a is not b**.
+*   `assertIsNone(x)`: Checks **x is None**.
+*   `assertIsNotNone(x)`: Checks `x is not None`.
+*   `assertIn(a, b)`: Checks **a in b**.
+*   `assertNotIn(a, b)`: Checks **a not in b**.
+*   `assertIsInstance(a, b)`: Checks **isinstance(a, b)**.
+*   `assertRaises(exception, callable, *args, **kwargs)`: Checks that calling **callable(*args, **kwargs)** raises **exception**.
+*   `assertRaisesRegex(exception, regex, ...)`: Like **assertRaises**, but also checks if the exception message matches **regex**.
+*   `assertAlmostEqual(a, b, places=7)`: Checks if **a** and **b** are approximately equal (useful for floats).
+*   `assertNotAlmostEqual(a, b, places=7)`: Checks if **a** and **b** are not approximately equal.
+
+### Example 1: Testing a String Utility Function
+
+Assume **str_utils.py** exists:
+
+```python
+# str_utils.py
+def reverse(s): return s[::-1]
+def is_palindrome(s):
+    processed = ''.join(filter(str.isalnum, s)).lower()
+    return processed == processed[::-1]
+```
+
+Test file **test_str_utils.py**:
+
+```python
+# test_str_utils.py
+import unittest
+import str_utils
+
+class TestStringUtils(unittest.TestCase):
+
+    def test_reverse(self):
+        self.assertEqual(str_utils.reverse("hello"), "olleh")
+        self.assertEqual(str_utils.reverse(""), "")
+        self.assertEqual(str_utils.reverse("123"), "321")
+
+    def test_is_palindrome(self):
+        self.assertTrue(str_utils.is_palindrome("racecar"))
+        self.assertTrue(str_utils.is_palindrome("A man a plan a canal Panama"))
+        self.assertTrue(str_utils.is_palindrome("")) # Empty string is often considered a palindrome
+        self.assertFalse(str_utils.is_palindrome("hello"))
+        self.assertFalse(str_utils.is_palindrome("python"))
+        self.assertTrue(str_utils.is_palindrome("Was it a car or a cat I saw?"))
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2) # Add verbosity for more detailed output
+```
+
+### Example 2: Testing a Simple Class
+
+Assume **counter.py** exists:
+
+```python
+# counter.py
+class Counter:
+    def __init__(self, start=0): self.count = start
+    def increment(self): self.count += 1
+    def get_value(self): return self.count
+    def reset(self): self.count = 0
+```
+
+Test file **test_counter.py**:
+
+```python
+# test_counter.py
+import unittest
+from counter import Counter # Import the class
+
+class TestCounter(unittest.TestCase):
+
+    # setUp method runs before each test method
+    def setUp(self):
+        """Create a new counter instance for each test."""
+        print("\nRunning setUp...")
+        self.counter = Counter(5) # Start each test with a counter at 5
+
+    # tearDown method runs after each test method
+    def tearDown(self):
+        """Clean up after test (optional here)."""
+        print("Running tearDown...")
+        # No specific cleanup needed for this simple class
+
+    def test_initial_value(self):
+        """Test if the counter initializes correctly."""
+        self.assertEqual(self.counter.get_value(), 5)
+        c0 = Counter() # Test default start
+        self.assertEqual(c0.get_value(), 0)
+
+    def test_increment(self):
+        """Test the increment method."""
+        self.counter.increment()
+        self.assertEqual(self.counter.get_value(), 6)
+        self.counter.increment()
+        self.assertEqual(self.counter.get_value(), 7)
+
+    def test_reset(self):
+        """Test the reset method."""
+        self.counter.increment() # Make sure it's not 0
+        self.counter.reset()
+        self.assertEqual(self.counter.get_value(), 0)
+
+if __name__ == '__main__':
+    unittest.main()
+```
+
+The **setUp** and **tearDown** methods are useful for setting up resources (like database connections or temporary files) before each test and cleaning them up afterwards.
+
+### Example 3: Testing Edge Cases
+
+Good tests cover not just typical cases but also edge cases (empty inputs, zeros, boundaries, errors).
+
+```python
+# In test_calc.py (adding more tests)
+import unittest
+import calc
+
+class TestCalcEdges(unittest.TestCase):
+
+     def test_add_zeros(self):
+          self.assertEqual(calc.add(0, 0), 0)
+          self.assertEqual(calc.add(5, 0), 5)
+          self.assertEqual(calc.add(0, -3), -3)
+
+     def test_divide_by_one(self):
+         self.assertEqual(calc.divide(100, 1), 100)
+         self.assertEqual(calc.divide(-50, 1), -50)
+
+     def test_divide_identity(self):
+         self.assertEqual(calc.divide(42, 42), 1)
+         self.assertEqual(calc.divide(-5, -5), 1)
+
+# Add this to the bottom if combining in one file, or run via discovery
+# if __name__ == '__main__':
+#    unittest.main()
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/basic_testing_with_unittest";
+
+<Quiz questions={pythonQuiz} />

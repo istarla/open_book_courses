@@ -1,0 +1,244 @@
+
+
+# File Modes & The **with** Statement
+
+## Recap: Opening Files and Modes
+<section id="recap-opening-files-and-modes"></section>
+
+In the previous lessons, we used the `open()` function to interact with files. We focused on the three most common modes:
+
+*   **r:** Read mode (default). Error if file doesn't exist.
+*   **w:** Write mode. Creates file if non-existent, **truncates (erases)** if exists.
+*   **a:** Append mode. Creates file if non-existent, adds data to the end if exists.
+
+We also emphasized the importance of closing files using `file.close()`.
+
+## More File Modes: Binary and Update
+<section id="more-file-modes-binary-and-update"></section>
+
+
+Besides  **r**, **w**, and **a**, there are modifiers you can add to these modes:
+
+      <table>
+        <thead>
+          <tr>
+            <th>**Mode**</th>
+            <th>**Description**</th>
+            <th>**File Pointer Position**</th>
+            <th>**Behavior if File Exists**</th>
+            <th>**Behavior if File Doesn't Exist**</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="inline">**r**</code></td>
+            <td>Read (text, default)</td>
+            <td>Beginning</td>
+            <td>Read from start</td>
+            <td>Raises FileNotFoundError</td>
+          </tr>
+          <tr>
+            <td><code class="inline">**rb**</code></td>
+            <td>Read Binary</td>
+            <td>Beginning</td>
+            <td>Read from start</td>
+            <td>Raises FileNotFoundError</td>
+          </tr>
+          <tr>
+            <td><code class="inline">**w**</code></td>
+            <td>Write (text)</td>
+            <td>Beginning</td>
+            <td>Truncates (erases)</td>
+            <td>Creates new file</td>
+          </tr>
+          <tr>
+            <td><code class="inline">**wb**</code></td>
+            <td>Write Binary</td>
+            <td>Beginning</td>
+            <td>Truncates (erases)</td>
+            <td>Creates new file</td>
+          </tr>
+          <tr>
+            <td><code class="inline">**a**</code></td>
+            <td>Append (text)</td>
+            <td>End</td>
+            <td>Append to end</td>
+            <td>Creates new file</td>
+          </tr>
+          <tr>
+            <td><code class="inline">**ab**</code></td>
+            <td>Append Binary</td>
+            <td>End</td>
+            <td>Append to end</td>
+            <td>Creates new file</td>
+          </tr>
+          <tr>
+            <td><code class="inline">**r+**</code></td>
+            <td>Read and Write (text)</td>
+            <td>Beginning</td>
+            <td>Read/Write from start</td>
+            <td>Raises FileNotFoundError</td>
+          </tr>
+          <tr>
+            <td><code class="inline">**rb+**</code></td>
+            <td>Read and Write Binary</td>
+            <td>Beginning</td>
+            <td>Read/Write from start</td>
+            <td>Raises FileNotFoundError</td>
+          </tr>
+          <tr>
+            <td><code class="inline">**w+**</code></td>
+            <td>Write and Read (text)</td>
+            <td>Beginning</td>
+            <td>Truncates (erases)</td>
+            <td>Creates new file</td>
+          </tr>
+          <tr>
+            <td><code class="inline">**wb+**</code></td>
+            <td>Write and Read Binary</td>
+            <td>Beginning</td>
+            <td>Truncates (erases)</td>
+            <td>Creates new file</td>
+          </tr>
+          <tr>
+            <td><code class="inline">**a+**</code></td>
+            <td>Append and Read (text)</td>
+            <td>
+              End for writing, Beginning potentially for reading (depends on
+              seek)
+            </td>
+            <td>Append to end</td>
+            <td>Creates new file</td>
+          </tr>
+          <tr>
+            <td><code class="inline">**ab+**</code></td>
+            <td>Append and Read Binary</td>
+            <td>End for writing, Beginning potentially for reading</td>
+            <td>Append to end</td>
+            <td>Creates new file</td>
+          </tr>
+        </tbody>
+      </table>
+*   **b** (Binary Mode): Use this when dealing with non-text files like images, audio, executables, or any file where you need to handle the raw bytes exactly as they are stored, without Python trying to interpret them as text or handle line endings.
+*   **+** (Update Mode): Use this when you need to both read from and write to the same file object within the same **open()** block. Be mindful of the file cursor position when switching between reading and writing.
+
+For most basic text file processing, 'r', 'w', and 'a' (often combined with 't' implicitly or explicitly, e.g., 'rt') are sufficient.
+
+## The Problem with Forgetting **close()**
+<section id="the-problem-with-forgetting-close"></section>
+
+Manually calling `file.close()` works, but it has drawbacks:
+
+*   **Forgetting:** It's easy to forget to call `close()`, especially in longer scripts or functions.
+*   **Errors:** If an error occurs after opening the file but before the `close()` call is reached, the file might remain open, potentially leading to resource leaks or data corruption.
+
+We saw a partial solution using **try...finally** yesterday, but Python provides a much more elegant and standard way to handle this: the with statement.
+
+## Context Managers: The **with** Statement
+<section id="context-managers-the-with-statement"></section>
+
+The `with` statement is used with objects that support the **context management protocol** (file objects are a prime example). It simplifies resource management by ensuring that certain setup and teardown operations are performed automatically.
+
+For files, the with statement guarantees that the file will be automatically closed when the block is exited, even if errors occur within the block.
+
+* **The syntax is:**
+
+```python
+with open("filename.txt", mode="...", encoding="...") as file_variable:
+    # Indented block: Work with the file using 'file_variable'
+    content = file_variable.read()
+    # or file_variable.write("something")
+    # ... etc ...
+
+# Code here executes AFTER the 'with' block is finished.
+# The file is automatically closed at this point, even if an error happened inside the block.
+```
+
+*   `with open(...) as file_variable:`: Opens the file and assigns the file object to `file_variable`.
+*   The indented block contains the code that works with the file.
+*   When the block finishes (either normally or due to an error), Python automatically calls the necessary cleanup method on the file object (which is `close()` for files).
+
+**This is the preferred way to work with files in Python.** It's cleaner, safer, and less error-prone than manually managing **close()**.
+
+### Example 1: Reading with **with**
+
+Using the **sample.txt** file from Day 39.
+
+
+* **File: with_read.py**
+```python
+
+filename = "sample.txt" # Use a variable for the filename
+
+try:
+    # Use 'with' to automatically handle closing
+    with open(filename, mode="r", encoding="utf-8") as f:
+        print(f"File '{filename}' opened.")
+        content = f.read()
+        print("--- File Content ---")
+        print(content)
+        print("--- End of Content ---")
+        # No need to call f.close() explicitly!
+    print(f"File '{filename}' automatically closed.")
+
+except FileNotFoundError:
+    print(f"Error: File '{filename}' not found.")
+except Exception as e:
+    print(f"An error occurred: {e}")
+```
+
+### Example 2: Writing with **with**
+
+
+* **File: with_write.py**
+```python
+
+filename = "new_output_with.txt"
+lines = ["Generated using 'with'.\n", "Ensures file is closed.\n"]
+
+try:
+    with open(filename, "w", encoding="utf-8") as outfile:
+        print(f"File '{filename}' opened for writing.")
+        outfile.writelines(lines)
+        outfile.write("Finished writing.")
+        print("Data written.")
+        # No outfile.close() needed
+    print(f"File '{filename}' automatically closed.")
+
+    # Optional: Read back to verify
+    print("\n--- Verifying file content ---")
+    with open(filename, "r", encoding="utf-8") as infile:
+        verify_content = infile.read()
+        print(verify_content)
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+```
+
+### Example 3: Appending with **with**
+
+
+* **File: with_append.py**
+```python
+
+import datetime
+
+log_file = "app_log_with.log"
+message = "Application started successfully."
+
+try:
+    with open(log_file, "a", encoding="utf-8") as log:
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        log.write(f"[{timestamp}] {message}\n")
+        print("Log entry appended.")
+        # No log.close() needed
+    print("Log file automatically closed.")
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/files_modes";
+
+<Quiz questions={pythonQuiz} />

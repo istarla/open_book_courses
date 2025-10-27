@@ -1,0 +1,291 @@
+# Introduction to NumPy & Pandas (Data Science)
+<section id="introduction-to-requests-http-library"></section>
+
+## Entering the World of Data Science
+<section id="entering-the-world-of-data-science"></section>
+
+Python has become a dominant language in the fields of data science, machine learning, and scientific computing. This is largely due to its rich ecosystem of powerful third-party libraries designed specifically for these tasks.
+
+Today, we'll get a brief introduction to two foundational libraries:
+
+*   **NumPy (Numerical Python):** Provides support for large, multi-dimensional arrays and matrices, along with a collection of high-level mathematical functions to operate on these arrays efficiently. It's the bedrock of numerical computation in Python.
+*   **Pandas:** Built on top of NumPy, Pandas provides high-performance, easy-to-use data structures (like DataFrames) and data analysis tools. It's essential for data cleaning, manipulation, analysis, and visualization preparation.
+
+> **Prerequisite:** These are third-party libraries. You need to install them first using **pip**, preferably within an activated virtual environment.
+> 
+> ```python
+> # Make sure your virtual environment is activated!
+> pip install numpy pandas
+> ```
+> 
+> This will install both libraries and their dependencies.
+
+## NumPy: Efficient Numerical Arrays
+<section id="numpy-efficient-numerical-arrays"></section>
+
+The core object in NumPy is the `ndarray` (n-dimensional array). It's similar to a Python list but offers significant advantages for numerical work:
+
+*   **Efficiency:** NumPy arrays are stored more compactly in memory and operations on them are significantly faster than equivalent operations on Python lists, especially for large datasets. This is because many NumPy operations are implemented in compiled C code.
+*   **Convenience:** Supports vectorized operations (performing an operation on the entire array at once without explicit loops).
+*   **Functionality:** Includes a wide range of mathematical, statistical, and linear algebra functions optimized for arrays.
+
+By convention, NumPy is imported with the alias `np`.
+
+```python
+# File: numpy_intro.py
+import numpy as np # Import with standard alias
+
+# --- Creating NumPy Arrays ---
+# From a Python list
+list1 = [1, 2, 3, 4, 5]
+arr1 = np.array(list1)
+print(f"NumPy array from list: {arr1}")
+print(f"Type: {type(arr1)}") # <class 'numpy.ndarray'>
+print(f"Data type of elements: {arr1.dtype}") # int64 or int32 depending on system
+
+# Create array of zeros
+zeros_arr = np.zeros(5) # Creates an array of 5 floating point zeros
+print(f"\nZeros array: {zeros_arr}")
+print(f"Data type: {zeros_arr.dtype}") # float64
+
+# Create array of ones
+ones_arr = np.ones(4, dtype=int) # Specify integer type
+print(f"\nOnes array (int): {ones_arr}")
+
+# Create array with a range of numbers (similar to range)
+range_arr = np.arange(0, 10, 2) # Start, stop (exclusive), step
+print(f"\nArange array: {range_arr}") # [0 2 4 6 8]
+
+# --- Basic Operations (Vectorized) ---
+print("\n--- Array Operations ---")
+arr_a = np.array([10, 20, 30, 40])
+arr_b = np.array([1, 2, 3, 4])
+
+# Element-wise addition
+sum_arr = arr_a + arr_b
+print(f"{arr_a} + {arr_b} = {sum_arr}") # [11 22 33 44]
+
+# Scalar multiplication
+scaled_arr = arr_a * 3
+print(f"{arr_a} * 3 = {scaled_arr}") # [30 60 90 120]
+
+# Element-wise comparison
+comparison = arr_a > 25
+print(f"{arr_a} > 25 = {comparison}") # [False False True True]
+
+# --- Indexing and Slicing (Similar to lists) ---
+print("\n--- Indexing & Slicing ---")
+print(f"Element at index 1 of arr_a: {arr_a[1]}") # 20
+print(f"Slice from index 1 to 3: {arr_a[1:3]}") # [20 30]
+
+# --- Mathematical Functions ---
+print("\n--- Math Functions ---")
+print(f"Square root of arr_a: {np.sqrt(arr_a)}")
+print(f"Mean of arr_a: {np.mean(arr_a)}") # 25.0
+print(f"Sum of arr_a: {np.sum(arr_a)}")   # 100
+```
+
+## Pandas: Data Structures for Analysis
+<section id="pandas-data-structures-for-analysis"></section>
+
+Pandas introduces two primary data structures:
+
+*   **`Series`**: A one-dimensional labeled array, capable of holding any data type. Think of it like a single column in a spreadsheet or database table, with an associated index.
+*   **`DataFrame`**: A two-dimensional labeled data structure with columns of potentially different types. It's the most commonly used Pandas object, analogous to a spreadsheet, SQL table, or a dictionary of Series objects.
+
+By convention, Pandas is imported with the alias `pd`.
+
+```python
+# File: pandas_intro.py
+import pandas as pd # Import with standard alias
+import numpy as np # Often used together
+
+# --- Creating a Series ---
+print("--- Pandas Series ---")
+s = pd.Series([10, 20, 30, np.nan, 50], name='MyNumbers') # np.nan represents missing data
+print(s)
+# Output:
+# 0    10.0
+# 1    20.0
+# 2    30.0
+# 3     NaN
+# 4    50.0
+# Name: MyNumbers, dtype: float64
+
+# --- Creating a DataFrame ---
+print("\n--- Pandas DataFrame ---")
+# From a dictionary of lists (common method)
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie', 'David'],
+    'Age': [25, 32, 18, 47],
+    'City': ['New York', 'Paris', 'London', 'Tokyo']
+}
+df = pd.DataFrame(data)
+print(df)
+# Output:
+#       Name  Age       City
+# 0    Alice   25   New York
+# 1      Bob   32      Paris
+# 2  Charlie   18     London
+# 3    David   47      Tokyo
+
+# --- Basic DataFrame Operations ---
+print("\n--- DataFrame Operations ---")
+# Display basic info
+print("\nDataFrame Info:")
+df.info() # Shows column types, non-null counts, memory usage
+
+# Show first few rows
+print("\nFirst 2 rows (head):")
+print(df.head(2))
+
+# Show last few rows
+print("\nLast row (tail):")
+print(df.tail(1))
+
+# Get descriptive statistics for numerical columns
+print("\nDescriptive Statistics (describe):")
+print(df.describe())
+
+# --- Selecting Data ---
+print("\n--- Selecting Data ---")
+# Select a single column (returns a Series)
+ages = df['Age']
+print("Age column (Series):")
+print(ages)
+
+# Select multiple columns (returns a DataFrame)
+name_city = df[['Name', 'City']]
+print("\nName and City columns (DataFrame):")
+print(name_city)
+
+# Select rows by index slice
+print("\nRows 1 and 2 (iloc):")
+print(df.iloc[1:3]) # Select rows by integer position
+
+# Select rows based on condition
+print("\nPeople older than 30:")
+print(df[df['Age'] > 30])
+```
+
+Pandas excels at reading data from various sources (CSV, Excel, SQL databases), cleaning messy data, handling missing values, grouping, merging, and preparing data for analysis or visualization.
+
+### Example 1: Basic NumPy Array Manipulation
+<section id="example-1-basic-numpy-array-manipulation"></section>
+
+```python
+# File: numpy_manipulation.py
+import numpy as np
+
+# Create a 2D array (matrix)
+matrix = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+print("Original Matrix:")
+print(matrix)
+print(f"Shape: {matrix.shape}") # (3, 3) -> 3 rows, 3 columns
+
+# Access element at row 1, column 2 (value 6)
+print(f"\nElement at (1, 2): {matrix[1, 2]}")
+
+# Get the second row
+print(f"Second row: {matrix[1, :]}") # [4 5 6]
+
+# Get the third column
+print(f"Third column: {matrix[:, 2]}") # [3 6 9]
+
+# Sum of all elements
+print(f"Sum of all elements: {np.sum(matrix)}")
+
+# Sum along columns (axis=0)
+print(f"Sum along columns: {np.sum(matrix, axis=0)}") # [12 15 18]
+
+# Sum along rows (axis=1)
+print(f"Sum along rows: {np.sum(matrix, axis=1)}") # [ 6 15 24]
+```
+
+### Example 2: Reading CSV Data with Pandas
+<section id="example-2-reading-csv-data-with-pandas"></section>
+
+First, create a simple CSV file named `data.csv`:
+
+```csv
+ID,Name,Score
+1,Alice,88
+2,Bob,92
+3,Charlie,75
+4,David,
+5,Eve,95
+```
+
+Python script:
+
+```python
+# File: pandas_read_csv.py
+import pandas as pd
+
+filename = "data.csv"
+try:
+    # Read data from CSV into a DataFrame
+    df = pd.read_csv(filename)
+    print("--- DataFrame loaded from CSV ---")
+    print(df)
+
+    print("\n--- Handling Missing Data ---")
+    # Check for missing values (NaN)
+    print("Missing values per column:")
+    print(df.isnull().sum()) # Counts NaN values in each column
+
+    # Fill missing score with the mean score
+    mean_score = df['Score'].mean()
+    df['Score'].fillna(mean_score, inplace=True) # inplace=True modifies df directly
+    print("\nDataFrame after filling missing score:")
+    print(df)
+
+    print("\n--- Sorting Data ---")
+    # Sort by Score descending
+    df_sorted = df.sort_values(by='Score', ascending=False)
+    print("DataFrame sorted by Score (descending):")
+    print(df_sorted)
+
+except FileNotFoundError:
+    print(f"Error: File '{filename}' not found.")
+except Exception as e:
+    print(f"An error occurred: {e}")
+```
+
+### Example 3: Filtering Pandas DataFrame
+<section id="example-3-filtering-pandas-dataframe"></section>
+
+```python
+# File: pandas_filtering.py
+import pandas as pd
+
+# Create sample DataFrame
+data = {
+    'Product': ['A', 'B', 'A', 'C', 'B', 'A'],
+    'Region': ['North', 'South', 'North', 'West', 'South', 'East'],
+    'Sales': [250, 180, 310, 150, 220, 280]
+}
+df = pd.DataFrame(data)
+print("--- Original DataFrame ---")
+print(df)
+
+# Filter for sales > 200
+high_sales = df[df['Sales'] > 200]
+print("\n--- High Sales (Sales > 200) ---")
+print(high_sales)
+
+# Filter for Region 'North'
+north_region = df[df['Region'] == 'North']
+print("\n--- North Region Sales ---")
+print(north_region)
+
+# Filter for Product 'A' AND Sales > 260
+complex_filter = df[(df['Product'] == 'A') & (df['Sales'] > 260)]
+print("\n--- Product A, Sales > 260 ---")
+print(complex_filter)
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/intro_to_numpy";
+
+<Quiz questions={pythonQuiz} />

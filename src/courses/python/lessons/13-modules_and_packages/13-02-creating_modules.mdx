@@ -1,0 +1,252 @@
+# Creating Your Own Modules
+
+
+## Organizing Your Code into Reusable Files
+<section id="organizing-your-code-into-reusable-files"></section>
+
+Yesterday, we learned how to import and use functionality from Python's built-in modules (like **math** and **random**) and the standard library. This concept of modularity is fundamental to writing larger, maintainable Python programs.
+
+You can easily create your own modules to organize related functions, classes, and variables into separate files. This promotes code reuse and makes your project structure clearer.
+
+**Creating a module is simple: any Python file (`.py` extension) can potentially act as a module.** You just write your Python code (definitions) in a file, save it, and then you can import that file into another Python script.
+
+## Step-by-Step: Creating and Using a Module
+<section id="step-by-step-creating-and-using-a-module"></section>
+
+Let's create a simple module for some string utility functions.
+
+### Step 1: Create the Module File
+
+Create a new file named `string_utils.py` (the filename becomes the module name). Place the following code inside it:
+
+```python
+string_utils.py
+
+"""A simple module for string manipulation utilities."""
+
+def reverse_string(s):
+  """Returns the reversed version of a string."""
+  return s[::-1]
+
+def count_vowels(s):
+  """Counts the number of vowels (a, e, i, o, u) in a string (case-insensitive)."""
+  vowels = "aeiou"
+  count = 0
+  for char in s.lower():
+    if char in vowels:
+      count += 1
+  return count
+```
+You can also define variables in a module
+DEFAULT_GREETING = "Hello"
+print("string_utils module has been loaded!") # This line executes when the module is first imported
+
+
+This file now defines two functions (**reverse_string**, **count_vowels**) and a variable (**DEFAULT_GREETING**).
+
+### Step 2: Create the Main Script to Use the Module
+
+Now, create another Python file in the **same directory** as `string_utils.py`. Let's call this file `main_program.py`.
+
+Inside `main_program.py`, you can import and use your custom module:
+
+
+* **main_program.py**
+```python
+import string_utils # Import the module we created (using the filename without .py)
+Call functions defined in the module using the module name prefix
+my_string = "Python Module"
+reversed_str = string_utils.reverse_string(my_string)
+vowel_count = string_utils.count_vowels(my_string)
+
+print(f"Original string: '{my_string}'")
+print(f"Reversed string: '{reversed_str}'")
+print(f"Vowel count: {vowel_count}")
+
+# Access variables defined in the module
+print(f"Default greeting from module: {string_utils.DEFAULT_GREETING}")
+
+# Try importing specific functions
+from string_utils import reverse_string as rs # Import with an alias
+
+another_string = "Test"
+print(f"\nReversing '{another_string}' using alias: {rs(another_string)}")
+```
+
+### Step 3: Running the Main Script
+
+When you run `main_program.py` from your terminal (`python main_program.py`), Python will first find and execute (load) the **string_utils.py** file. You'll see the message "string_utils module has been loaded!" printed once, followed by the output from **main_program.py**.
+
+> **Module Search Path:** Python looks for modules in several places:
+> 1.  The directory containing the input script (the script you are running).
+> 2.  Directories listed in the `PYTHONPATH` environment variable (if set).
+> 3.  Installation-dependent default paths (usually where the standard library and installed packages reside).
+> 
+> For modules you create yourself, the simplest approach is to place them in the same directory as the script that imports them. For larger projects, you'll organize modules into packages (directories with a special **__init__.py** file), which we might cover later.
+
+## The __name__ Special Variable
+
+
+Every Python module has a special built-in variable called __name__ (note the double underscores). The value of __name__ depends on how the module is being used:
+
+*   If the file is run directly as the main script (e.g., python string_utils.py), its __name__ is set to the special string __main__.
+*   If the file is imported as a module into another script, its __name__ is set to the module's filename (without the .py extension, e.g., "string_utils").
+
+This allows you to write code within a module file that only executes when the file is run directly, but not when it's imported. This is commonly used for testing the module's functions or providing a command-line interface for the module.
+
+Let's modify `string_utils.py`:
+
+```python
+# string_utils.py (Modified)
+
+"""A simple module for string manipulation utilities."""
+
+def reverse_string(s):
+  """Returns the reversed version of a string."""
+  return s[::-1]
+
+def count_vowels(s):
+  """Counts the number of vowels (a, e, i, o, u) in a string (case-insensitive)."""
+  vowels = "aeiou"
+  count = 0
+  for char in s.lower():
+    if char in vowels:
+      count += 1
+  return count
+
+DEFAULT_GREETING = "Hello"
+
+# --- Code below only runs when string_utils.py is executed directly ---
+if __name__ == "__main__":
+    print("\n--- Running string_utils.py directly (for testing) ---")
+    test_str = "Example String 123"
+    print(f"Testing with string: '{test_str}'")
+    print(f"Reversed: '{reverse_string(test_str)}'")
+    print(f"Vowel Count: {count_vowels(test_str)}")
+    print(f"Default Greeting: {DEFAULT_GREETING}")
+    print("--- End of direct execution test ---")
+else:
+    # This block runs ONLY when the file is imported as a module
+    print(f"string_utils module has been imported (__name__ is '{__name__}').")
+```
+
+Now:
+
+*   Running `python string_utils.py` will execute the test code inside the `if __name__ == "__main__":` block.
+*   Running `python main_program.py` (which imports **string_utils**) will execute the code in the **else** block of **string_utils.py** (printing the "imported" message) but **not** the test code.
+
+This `if __name__ == "__main__":` block is a standard Python idiom for creating reusable modules that can also be run independently for testing or simple tasks.
+
+### Example 1: Simple Calculator Module
+<section id="example-1-simple-calculator-module"></section>
+
+Create `calculator.py`:
+
+```python
+# calculator.py
+"""A module for basic arithmetic operations."""
+def add(x, y):
+    return x + y
+def subtract(x, y):
+    return x - y
+def multiply(x, y):
+    return x * y
+def divide(x, y):
+    if y == 0:
+        return "Error: Cannot divide by zero"
+    return x / y
+if __name__ == "__main__":
+    print("Testing calculator module...")
+    a = 10
+    b = 5
+    print(f"{a} + {b} = {add(a, b)}")
+    print(f"{a} - {b} = {subtract(a, b)}")
+    print(f"{a} * {b} = {multiply(a, b)}")
+    print(f"{a} / {b} = {divide(a, b)}")
+    print(f"{a} / 0 = {divide(a, 0)}")
+```
+
+Create `use_calculator.py` in the same directory:
+
+
+* **use_calculator.py**
+```python
+import calculator
+num1 = 25
+num2 = 5
+print(f"{num1} / {num2} = {calculator.divide(num1, num2)}")
+print(f"{num1} * {num2} = {calculator.multiply(num1, num2)}")
+```
+
+Run **use_calculator.py**. Only the results from **use_calculator.py** will print; the test code in **calculator.py** won't run.
+
+### Example 2: Module with Constants
+<section id="example-2-module-with-constants"></section>
+Create `constants.py`:
+
+```python
+# constants.py
+"""Module defining some common constants."""
+
+PI = 3.14159
+GRAVITY = 9.81 # m/s^2
+SPEED_OF_LIGHT = 299792458 # m/s
+
+# No __main__ block needed if it only contains definitions
+```
+
+Create `physics_calc.py`:
+
+```python
+# physics_calc.py
+import constants
+from constants import GRAVITY # Import specific constant
+def calculate_circumference(radius):
+    return 2 * constants.PI * radius
+def calculate_fall_time(height):
+    # Simplified: time = sqrt(2 * height / g)
+    if height < 0: return 0
+    # Note: Need to import math for sqrt
+    import math
+    return math.sqrt(2 * height / GRAVITY) # Using imported GRAVITY
+
+r = 10
+print(f"Circumference (r=10): {calculate_circumference(r):.2f}") # Uses constants.PI
+
+h = 50
+print(f"Time to fall {h}m: {calculate_fall_time(h):.2f}s") # Uses imported GRAVITY
+```
+
+### Example 3: Importing Between Your Own Modules (Conceptual)
+
+
+Imagine you have **module_a.py** and **module_b.py**. **module_b.py** can import **module_a.py** just like any other module, provided they are in the same directory (or module_a is findable on the Python path).
+
+
+
+
+* **module_a.py**
+```python
+def function_a():
+    print("Function A from module_a")
+```
+
+* **module_b.py**
+```python
+import module_a # Import our other custom module
+def function_b():
+    print("Function B from module_b, calling function A:")
+    module_a.function_a() # Call function from the imported module
+if __name__ == "__main__":
+    print("Running module_b directly:")
+    function_b()
+```
+
+Running **python module_b.py** would execute **function_b**, which in turn imports **module_a** and calls **function_a**.
+
+
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/creating_modules";
+
+<Quiz questions={pythonQuiz} />

@@ -1,0 +1,236 @@
+
+# Decorators
+<section id="decorators"></section>
+
+## Modifying Functions and Methods
+<section id="modifying-functions-and-methods"></section>
+
+As programs grow, you might find yourself wanting to add similar functionality (like logging, access control, timing, or caching) to multiple functions or methods without significantly altering their core logic or repeating the boilerplate code everywhere.
+
+**Decorators** provide a powerful and elegant way to modify or enhance functions and methods in Python. They are a form of metaprogramming, allowing you to wrap existing functions with additional code.
+
+<img src="/images/decorators.jpg" alt="variable" className="w-150 h-100 mx-auto" />
+
+Decorators leverage several concepts we've already learned:
+
+*   Functions are first-class objects: They can be assigned to variables, passed as arguments, and returned from other functions.
+*   Nested functions: Functions can be defined inside other functions.
+## The Basic Idea: Wrapping Functions
+<section id="the-basic-idea-wrapping-functions"></section>
+
+Imagine you have a function and you want to add some code that runs before and after it executes. You could manually wrap it:
+
+```python
+def say_hello():
+    print("Hello!")
+
+def wrapper_function(func_to_wrap):
+    print("---> Entering wrapper")
+    func_to_wrap() # Call the original function
+    print("<-- Exiting wrapper")
+
+# Manually wrap say_hello
+wrapper_function(say_hello)
+# Output:
+# --> Entering wrapper
+# Hello!
+# <-- Exiting wrapper
+```
+
+A decorator automates this wrapping process using a special syntax (`@decorator_name`).
+
+## Creating a Simple Decorator
+<section id="creating-a-simple-decorator"></section>
+
+A decorator is typically implemented as a function that takes another function (the one being decorated) as an argument, defines a new "wrapper" function inside, and returns that wrapper function. The wrapper function usually calls the original function and adds its own logic before and/or after the call.
+
+* **File: simple_decorator.py**
+```python
+
+# 1. Define the decorator function
+def simple_decorator(func):
+    """A simple decorator that prints before and after the wrapped function."""
+    def wrapper():
+        print("--< Before calling the function.")
+        func() # Call the original function passed to the decorator
+        print(">-- After calling the function.")
+    # The decorator returns the wrapper function
+    return wrapper
+```
+* **2. Apply the decorator using the @ syntax**
+```python
+@simple_decorator
+def greet():
+    """A simple greeting function."""
+    print("   Hello from the greet function!")
+```
+* **3. Call the decorated function**
+```python
+print("Calling greet():")
+greet()
+# When greet() is called, the wrapper function returned by simple_decorator is executed instead.
+
+# The @simple_decorator syntax above is syntactic sugar for:
+# greet = simple_decorator(greet)
+# This reassignment happens when the function is defined.
+```
+
+The `@simple_decorator` line placed directly above the **def greet():** line is the key. It tells Python to pass the **greet** function to the **simple_decorator** function, and then reassign the name **greet** to whatever function **simple_decorator** returns (which is the **wrapper** function).
+
+## Decorators with Arguments
+<section id="decorators-with-arguments"></section>
+
+What if the function being decorated takes arguments? The wrapper function needs to accept those arguments and pass them along to the original function. This is where `*args` and `**kwargs` become essential in the wrapper definition.
+
+```python
+# File: decorator_with_args.py
+import functools # Often needed for more complex decorators
+
+def logging_decorator(func):
+    """Logs function calls and arguments."""
+    # Use functools.wraps to preserve original function metadata (name, docstring)
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs): # Accept arbitrary arguments
+        print(f"--> Calling '{func.__name__}' with args: {args}, kwargs: {kwargs}")
+        # Call the original function, passing along arguments
+        result = func(*args, **kwargs)
+        print(f"<-- '{func.__name__}' returned: {result}")
+        return result # Return the original function's result
+    return wrapper
+
+@logging_decorator
+def add(x, y):
+    """Adds two numbers."""
+    return x + y
+
+@logging_decorator
+def say_message(message, times=1):
+    """Prints a message multiple times."""
+    for _ in range(times):
+        print(f"   Message: {message}")
+    return f"{times} messages printed."
+
+# Call the decorated functions
+print("Calling add(5, 3):")
+sum_result = add(5, 3)
+
+print("\nCalling say_message('Hello', times=2):")
+msg_result = say_message("Hello", times=2)
+
+print("\nChecking function metadata:")
+print(f"add function name: {add.__name__}") # Correctly shows 'add' because of @functools.wraps
+print(f"add docstring: {add.__doc__}")     # Correctly shows docstring
+```
+
+> Using `@functools.wraps(func)` inside the decorator is important. It copies metadata (like the function name **__name__**, docstring **__doc__**, etc.) from the original function (**func**) to the wrapper function. Without it, calling **add.__name__** would return **"wrapper"**, which can be confusing for debugging and introspection tools.
+
+## Common Use Cases
+<section id="common-use-cases"></section>
+
+*   **Logging:** Recording when functions are called and with what arguments/results.
+*   **Access Control/Authorization:** Checking user permissions before allowing a function to execute.
+*   **Timing/Profiling:** Measuring how long a function takes to run.
+*   **Caching/Memoization:** Storing results of expensive function calls and returning the cached result for the same inputs.
+*   **Input Validation:** Adding common validation checks to multiple functions.
+*   Frameworks (like Flask, Django) use decorators extensively for routing, authentication, etc.
+
+### Example 1: Timing Decorator
+
+```python
+# File: timing_decorator.py
+import time
+import functools
+
+def timer(func):
+    """Prints the runtime of the decorated function."""
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.perf_counter() # Get high-resolution time
+        value = func(*args, **kwargs)
+        end_time = time.perf_counter()
+        run_time = end_time - start_time
+        print(f"Finished '{func.__name__}' in {run_time:.4f} secs")
+        return value
+    return wrapper
+
+@timer
+def slow_function(delay):
+    """Simulates a function that takes some time."""
+    print(f"  Running slow_function with delay {delay}...")
+    time.sleep(delay) # Pause execution for 'delay' seconds
+    print("  Slow_function finished.")
+    return delay * 10
+
+# Call the decorated function
+result = slow_function(1.5) # Simulate 1.5 second delay
+print(f"Result of slow_function: {result}")
+
+result = slow_function(0.5)
+print(f"Result of slow_function: {result}")
+```
+
+### Example 2: Debugging Decorator (Simple)
+
+```python
+# File: debug_decorator.py
+import functools
+
+def debug(func):
+    """Prints function signature and return value."""
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        # Create readable representations of args and kwargs
+        args_repr = [repr(a) for a in args]
+        kwargs_repr = [f"{k}={v!r}" for k, v in kwargs.items()] # Use !r for repr() in f-string
+        signature = ", ".join(args_repr + kwargs_repr)
+        print(f"--> Calling {func.__name__}({signature})")
+        value = func(*args, **kwargs)
+        print(f"<-- {func.__name__!r} returned {value!r}") # Use !r for repr()
+        return value
+    return wrapper
+
+@debug
+def make_greeting(name, age=None):
+    greeting = f"Hello {name}"
+    if age is not None:
+        greeting += f", you are {age} years old."
+    return greeting
+
+# Call decorated function
+make_greeting("Alice")
+make_greeting("Bob", age=30)
+make_greeting(name="Charlie", age=25)
+```
+
+### Example 3: Decorator Stacking
+
+You can apply multiple decorators to a single function. They are applied from bottom to top (the one closest to the **def** line runs first).
+
+```python
+# File: stacked_decorators.py
+import functools
+import time # Assuming timer decorator is defined as above
+
+# Assuming debug decorator is defined as above
+
+@timer # Applied second (wraps the result of @debug)
+@debug # Applied first (wraps the original say_whee)
+def say_whee(name):
+    print(f"    Whee, {name}!")
+    return "Done"
+
+# Call the function decorated with both
+say_whee("Python")
+
+# Execution Order:
+# timer starts
+# debug prints -> Calling say_whee('Python')
+#   original say_whee runs -> prints '    Whee, Python!'
+# debug prints <- 'say_whee' returned 'Done'
+# timer finishes and prints runtime
+```
+
+import Quiz from "@/components/Quiz";
+import pythonQuiz from "@/Data/decorators";
+
+<Quiz questions={pythonQuiz} />

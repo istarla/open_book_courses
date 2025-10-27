@@ -1,0 +1,293 @@
+
+# Polymorphism & Encapsulation
+
+## Recap: Classes and Inheritance
+<section id="recap-classes-and-inheritance"></section>
+
+We've established the foundations of Object-Oriented Programming in Python, understanding classes as blueprints, instances as objects created from those blueprints, attributes as data, methods as behavior, and inheritance as a way to create specialized subclasses that reuse and extend parent class functionality.
+
+Today, we explore two more fundamental concepts in OOP that build upon classes and inheritance: Polymorphism and Encapsulation.
+
+## Polymorphism: Many Forms
+<section id="polymorphism-many-forms"></section>
+
+**Polymorphism**, literally meaning "many forms", is a core OOP principle that allows objects of different classes to respond to the same method call in their own specific ways.
+
+In the context of inheritance, polymorphism often manifests through method overriding. If a child class overrides a method from its parent, calling that method on an instance of the child class will execute the child's version. However, code that works with the parent class type can often operate on child class objects seamlessly, calling the appropriate overridden method without needing to know the object's specific subclass.
+
+This allows for flexible and extensible code. You can write functions that operate on a general type (like Animal or Vehicle) and have them work correctly with any current or future subclass (like Dog, Cat, Car, Motorcycle) as long as those subclasses implement the expected methods.
+
+### Polymorphism Example: Different Speakers
+<section id="polymorphism-example-different-speakers"></section>
+
+
+* **File: polymorphism_example.py**
+```python
+
+class Animal:
+    def __init__(self, name):
+        self.name = name
+    def speak(self): # Generic method
+        raise NotImplementedError("Subclass must implement abstract method")
+
+class Dog(Animal):
+    def speak(self):
+        return f"{self.name} says Woof!"
+
+class Cat(Animal):
+    def speak(self):
+        return f"{self.name} says Meow!"
+
+class Duck(Animal):
+    def speak(self):
+        return f"{self.name} says Quack!"
+```
+* **Create a list of different Animal objects (polymorphism in action)**
+```python
+my_pets = [Dog("Buddy"), Cat("Whiskers"), Duck("Daffy"), Dog("Lucy")]
+
+print("Let the pets speak:")
+# This loop works with any Animal subclass that implements speak()
+for pet in my_pets:
+    # Python automatically calls the correct 'speak' method
+    # based on the actual type of the 'pet' object at runtime.
+    print(pet.speak())
+
+# Define a function that works with any object having a 'speak' method
+def make_it_speak(speaker):
+    # This relies on polymorphism ("duck typing" in Python)
+    print(f"Making it speak: {speaker.speak()}")
+
+print("\nUsing the function:")
+make_it_speak(Dog("Rex"))
+make_it_speak(Cat("Snowball"))
+```
+
+In this example, the for loop and the make_it_speak function don't need to know the specific type of each pet or speaker. They just call the speak() method, and polymorphism ensures the correct version (from Dog, Cat, or Duck) is executed.
+
+Python's approach to polymorphism is often referred to as duck typing: "If it walks like a duck and quacks like a duck, then it must be a duck." This means Python often cares more about whether an object has the required method or attribute (like speak()) rather than its explicit class type or inheritance relationship. However, using inheritance provides structure and guarantees that subclasses should have the method.
+
+## Encapsulation: Protecting Data
+<section id="encapsulation-protecting-data"></section>
+
+Encapsulation is the principle of bundling data (attributes) and the methods that operate on that data within a single unit (the object or class) and restricting direct access to some of the object's components. It's about controlling access to the internal state of an object.
+
+Why encapsulate?
+
+*   **Data Hiding/Protection:** Prevents external code from accidentally or intentionally corrupting the internal state of an object.
+*   **Control:** Allows the class designer to control how attributes are accessed and modified, potentially adding validation or logic (e.g., ensuring a balance doesn't go below zero).
+*   **Implementation Hiding:** Users of the class interact with it through its public methods (its interface), without needing to know the complex internal details. This makes the class easier to use and allows internal implementation changes without breaking external code (as long as the public interface remains stable).
+
+### Access Modifiers in Python (By Convention)
+<section id="access-modifiers-in-python-by-convention"></section>
+
+
+Unlike some other languages (like Java or C++), Python doesn't have strict keywords like **private** or **protected** to enforce data hiding. Instead, it relies heavily on **naming conventions**:
+
+*   **Public (`attribute_name`):** Attributes and methods without leading underscores are considered public. They are meant to be part of the class's public interface and can be accessed directly from outside the class.
+*   **Protected (`_attribute_name`):** A single leading underscore indicates that an attribute or method is intended for internal use within the class and its subclasses. It's a convention signaling "don't touch this from outside unless you know what you're doing". Python doesn't technically prevent access, but linters and developers respect this convention.
+*   **Private (`__attribute_name`):** Two leading underscores (and no more than one trailing underscore) trigger name mangling. Python automatically changes the name of the attribute to _ClassName__attribute_name. This makes it harder (but not impossible) to access directly from outside the class, strongly indicating it's private and internal.
+
+* **File: encapsulation_example.py**
+```python
+
+class Player:
+    def __init__(self, name, initial_health=100):
+        self.name = name # Public attribute
+        self._level = 1 # Protected attribute (convention)
+        self.__health = initial_health # Private attribute (name mangled)
+
+    # Public method to access health safely
+    def get_health(self):
+        return self.__health # Access internal attribute via mangled name
+
+    # Public method to modify health safely
+    def take_damage(self, amount):
+        if amount > 0:
+            self.__health -= amount
+            if self.__health < 0:
+                self.__health = 0 # Prevent negative health
+            print(f"{self.name} took {amount} damage. Health: {self.__health}")
+        else:
+            print("Damage amount must be positive.")
+
+    # Protected method (convention)
+    def _level_up(self):
+        self._level += 1
+        self.__health += 20 # Internal logic can access private attributes
+        print(f"{self.name} leveled up to {self._level}! Health increased.")
+
+    # Public method that might call protected method
+    def gain_experience(self, xp):
+         print(f"{self.name} gained {xp} XP.")
+         # Imagine some logic here...
+         if xp > 100 * self._level: # Example condition
+             self._level_up() # Call the 'protected' method internally
+```
+* **--- Usage ---**
+```python
+
+p1 = Player("Gandalf", 150)
+```
+* **Access public attribute**
+```python
+print(f"Player Name: {p1.name}")
+```
+* **Access public methods**
+```python
+p1.take_damage(30)
+print(f"Current health via get_health(): {p1.get_health()}")
+p1.gain_experience(150) # Might trigger _level_up
+```
+* **Accessing 'protected' attribute (possible, but discouraged)**
+```python
+print(f"Player level (accessing _level): {p1._level}")
+```
+* **Accessing 'private' attribute directly fails due to name mangling**
+```python
+try:
+    print(p1.__health)
+except AttributeError as e:
+    print(f"\nError accessing p1.__health directly: {e}")
+```
+* **Accessing 'private' attribute via mangled name (possible, but strongly discouraged)**
+```python
+print(f"Player health (accessing _Player__health): {p1._Player__health}") # Don't do this normally!
+
+# Modifying 'private' attribute unsafely (bypasses take_damage logic)
+# p1._Player__health = -500 # Very bad practice!
+```
+
+Encapsulation encourages interacting with objects through their defined public methods rather than directly manipulating their internal attributes.
+
+### Example 1: Document Class with Polymorphic Formatting
+* **File: document_formatter.py**
+```python
+class Document:
+    def __init__(self, content):
+        self._content = content # Protected content
+
+    def format(self):
+        # Base implementation or raise error
+        return f"Generic Document: {self._content[:20]}..."
+
+class PlainTextDocument(Document):
+    def format(self): # Override format
+        return self._content
+
+class HtmlDocument(Document):
+    def format(self): # Override format
+        return f"<html><body>{self._content}</body></html>"
+
+class MarkdownDocument(Document):
+     def format(self): # Override format
+        return f"## Markdown\n\n{self._content}"
+
+docs = [
+    PlainTextDocument("This is plain text."),
+    HtmlDocument("This is HTML content."),
+    MarkdownDocument("This is markdown.")
+]
+
+# Polymorphism: Loop calls the correct 'format' method for each object
+for doc in docs:
+    print(doc.format())
+    print("-" * 20)
+```
+
+### Example 2: Counter with Encapsulation
+
+* **File: encapsulated_counter.py**
+```python
+class SecureCounter:
+    def __init__(self, initial_value=0):
+        # Make the count 'private' to control access
+        if not isinstance(initial_value, int):
+             raise TypeError("Initial value must be an integer.")
+        self.__count = initial_value
+
+    def increment(self):
+        self.__count += 1
+
+    def decrement(self):
+         if self.__count > 0: # Add some logic/validation
+             self.__count -= 1
+         else:
+             print("Counter cannot go below zero.")
+
+    def get_value(self):
+        # Provide controlled read access
+        return self.__count
+```
+* **--- Usage ---**
+```python
+c = SecureCounter(5)
+c.increment()
+c.increment()
+print(f"Counter value: {c.get_value()}") # Access via method
+
+c.decrement()
+c.decrement()
+c.decrement()
+c.decrement()
+c.decrement()
+c.decrement() # Tries to go below zero
+print(f"Counter value: {c.get_value()}")
+
+# Direct access is hindered
+# print(c.__count) # AttributeError
+# c.__count = -100 # This actually creates a separate attribute, doesn't change the private one!
+# print(f"Counter value after trying to set __count: {c.get_value()}") # Still 0
+```
+
+### Example 3: Coffee Machine (Conceptual)
+* **File: coffee_machine.py**
+```python
+class CoffeeMachine:
+    def __init__(self, water_level=100):
+        self._water_level = max(0, water_level) # Protected, ensure non-negative
+        self.__is_on = False # Private internal state
+
+    def _heat_water(self): # Protected helper method
+        if self._water_level > 10:
+            print("Heating water...")
+            return True
+        else:
+            print("Not enough water to heat.")
+            return False
+
+    def turn_on(self): # Public interface
+        self.__is_on = True
+        print("Coffee machine is ON.")
+
+    def turn_off(self): # Public interface
+        self.__is_on = False
+        print("Coffee machine is OFF.")
+
+    def make_coffee(self): # Public interface
+        if not self.__is_on:
+            print("Machine is off. Please turn on.")
+            return
+
+        if self._heat_water(): # Uses protected method
+            print("Brewing coffee...")
+            self._water_level -= 10 # Assume coffee uses 10 units
+            print("Coffee ready!")
+```
+* **--- Usage ---**
+```python
+machine = CoffeeMachine(50)
+machine.turn_on()
+machine.make_coffee()
+machine.make_coffee()
+machine.make_coffee()
+machine.make_coffee()
+machine.make_coffee()
+machine.make_coffee() # Should fail due to water level
+machine.turn_off()
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/polymorphism";
+
+<Quiz questions={pythonQuiz} />

@@ -1,0 +1,154 @@
+# Lambda Functions
+
+## Small, Anonymous Functions
+<section id="small-anonymous-functions"></section>
+
+We've learned how to define functions using the def keyword. These are typically used for larger blocks of code or for functions that will be reused multiple times by name.
+
+Python also provides a way to create small, simple, anonymous functions (functions without a formal name defined via def) using the lambda keyword. These are often called lambda functions or lambda expressions.
+
+Lambda functions are restricted to a single expression. They can take any number of arguments but can only have one expression, the result of which is implicitly returned. They cannot contain complex statements like loops, `if-else` blocks spanning multiple lines (though conditional expressions are allowed), or `try-except` blocks.
+
+## Syntax of Lambda Functions
+<section id="syntax-of-lambda-functions"></section>
+
+The basic syntax is:
+
+```python
+lambda arguments: expression
+```
+
+*   `lambda`: Keyword indicating the start of a lambda function.
+*   `arguments`: One or more arguments the function accepts, separated by commas (just like parameters in a **def** statement).
+*   `:`: Colon separating the arguments from the expression.
+*   `expression`: A single expression that uses the arguments. The result of this expression is automatically returned by the lambda function.
+
+## Comparing **lambda** with **def**
+<section id="comparing-lambda-with-def"></section>
+
+Let's compare a simple function defined using **def** and an equivalent lambda function:
+
+* **Using def**
+```python
+
+def double(x):
+  return x * 2
+
+result_def = double(5)
+print(f"Result from def function: {result_def}")
+```
+
+* **Equivalent using lambda**
+```python
+# Assigning the lambda function to a variable (less common, but shows equivalence)
+double_lambda = lambda x: x * 2
+
+result_lambda = double_lambda(5)
+print(f"Result from lambda function: {result_lambda}")
+
+# Lambda functions are objects just like regular functions
+print(f"Type of double_lambda: {type(double_lambda)}") # Output: <class 'function'>
+```
+
+While you **can** assign a lambda function to a variable, it slightly defeats the purpose of them being "anonymous". The primary use case for lambdas isn't assignment, but rather passing simple functions as arguments to other functions.
+
+## When to Use Lambda Functions
+<section id="when-to-use-lambda-functions"></section>
+
+Lambda functions shine when you need a small, temporary function for a short period, especially as arguments to higher-order functions (functions that take other functions as arguments).
+
+Common scenarios:
+
+*   **Sorting (`sort()`, `sorted()`):** Providing a custom key for sorting complex objects.
+*   **Mapping (`map()`):** Applying a simple transformation to every item in an iterable.
+*   **Filtering (`filter()`):** Selecting items from an iterable based on a simple condition.
+*   GUI frameworks (like Tkinter, PyQt) for simple callback handlers.
+
+(We haven't covered **map** and **filter** yet, but they are classic examples where lambdas are useful).
+
+**Readability:** While lambdas can be concise, complex lambda functions can become hard to read. If the logic requires more than a very simple expression, defining a regular function with **def** is usually clearer and preferred. PEP 8 (the style guide) generally recommends using **def** over assigning lambdas to variables.
+
+### Example 1: Simple Arithmetic Lambda
+<section id="example-1-simple-arithmetic-lambda"></section>
+
+
+
+* **File: arithmetic_lambda.py**
+```python
+
+# Lambda function for adding three numbers
+add_three = lambda a, b, c: a + b + c
+result = add_three(5, 10, 15)
+print(f"Result of add_three(5, 10, 15): {result}") # Output: 30
+```
+* **Lambda function using a conditional expression**
+```python
+max_val = lambda x, y: x if x > y else y
+result_max = max_val(100, 50)
+print(f"Result of max_val(100, 50): {result_max}") # Output: 100
+```
+
+### Example 2: Using Lambda with **sorted()**
+<section id="example-2-using-sorted"></section>
+
+Sorting a list of tuples based on the second element of each tuple.
+
+
+* **File: lambda_sort.py**
+```python
+points = [(1, 5), (3, 2), (5, 8), (2, 1)]
+print(f"Original points: {points}")
+```
+* **Sort based on the first element (default tuple sorting)**
+```python
+points.sort() # Sorts in-place based on first element, then second if first is equal
+print(f"Sorted by first element: {points}")
+```
+* **Sort based on the second element using a lambda as the key**
+```python
+# The key function takes one argument (a tuple from the list)
+# and returns the value to sort by (the second element, index 1).
+points.sort(key=lambda point_tuple: point_tuple[1])
+print(f"Sorted by second element: {points}") # Output: [(2, 1), (3, 2), (1, 5), (5, 8)]
+```
+* **Using sorted() to create a new sorted list (original unchanged)**
+```python
+points_original = [(1, 5), (3, 2), (5, 8), (2, 1)]
+sorted_by_y = sorted(points_original, key=lambda p: p[1])
+print(f"\nOriginal points (unchanged): {points_original}")
+print(f"New list sorted by y: {sorted_by_y}")
+```
+
+### Example 3: Using Lambda with **filter()** (Conceptual Preview)
+<section id="example-3-using-filter"></section>
+
+
+**filter(function, iterable)** creates an iterator that yields items from the iterable for which the function returns True.
+
+
+* **File: lambda_filter.py**
+```python
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+print(f"Original numbers: {numbers}")
+```
+
+* **Use filter with a lambda to get only even numbers**
+```python
+# The lambda takes a number x and returns True if x is even
+even_numbers_iterator = filter(lambda x: x % 2 == 0, numbers)
+```
+* **Convert the iterator to a list to see the results**
+```python
+even_numbers_list = list(even_numbers_iterator)
+print(f"Even numbers (using filter and lambda): {even_numbers_list}") # Output: [2, 4, 6, 8, 10]
+```
+* **Equivalent using list comprehension (often preferred for simple cases)**
+```python
+even_comp = [x for x in numbers if x % 2 == 0]
+print(f"Even numbers (using list comprehension): {even_comp}")
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/lambda_functions";
+
+<Quiz questions={pythonQuiz} />

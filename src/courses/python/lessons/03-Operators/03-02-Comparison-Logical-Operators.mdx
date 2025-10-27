@@ -1,0 +1,274 @@
+
+# Comparison & Logical Operators
+
+## Introduction
+<section id="Introduction"></section>
+
+Beyond arithmetic, Python provides operators to compare values and combine boolean expressions. These are crucial for making decisions in your programs (control flow), which we'll start exploring soon.
+
+*   **Comparison (Relational) Operators:** Used to compare two values. They evaluate to a Boolean value (`True` or `False`).
+*   **Logical Operators:** Used to combine or modify Boolean values.
+
+## Comparison Operators
+<section id="Comparison-Operators"></section>
+
+These operators compare the values of their operands and return `True` or `False`.
+
+
+Comparison operators work on numbers, strings (lexicographical comparison), and other types (though comparison rules vary).
+
+```python
+a = 25
+b = 15
+c = 25
+
+print(f"{a} == {b}: {a == b}")  # False
+print(f"{a} == {c}: {a == c}")  # True
+print(f"{a} != {b}: {a != b}")  # True
+print(f"{a} > {b}: {a > b}")    # True
+print(f"{b} < {a}: {b < a}")    # True
+print(f"{a} >= {c}: {a >= c}") # True
+print(f"{b} <= {a}: {b <= a}") # True
+
+# String comparison (lexicographical / alphabetical order)
+print(f"'apple' == 'orange': {'apple' == 'orange'}") # False
+print(f"'apple' < 'orange': {'apple' < 'orange'}") # True (a comes before o)
+print(f"'Banana' < 'apple': {'Banana' < 'apple'}") # True (B comes before a)
+```
+
+## Logical Operators
+<section id="Logical-Operators"></section>
+<table>
+  <thead>
+    <tr>
+      <th>**Operator**</th>
+      <th>**Name**</th>
+      <th>**Description**</th>
+      <th>
+        **Example** (<code class="inline">x = 10</code>,
+        <code class="inline">y = 5</code>)
+      </th>
+      <th>**Result**</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="inline">==</code></td>
+      <td>Equal to</td>
+      <td>Returns <code class="inline">True</code> if operands are equal.</td>
+      <td><code class="inline">x == y</code></td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <td><code class="inline">!=</code></td>
+      <td>Not equal to</td>
+      <td>Returns <code class="inline">True</code> if operands are not equal.</td>
+      <td><code class="inline">x != y</code></td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <td><code class="inline">&gt;</code></td>
+      <td>Greater than</td>
+      <td>Returns <code class="inline">True</code> if the left operand is greater than the right.</td>
+      <td><code class="inline">x &gt; y</code></td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <td><code class="inline">&lt;</code></td>
+      <td>Less than</td>
+      <td>Returns <code class="inline">True</code> if the left operand is less than the right.</td>
+      <td><code class="inline">x &lt; y</code></td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <td><code class="inline">&gt;=</code></td>
+      <td>Greater than or equal to</td>
+      <td>Returns <code class="inline">True</code> if the left operand is greater than or equal to the right.</td>
+      <td><code class="inline">x &gt;= y</code></td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <td><code class="inline">&lt;=</code></td>
+      <td>Less than or equal to</td>
+      <td>Returns <code class="inline">True</code> if the left operand is less than or equal to the right.</td>
+      <td><code class="inline">x &lt;= y</code></td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+
+### Truth Tables
+<section id="Truth-Tables"></section>
+
+Truth tables summarize the results of logical operators for all possible input combinations:
+
+#### **and** Operator
+
+      <table>
+        <thead>
+          <tr>
+            <th>**Operand 1**</th>
+            <th>**Operand 2**</th>
+            <th>**Result** (Op1 and Op2)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>True</td>
+            <td>True</td>
+            <td>True</td>
+          </tr>
+          <tr>
+            <td>True</td>
+            <td>False</td>
+            <td>False</td>
+          </tr>
+          <tr>
+            <td>False</td>
+            <td>True</td>
+            <td>False</td>
+          </tr>
+          <tr>
+            <td>False</td>
+            <td>False</td>
+            <td>False</td>
+          </tr>
+        </tbody>
+      </table>
+
+#### **or** Operator
+
+   <table>
+        <thead>
+          <tr>
+            <th>**Operand 1**</th>
+            <th>**Operand 2**</th>
+            <th>**Result** (Op1 or Op2)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>True</td>
+            <td>True</td>
+            <td>True</td>
+          </tr>
+          <tr>
+            <td>True</td>
+            <td>False</td>
+            <td>True</td>
+          </tr>
+          <tr>
+            <td>False</td>
+            <td>True</td>
+            <td>True</td>
+          </tr>
+          <tr>
+            <td>False</td>
+            <td>False</td>
+            <td>False</td>
+          </tr>
+        </tbody>
+      </table>
+
+#### **not** Operator
+
+      <table>
+        <thead>
+          <tr>
+            <th>**Operand**</th>
+            <th>**Result**(not Operand)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>True</td>
+            <td>False</td>
+          </tr>
+          <tr>
+            <td>False</td>
+            <td>True</td>
+          </tr>
+        </tbody>
+      </table>
+
+### Short-Circuit Evaluation
+<section id="Short-Circuit-Evaluation"></section>
+
+Python's logical operators (`and`, `or`) use **short-circuit evaluation**. This means the second operand is only evaluated if the first operand isn't enough to determine the result.
+
+*   For `and`: If the first operand is `False`, the result must be `False`, so the second operand is not evaluated.
+*   For `or`: If the first operand is `True`, the result must be `True`, so the second operand is not evaluated.
+
+This can be useful for preventing errors, like trying to divide by zero:
+
+```python
+denominator = 0
+numerator = 10
+
+# Without short-circuiting, 'numerator / denominator' would cause a ZeroDivisionError
+# With short-circuiting, since 'denominator != 0' is False, the second part is skipped
+if denominator != 0 and numerator / denominator > 1:
+    print("Division successful and result > 1")
+else:
+    print("Division check failed or denominator was zero.") # This will print
+```
+* **Example with 'or'**
+```python
+is_admin = True
+needs_approval = False # This part won't be evaluated
+
+if is_admin or needs_approval: # Since is_admin is True, the result is True
+    print("Access granted.") # This will print
+```
+
+### Example 1: Checking Age Eligibility
+* **File: age_check.py**
+```python
+age = 20
+has_id = True
+
+is_adult = age >= 18
+can_enter_club = is_adult and has_id
+
+print(f"Age: {age}")
+print(f"Has ID: {has_id}")
+print(f"Is adult? {is_adult}")
+print(f"Can enter club? {can_enter_club}") # True because both conditions are True
+```
+
+### Example 2: Combining Multiple Conditions
+
+```python
+# File: condition_combo.py
+score = 75
+attendance_percent = 90
+has_submitted_project = True
+
+# Pass requires score >= 60 AND (attendance >= 80 OR project submitted)
+passed = score >= 60 and (attendance_percent >= 80 or has_submitted_project)
+
+print(f"Score: {score}")
+print(f"Attendance: {attendance_percent}%")
+print(f"Project Submitted: {has_submitted_project}")
+print(f"Passed? {passed}") # True because score is >= 60 and attendance is >= 80
+```
+
+### Example 3: Using **not** to Invert a Condition
+
+```python
+# File: not_example.py
+is_raining = False
+is_weekend = True
+```
+* **Go for a walk if it's NOT raining AND it's the weekend**
+```python
+go_for_walk = not is_raining and is_weekend
+
+print(f"Is raining? {is_raining}")
+print(f"Is weekend? {is_weekend}")
+print(f"Go for a walk? {go_for_walk}") # True because not False is True, and True and True is True
+```
+import Quiz from '../../../../components/Quiz'
+import pythonQuiz from '../../../../Data/Comparision_Operator'
+
+<Quiz questions={pythonQuiz} />

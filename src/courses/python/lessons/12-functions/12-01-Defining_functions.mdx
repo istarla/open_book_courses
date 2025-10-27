@@ -1,0 +1,186 @@
+
+# Defining Functions (**def**)
+
+## Organizing Code: The Need for Functions
+<section id="the-need-for-functions"></section>
+
+As our programs grow larger and more complex, simply writing code sequentially becomes difficult to manage, read, and maintain. We often find ourselves repeating the same blocks of code in different places.
+
+**Functions**: are named blocks of reusable code that perform a specific task. They allow us to break down our program into smaller, logical units, making the code more organized, modular, and easier to understand and debug.
+<img src="/images/functions.png" alt="variable" className="w-150 h-100 mx-auto" />
+### Key benefits of using functions:
+
+*   **Reusability:** Write the code once and call the function multiple times from different parts of your program.
+*   **Modularity:** Break down complex problems into smaller, manageable pieces.
+*   **Readability:** Give descriptive names to blocks of code, making the overall program flow easier to follow.
+*   **Maintainability:** If you need to change how a specific task is done, you only need to modify the code inside the function, rather than finding and changing it everywhere it's used.
+
+We've already used built-in functions like `print()`, `len()`, `input()`, `type()`, `range()`, `int()`, `set()`, etc. Now, we'll learn how to define our own custom functions.
+
+## Defining a Function: The def Statement
+<section id="defining-a-function-the-def-statement"></section>
+
+We define a function using the `def` keyword, followed by the function name, parentheses `()`, and a colon `:`. The code block that belongs to the function is indented underneath the `def` line.
+
+```python
+def function_name(parameters):
+    """Optional docstring explaining what the function does."""
+    # Code block (function body)
+    statement1
+    statement2
+    # ...
+    # Optional: return value (more on this later)
+```
+
+Key components:
+
+*   **def:** Keyword indicating the start of a function definition.
+*   **function_name:** A descriptive name for the function. Follows the same naming rules and conventions as variables (snake_case is recommended).
+*   **(parameters):** Parentheses containing an optional comma-separated list of input parameters (variables) that the function can accept. If the function doesn't take any input, the parentheses are still required but remain empty.
+*   **:** A colon marking the end of the function header.
+*   **"""Docstring""":** (Optional but highly recommended) A multi-line string literal used to document what the function does, its parameters, and what it returns.
+*   **Indented Block (Function Body)**: The sequence of statements that make up the function's logic. This code only executes when the function is called.
+
+## Calling a Function
+<section id="calling-a-function"></section>
+
+Defining a function doesn't execute its code. To run the code inside a function, you need to call it. You call a function by using its name followed by parentheses `()` . If the function expects arguments (values for its parameters), you provide them inside the parentheses.
+
+* **1. Define the function**
+```python
+def greet():
+    """Prints a simple greeting message."""
+    print("Hello there!")
+    print("Welcome to the world of functions.")
+```
+* **2. Call the function to execute its code**
+```python
+print("Calling the greet function now...")
+greet() # This executes the print statements inside greet()
+print("...greet function finished.")
+```
+* **You can call it multiple times**
+```python
+print("\nCalling greet() again:")
+greet()
+```
+
+## Functions with Parameters
+<section id="functions-with-parameters"></section>
+
+Functions become much more powerful when they can accept input data through parameters. Parameters are variables listed inside the parentheses in the function definition. When you call the function, you pass **arguments** (actual values) which are assigned to these parameters.
+
+
+## File: function_with_param.py
+
+* **Define a function that takes one parameter name**
+```python
+def greet_user(name):
+    """Greets a user by their name."""
+    print(f"Hello, {name}!")
+    print("Have a great day.")
+```
+* **Call the function, passing arguments**
+```python
+print("Calling with argument 'Alice':")
+greet_user("Alice") # "Alice" is the argument assigned to the 'name' parameter
+
+print("\nCalling with argument 'Bob':")
+greet_user("Bob")   # "Bob" is the argument assigned to 'name'
+```
+* **Define a function with multiple parameters**
+```python
+def add_numbers(num1, num2):
+    """Adds two numbers and prints the result."""
+    total = num1 + num2
+    print(f"The sum of {num1} and {num2} is {total}")
+
+print("\nCalling add_numbers:")
+add_numbers(5, 3) # 5 is assigned to num1, 3 is assigned to num2
+add_numbers(100, -25)
+```
+
+We will discuss different ways to pass arguments (positional, keyword) and return values in the upcoming lessons.
+
+### Example 1: Function to Print a Separator Line
+<section id="example-1-function-to-print-a-separator-line"></section>
+
+
+* **File: print_separator.py**
+```python
+def print_separator(char="-", length=40):
+    """Prints a separator line using a given character and length."""
+    print(char * length) # Uses string repetition
+```
+* **Call with defaults**
+```python
+print("Section 1 Title")
+print_separator()
+```
+* **Call with different character and length**
+```python
+print("Section 2 Title")
+print_separator(char="*", length=20)
+```
+* **Call changing only length**
+```python
+print("Section 3 Title")
+print_separator(length=30)
+```
+
+(This example previews default parameter values, which we'll cover formally soon).
+
+### Example 2: Function to Calculate Area of a Rectangle
+<section id="example-2-function-to-calculate-area-of-a-rectangle"></section>
+
+
+* **File: rectangle_area.py**
+```python
+def calculate_rectangle_area(width, height):
+    """Calculates and prints the area of a rectangle."""
+    if width < 0 or height < 0:
+        print("Error: Width and height cannot be negative.")
+        return # Exit the function early (we'll discuss 'return' more)
+
+    area = width * height
+    print(f"The area of a {width}x{height} rectangle is {area}")
+```
+* **Call the function**
+```python
+calculate_rectangle_area(10, 5)
+calculate_rectangle_area(7.5, 3)
+calculate_rectangle_area(-4, 5) # Test the error condition
+```
+
+### Example 3: Function to Display List Items
+<section id="example-3-function-to-display-list-items"></section>
+
+
+* **File: display_list.py**
+```python
+def display_items(items_list, title="Items"):
+    """Displays items from a list with a title."""
+    print(f"\n--- {title} ---")
+    if not items_list: # Check if list is empty (falsy)
+        print("(No items to display)")
+        return
+
+    for i, item in enumerate(items_list): # enumerate gives index and item
+        print(f"{i + 1}. {item}")
+    print("-" * (len(title) + 6))
+
+fruits = ["Apple", "Banana", "Cherry"]
+empty = []
+tasks = ["Buy groceries", "Pay bills", "Walk the dog"]
+
+display_items(fruits, title="Fruit Basket")
+display_items(tasks, title="To-Do List")
+display_items(empty) # Call with default title
+```
+
+(This example previews **enumerate** and default arguments).
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/define_functions";
+
+<Quiz questions={pythonQuiz} />

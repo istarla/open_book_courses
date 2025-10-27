@@ -1,0 +1,354 @@
+# Set Operations
+
+## Recap: Sets for Uniqueness
+<section id="recap-sets-for-uniqueness"></section>
+
+Yesterday, we learned that sets are unordered collections of unique, immutable items. We saw how to create them, add/remove elements, and test for membership efficiently using in.
+
+One of the key strengths of sets lies in their ability to perform mathematical set operations easily and efficiently. These operations allow you to compare sets and create new sets based on their relationships.
+
+## Core Set Operations
+<section id="core-set-operations"></section>
+
+Python sets support several standard operations, which can be performed using either dedicated methods or symbolic operators.
+
+        <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Method</th>
+            <th>Operator</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Union</td>
+            <td><code class="inline">set1.union(set2)</code></td>
+            <td><code class="inline">set1 |set2</code></td>
+            <td>
+              Returns a new set containing all unique elements from
+              <strong>both</strong> sets.
+            </td>
+          </tr>
+          <tr>
+            <td>Intersection</td>
+            <td><code class="inline">set1.intersection(set2)</code></td>
+            <td><code class="inline">set1 & set2</code></td>
+            <td>
+              Returns a new set containing only the elements that are present in
+              <strong>both</strong> sets.
+            </td>
+          </tr>
+          <tr>
+            <td>Difference</td>
+            <td><code class="inline">set1.difference(set2)</code></td>
+            <td><code class="inline">set1 - set2</code></td>
+            <td>
+              Returns a new set containing elements that are in
+              <code class="inline">set1</code> but<strong>not</strong> in
+              <code class="inline">set2</code>. (Order matters!)
+            </td>
+          </tr>
+          <tr>
+            <td>Symmetric Difference</td>
+            <td><code class="inline">set1.symmetric_difference(set2)</code></td>
+            <td><code class="inline">set1 ^ set2</code></td>
+            <td>
+              Returns a new set containing elements that are in
+              <strong>either</strong> <code class="inline">set1</code> or
+              <code class="inline">set2</code>, but<strong>not</strong> in both.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+These methods and operators return new sets, leaving the original sets unchanged. There are also corresponding in-place update methods (e.g., `update()`, `intersection_update()`, `difference_update()`, `symmetric_difference_update()`) that modify the set they are called on.
+
+### 1. Union 
+
+Combines all unique elements from two or more sets.
+
+
+* **File: set_union.py**
+```python
+set_a = {1, 2, 3, 4}
+set_b = {3, 4, 5, 6}
+set_c = {7, 8}
+```
+* **Using the operator**
+```python
+union_ab = set_a | set_b
+print(f"Union (A | B): {union_ab}") # Output: {1, 2, 3, 4, 5, 6}
+```
+* **Using the method .union()**
+```python
+union_ab_method = set_a.union(set_b)
+print(f"Union (A.union(B)): {union_ab_method}") # Output: {1, 2, 3, 4, 5, 6}
+```
+* **Union with multiple sets**
+```python
+union_abc = set_a.union(set_b, set_c) # Method can take multiple args
+# union_abc_op = set_a | set_b | set_c # Operator chaining also works
+print(f"Union (A.union(B, C)): {union_abc}") # Output: {1, 2, 3, 4, 5, 6, 7, 8}
+```
+
+### 2. Intersection 
+
+Finds elements common to both sets.
+
+
+* **File: set_intersection.py**
+```python
+set_x = {'a', 'b', 'c', 'd'}
+set_y = {'c', 'd', 'e', 'f'}
+```
+* **Using the operator &**
+```python
+intersection_xy = set_x & set_y
+print(f"Intersection (X & Y): {intersection_xy}") # Output: {'c', 'd'} (order may vary)
+```
+* **Using the method .intersection()**
+```python
+intersection_xy_method = set_x.intersection(set_y)
+print(f"Intersection (X.intersection(Y)): {intersection_xy_method}") # Output: {'c', 'd'}
+```
+* **Intersection with a set having no common elements**
+```python
+set_z = {1, 2, 3}
+intersection_xz = set_x & set_z
+print(f"Intersection (X & Z): {intersection_xz}") # Output: set() (an empty set)
+```
+
+### 3. Difference 
+
+Finds elements present in the first set but not in the second. Order matters!
+
+
+* **File: set_difference.py**
+```python
+set_p = {10, 20, 30, 40, 50}
+set_q = {40, 50, 60, 70}
+```
+* **Using the operator**
+```python
+diff_pq = set_p - set_q # Elements in P but not in Q
+print(f"Difference (P - Q): {diff_pq}") # Output: {10, 20, 30}
+
+diff_qp = set_q - set_p # Elements in Q but not in P
+print(f"Difference (Q - P): {diff_qp}") # Output: {60, 70}
+```
+* **Using the method .difference()**
+```python
+diff_pq_method = set_p.difference(set_q)
+print(f"Difference (P.difference(Q)): {diff_pq_method}") # Output: {10, 20, 30}
+```
+
+### 4. Symmetric Difference 
+
+Finds elements present in either set, but not both (the opposite of intersection).
+
+
+* **File: set_symmetric_diff.py**
+```python
+set_m = {1, 2, 3, 4, 5}
+set_n = {4, 5, 6, 7, 8}
+```
+* **Using the operator**
+```python
+sym_diff_mn = set_m ^ set_n
+print(f"Symmetric Difference (M ^ N): {sym_diff_mn}") # Output: {1, 2, 3, 6, 7, 8}
+```
+* **Using the method .symmetric_difference()**
+```python
+sym_diff_mn_method = set_m.symmetric_difference(set_n)
+print(f"Symmetric Difference (M.symmetric_difference(N)): {sym_diff_mn_method}") # Output: {1, 2, 3, 6, 7, 8}
+
+# Note: Symmetric difference is equivalent to (M | N) - (M & N)
+# union_mn = set_m | set_n -> {1, 2, 3, 4, 5, 6, 7, 8}
+# intersection_mn = set_m & set_n -> {4, 5}
+# union_mn - intersection_mn -> {1, 2, 3, 6, 7, 8}
+```
+
+## Subset and Superset Checks
+<section id="subset-and-superset-checks"></section>
+
+Sets also provide methods to check relationships between them:
+
+      <table>
+        <thead>
+          <tr>
+            <th>Check</th>
+            <th>Method</th>
+            <th>Operator</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Is Subset</td>
+            <td><code class="inline">set1.issubset(set2)</code></td>
+            <td><code class="inline">set1 >set1 |set2</code></td>
+            <td>
+              Returns <code class="inline">True</code> if all elements of
+              <code class="inline">set1</code> are also in
+              <code class="inline">set2</code>.
+            </td>
+          </tr>
+          <tr>
+            <td>Is Superset</td>
+            <td><code class="inline">set1.issuperset(set2)</code></td>
+            <td><code class="inline">set1 >= set2</code></td>
+            <td>
+              Returns <code class="inline">True</code> if
+              <code class="inline">set1</code> contains all elements of
+              <code class="inline">set2</code>.
+            </td>
+          </tr>
+          <tr>
+            <td>Is Proper Subset</td>
+            <td>N/A (use operator)</td>
+            <td><code class="inline">set1 < set2</code></td>
+            <td>
+              Returns <code class="inline">True</code> if
+              <code class="inline">set1</code> is a subset of
+              <code class="inline">set2</code>, but
+              <code class="inline">set1</code> is not equal to
+              <code class="inline">set2</code>.
+            </td>
+          </tr>
+          <tr>
+            <td>Is Proper Superset</td>
+            <td>N/A (use operator)</td>
+            <td><code class="inline">set1 > set2</code></td>
+            <td>
+              Returns <code class="inline">True</code> if
+              <code class="inline">set1</code> is a superset of
+              <code class="inline">set2</code>, but
+              <code class="inline">set1</code> is not equal to
+              <code class="inline">set2</code>.
+            </td>
+          </tr>
+          <tr>
+            <td>Is Disjoint</td>
+            <td><code class="inline">set1.isdisjoint(set2)</code></td>
+            <td>N/A</td>
+            <td>
+              Returns <code class="inline">True</code> if
+              <code class="inline">set1</code> and
+              <code class="inline">set2</code> have no elements in common (their
+              intersection is empty).
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+* **File: set_subset_superset.py**
+```python
+A = {1, 2, 3}
+B = {1, 2, 3, 4, 5}
+C = {1, 2}
+D = {4, 5, 6}
+
+print(f"A: {A}, B: {B}, C: {C}, D: {D}")
+```
+* **Subset checks**
+```python
+print(f"\nA <= B: {A <= B}") # True
+print(f"A.issubset(B): {A.issubset(B)}") # True
+print(f"B <= A: {B <= A}") # False
+print(f"C < A: {C < A}") # True (Proper subset)
+print(f"A < A: {A < A}") # False (Not a proper subset of itself)
+```
+* **Superset checks**
+```python
+print(f"\nB >= A: {B >= A}") # True
+print(f"B.issuperset(A): {B.issuperset(A)}") # True
+print(f"A >= B: {A >= B}") # False
+print(f"B > C: {B > C}") # True (Proper superset)
+print(f"B > B: {B > B}") # False (Not a proper superset of itself)
+```
+* **Disjoint check**
+```python
+
+print(f"\nA and B disjoint? {A.isdisjoint(B)}") # False (common elements 1, 2, 3)
+print(f"A and D disjoint? {A.isdisjoint(D)}") # True (no common elements)
+```
+
+### Example 1: Finding Common and Unique Skills
+
+
+* **File: compare_skills.py**
+```python
+skills_dev1 = {"python", "git", "sql", "docker", "javascript"}
+skills_dev2 = {"java", "sql", "javascript", "aws", "git"}
+```
+* **Skills both developers have (intersection)**
+```python
+common_skills = skills_dev1 & skills_dev2
+print(f"Common skills: {common_skills}")
+```
+* **All skills combined (union)**
+```python
+all_skills = skills_dev1 | skills_dev2
+print(f"All skills combined: {all_skills}")
+```
+* **Skills unique to Developer 1 (difference)**
+```python
+unique_dev1 = skills_dev1 - skills_dev2
+print(f"Skills unique to Dev 1: {unique_dev1}")
+```
+* **Skills unique to Developer 2 (difference)**
+```python
+unique_dev2 = skills_dev2 - skills_dev1
+print(f"Skills unique to Dev 2: {unique_dev2}")
+```
+* **Skills present in one developer but not both (symmetric difference)**
+```python
+unique_either = skills_dev1 ^ skills_dev2
+print(f"Skills unique to either Dev: {unique_either}")
+```
+
+### Example 2: Checking Required Ingredients
+
+* **File: check_ingredients.py**
+```python
+required = {"flour", "sugar", "eggs"}
+available = {"flour", "eggs", "butter", "milk", "sugar"}
+```
+* **Check if we have all required ingredients**
+```python
+can_bake = required.issubset(available) # or required <= available
+
+if can_bake:
+    print("You have all required ingredients. Let\'s bake!")
+else:
+    missing = required - available # Find what\'s missing
+    print(f"Cannot bake. Missing ingredients: {missing}")
+```
+
+### Example 3: Identifying Non-overlapping Groups
+
+* **File: disjoint_groups.py**
+```python
+group_a = {"user1", "user2", "user3"}
+group_b = {"user4", "user5"}
+group_c = {"user3", "user6"}
+```
+* **Check if Group A and Group B have any members in common**
+```python
+a_b_disjoint = group_a.isdisjoint(group_b)
+print(f"Are Group A and Group B disjoint? {a_b_disjoint}") # Output: True
+```
+* **Check if Group A and Group C have any members in common**
+```python
+a_c_disjoint = group_a.isdisjoint(group_c)
+print(f"Are Group A and Group C disjoint? {a_c_disjoint}") # Output: False (user3 is common)
+```
+
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/set_operations";
+
+<Quiz questions={pythonQuiz} />

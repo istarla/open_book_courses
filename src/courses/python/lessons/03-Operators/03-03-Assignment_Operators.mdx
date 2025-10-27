@@ -1,0 +1,301 @@
+# Assignment Operators
+
+## What are Assignment Operators?
+<section id="What-are-assignment-operators?"></section>
+
+Assignment operators are used to assign values to variables. We've already been using the most basic assignment operator, the equals sign (`=`), extensively.
+
+```python
+# Basic assignment
+my_variable = 100
+message = "Hello"
+```
+
+Python also provides several **compound assignment operators** (also called augmented assignment operators). These combine an arithmetic (or bitwise, which we aren't covering yet) operation with assignment, providing a shorthand way to modify a variable's value in place.
+
+## Compound Assignment Operators
+<section id="Compound-assignment-operators"></section>
+  <table>
+  <thead>
+    <tr>
+      <th>**Operator**</th>
+      <th>**Example**</th>
+      <th>**Equivalent to**</th>
+      <th>**Description**</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code className="inline">+=</code></td>
+      <td><code className="inline">x += 5</code></td>
+      <td><code className="inline">x = x + 5</code></td>
+      <td>Add and assign</td>
+    </tr>
+    <tr>
+      <td><code className="inline">-=</code></td>
+      <td><code className="inline">x -= 5</code></td>
+      <td><code className="inline">x = x - 5</code></td>
+      <td>Subtract and assign</td>
+    </tr>
+    <tr>
+      <td><code className="inline">*=</code></td>
+      <td><code className="inline">x *= 5</code></td>
+      <td><code className="inline">x = x * 5</code></td>
+      <td>Multiply and assign</td>
+    </tr>
+    <tr>
+      <td><code className="inline">/=</code></td>
+      <td><code className="inline">x /= 5</code></td>
+      <td><code className="inline">x = x / 5</code></td>
+      <td>Divide and assign (result is always float)</td>
+    </tr>
+    <tr>
+      <td><code className="inline">%=</code></td>
+      <td><code className="inline">x %= 5</code></td>
+      <td><code className="inline">x = x % 5</code></td>
+      <td>Modulus and assign</td>
+    </tr>
+    <tr>
+      <td><code className="inline">**=</code></td>
+      <td><code className="inline">x **= 5</code></td>
+      <td><code className="inline">x = x ** 5</code></td>
+      <td>Exponentiation and assign</td>
+    </tr>
+    <tr>
+      <td><code className="inline">//=</code></td>
+      <td><code className="inline">x //= 5</code></td>
+      <td><code className="inline">x = x // 5</code></td>
+      <td>Floor division and assign</td>
+    </tr>
+    <tr>
+      <td><code className="inline">&amp;=</code></td>
+      <td><code className="inline">x &amp;= 5</code></td>
+      <td><code className="inline">x = x &amp; 5</code></td>
+      <td>Bitwise AND and assign</td>
+    </tr>
+    <tr>
+      <td><code className="inline">|=</code></td>
+      <td><code className="inline">x |= 5</code></td>
+      <td><code className="inline">x = x | 5</code></td>
+      <td>Bitwise OR and assign</td>
+    </tr>
+    <tr>
+      <td><code className="inline">^=</code></td>
+      <td><code className="inline">x ^= 5</code></td>
+      <td><code className="inline">x = x ^ 5</code></td>
+      <td>Bitwise XOR and assign</td>
+    </tr>
+    <tr>
+      <td><code className="inline">&gt;&gt;=</code></td>
+      <td><code className="inline">x &gt;&gt;= 5</code></td>
+      <td><code className="inline">x = x &gt;&gt; 5</code></td>
+      <td>Bitwise right shift and assign</td>
+    </tr>
+    <tr>
+      <td><code className="inline">&lt;&lt;=</code></td>
+      <td><code className="inline">x &lt;&lt;= 5</code></td>
+      <td><code className="inline">x = x &lt;&lt; 5</code></td>
+      <td>Bitwise left shift and assign</td>
+    </tr>
+  </tbody>
+</table>
+
+
+### Why Use Compound Operators?
+<section id="Why-use-compound-operators?"></section>
+*   **Conciseness:** They make code shorter and often more readable, especially when variable names are long.
+*   **Clarity of Intent:** They clearly signal that you are modifying an existing variable's value based on its current value.
+*   **Potential Efficiency:** In some cases (especially with mutable objects like lists, which we'll see later), they can be slightly more efficient as they might modify the object in place rather than creating a new one. For basic numeric types, the performance difference is usually negligible.
+
+## Examples in Action
+<section id="Examples"></section>
+### Using `+=` and `-=`
+
+
+* **File: add_subtract_assign.py**
+```python
+score = 100
+print(f"Initial score: {score}")
+```
+* **Add points**
+```python
+score += 10 # Equivalent to score = score + 10
+print(f"Score after adding 10: {score}") # Output: 110
+```
+* **Subtract points**
+```python
+score -= 5  # Equivalent to score = score - 5
+print(f"Score after subtracting 5: {score}") # Output: 105
+```
+* **+= also works for string concatenation**
+```python
+message = "Hello"
+message += ", World!" # Equivalent to message = message + ", World!"
+print(message) # Output: Hello, World!
+```
+
+### Using `*=`, `/=`, `//=`
+
+* **File: mul_div_assign.py**
+```python
+quantity = 5
+price = 20.0
+print(f"Initial quantity: {quantity}, Initial price: {price}")
+```
+* **Double the quantity**
+```python
+quantity *= 2 # quantity = quantity * 2
+print(f"Quantity after doubling: {quantity}") # Output: 10
+```
+* **Halve the price using float division**
+```python
+price /= 2  # price = price / 2
+print(f"Price after halving (/=): {price}") # Output: 10.0
+```
+* **Halve the quantity using floor division**
+```python
+quantity //= 2 # quantity = quantity // 2
+print(f"Quantity after halving (//=): {quantity}") # Output: 5
+```
+* **= also works for string repetition**
+```python
+separator = "*"
+separator *= 10 # separator = separator * 10
+print(separator) # Output: **********
+```
+
+### Using `%=` and `**=`
+* **File: mod_power_assign.py**
+```python
+counter = 17
+base = 2
+print(f"Initial counter: {counter}, Initial base: {base}")
+```
+* **Keep counter within range 0-4 (cycle)**
+```python
+counter %= 5 # counter = counter % 5
+print(f"Counter after modulo 5: {counter}") # Output: 2
+```
+* **Square the base**
+```python
+base **= 2 # base = base ** 2
+print(f"Base after squaring: {base}") # Output: 4
+```
+* **Cube the base again**
+```python
+base **= 3 # base = base ** 3 (now 4**3)
+print(f"Base after cubing: {base}") # Output: 64
+```
+
+### Using Bitwise Assignment Operators
+
+These operators work on the binary representation of integers. We'll cover bitwise operations in more detail in a later lesson, but here's a quick example to show how they work with assignment.
+
+
+* **File: bitwise_assign.py**
+```python
+x = 10 # Binary is 1010
+y = 4  # Binary is 0100
+print(f"Initial x: {x}, Initial y: {y}")
+```
+* **Bitwise AND and assign**
+```python
+x &= 4 # x = 10 & 4 (1010 & 0100 = 0000)
+print(f"x after &= 4: {x}") # Output: 0
+x = 10
+```
+* **Bitwise OR and assign**
+```python
+x |= 4 # x = 10 | 4 (1010 | 0100 = 1110)
+print(f"x after |= 4: {x}") # Output: 14
+```
+```python 
+x = 10
+# Bitwise XOR and assign
+x ^= 4 # x = 10 ^ 4 (1010 ^ 0100 = 1110)
+print(f"x after ^= 4: {x}") # Output: 14
+```
+```python
+x = 10
+# Bitwise left shift and assign
+x <<= 2 # x = 10 << 2 (1010 << 2 = 101000)
+print(f"x after <<= 2: {x}") # Output: 40
+```
+```python
+x = 10
+# Bitwise right shift and assign
+x >>= 2 # x = 10 >> 2 (1010 >> 2 = 10)
+print(f"x after >>= 2: {x}") # Output: 2
+```
+
+### Example 1: Accumulating a Total
+
+Simulating adding items to a shopping cart total.
+
+```python
+# File: cart_total.py
+total_cost = 0.0
+
+item1_price = 15.99
+item2_price = 4.50
+item3_price = 25.00
+
+print(f"Starting total: ${total_cost:.2f}")
+
+total_cost += item1_price
+print(f"After item 1: ${total_cost:.2f}")
+
+total_cost += item2_price
+print(f"After item 2: ${total_cost:.2f}")
+
+total_cost += item3_price
+print(f"Final total: ${total_cost:.2f}")
+```
+
+### Example 2: Applying a Discount
+
+```python
+# File: apply_discount.py
+original_price = 150.00
+discount_factor = 0.8 # 20% discount means price becomes 80% of original
+
+print(f"Original price: ${original_price:.2f}")
+
+# Apply discount
+discounted_price = original_price
+discounted_price *= discount_factor # discounted_price = discounted_price * discount_factor
+
+print(f"Price after 20% discount: ${discounted_price:.2f}")
+```
+
+### Example 3: Countdown Timer Variable
+
+```python
+# File: countdown.py
+timer = 10
+print(f"T-minus {timer}...")
+
+timer -= 1
+print(f"T-minus {timer}...") # 9
+
+timer -= 1
+print(f"T-minus {timer}...") # 8
+
+# ... imagine this continues in a loop (which we'll learn soon)
+
+timer -= 5 # Skip a few steps
+print(f"T-minus {timer}...") # 3
+
+timer -= 1
+print(f"T-minus {timer}...") # 2
+
+timer -= 1
+print(f"T-minus {timer}...") # 1
+
+timer -= 1
+print(f"Liftoff!") # 0 (or could check if timer becomes 0)
+```
+import Quiz from '../../../../components/Quiz'
+import pythonQuiz from '../../../../Data/Comparision_Operator'
+
+<Quiz questions={pythonQuiz} />

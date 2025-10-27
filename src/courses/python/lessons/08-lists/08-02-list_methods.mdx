@@ -1,0 +1,246 @@
+# List Methods
+<section id="listmethods"></section>
+
+
+
+## Manipulating Lists: Beyond Indexing
+<section id="manipulating-lists-beyond-indexing"></section>
+
+we learned how to create lists, access items by index, and modify items by index. Because lists are mutable, Python provides a variety of built-in methods specifically designed to efficiently modify list contents (like adding, removing, or rearranging items).
+
+Remember that methods are functions associated with an object and are called using dot notation: list_variable.method_name(arguments). Most list methods modify the list in-place, meaning they change the original list object directly and usually return None.
+
+## Common List Methods
+<section id="common-list-methods"></section>
+
+Here is a table summarizing some of the most common and useful list methods.
+
+        <table>
+        <thead>
+          <tr>
+            <th>Method Name</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>.append(item)</code></td>
+            <td>Adds a single item to the end of the list.</td>
+          </tr>
+          <tr>
+            <td><code>.extend(iterable)</code></td>
+            <td>Extends the list by appending all items from an iterable (e.g., another list).</td>
+          </tr>
+          <tr>
+            <td><code>.insert(index, item)</code></td>
+            <td>Inserts an item at a specified index.</td>
+          </tr>
+          <tr>
+            <td><code>.remove(item)</code></td>
+            <td>Removes the first occurrence of an item from the list. Raises a <code>ValueError</code> if the item is not found.</td>
+          </tr>
+          <tr>
+            <td><code>.pop([index])</code></td>
+            <td>Removes and returns the item at a specified index. If no index is given, it removes and returns the last item.</td>
+          </tr>
+          <tr>
+            <td><code>.clear()</code></td>
+            <td>Removes all items from the list. The list becomes empty.</td>
+          </tr>
+          <tr>
+            <td><code>.index(item, [start], [end])</code></td>
+            <td>Returns the index of the first occurrence of an item. Raises a <code>ValueError</code> if the item is not found.</td>
+          </tr>
+          <tr>
+            <td><code>.count(item)</code></td>
+            <td>Returns the number of times an item appears in the list.</td>
+          </tr>
+          <tr>
+            <td><code>.sort()</code></td>
+            <td>Sorts the items of the list in place (ascending by default).</td>
+          </tr>
+          <tr>
+            <td><code>.reverse()</code></td>
+            <td>Reverses the order of the elements in the list in place.</td>
+          </tr>
+          <tr>
+            <td><code>.copy()</code></td>
+            <td>Returns a shallow copy of the list.</td>
+          </tr>
+        </tbody>
+      </table>
+
+### 1. Adding Items
+<section id="adding-items"></section>
+1. **append(item)**: Adds a single `item` to the very end of the list.
+2. **insert(index, item)**: Inserts an `item` at the specified `index`. Existing items from that index onwards are shifted to the right.
+3. **extend(iterable)**: Adds all items from an `iterable` (like another list, tuple, or string) to the end of the list.
+
+* **File: list_add.py**
+```python
+my_list = [10, 20, 30]
+print(f"Initial list: {my_list}")
+```
+* **append()**
+```python
+my_list.append(40)
+print(f"After append(40): {my_list}") # Output: [10, 20, 30, 40]
+```
+
+* **insert()**
+```python
+my_list.insert(1, 15) # Insert 15 at index 1
+print(f"After insert(1, 15): {my_list}") # Output: [10, 15, 20, 30, 40]
+```
+
+* **extend()**
+```python
+another_list = [50, 60]
+my_list.extend(another_list)
+print(f"After extend([50, 60]): {my_list}") # Output: [10, 15, 20, 30, 40, 50, 60]
+
+# Note: append adds the list itself as one element if you pass a list
+# my_list.append([70, 80]) -> [10, ..., 60, [70, 80]]
+```
+
+### 2. Removing Items
+<section id="removing-items"></section>
+1. **remove(item)**: Removes the **first** occurrence of the specified `item` from the list. Raises a `ValueError` if the item is not found.
+2. **pop(index=-1)**: Removes and **returns**the item at the specified `index`. If no index is provided, it defaults to `-1`, removing and returning the last item. Raises an `IndexError` if the index is out of range or the list is empty.
+3. **clear()**: Removes all items from the list, making it empty.
+
+* **File: list_remove.py**
+```python
+items = ["apple", "banana", "cherry", "banana", "date"]
+print(f"Initial items: {items}")
+```
+* **remove()**
+```python
+items.remove("banana") # Removes the first "banana"
+print(f"After remove('banana'): {items}") # Output: ['apple', 'cherry', 'banana', 'date']
+```
+* **pop() without index (removes last item)**
+```python
+last_item = items.pop()
+print(f"After pop(): {items}, Removed item: {last_item}") # Output: ['apple', 'cherry', 'banana'], Removed item: date
+```
+* **pop() with index**
+```python
+second_item = items.pop(1) # Remove item at index 1 ('cherry')
+print(f"After pop(1): {items}, Removed item: {second_item}") # Output: ['apple', 'banana'], Removed item: cherry
+```
+* **clear()**
+```python
+items.clear()
+print(f"After clear(): {items}") # Output: []
+```
+
+### 3. Searching and Counting
+<section id="searching-and-counting"></section>
+1. **index(item, start=0, end=len(list))**: Returns the index of the **first** occurrence of the specified `item`. Optional `start` and `end` arguments can limit the search range. Raises a `ValueError` if the item is not found.
+2. **count(item)**: Returns the number of times the specified `item` appears in the list.
+
+* **File: list_search.py**
+```python
+grades = [85, 90, 77, 90, 88, 90]
+print(f"Grades: {grades}")
+```
+* **index()**
+```python
+try:
+    first_90_index = grades.index(90)
+    print(f"Index of first 90: {first_90_index}") # Output: 1
+    # Search for 90 starting after index 2
+    next_90_index = grades.index(90, 2)
+    print(f"Index of 90 after index 2: {next_90_index}") # Output: 3
+except ValueError:
+    print("Item not found.")
+```
+
+* **count()**
+```python
+count_90 = grades.count(90)
+print(f"Number of 90s: {count_90}") # Output: 3
+
+count_100 = grades.count(100)
+print(f"Number of 100s: {count_100}") # Output: 0
+```
+
+### 4. Sorting and Reversing
+<section id="sorting-and-reversing"></section>
+
+*   **sort(key=None, reverse=False)**: Sorts the items of the list in-place. By default, sorts in ascending order. Set `reverse=True` for descending order. The optional `key` argument allows specifying a function to customize the sort order (more advanced topic). Items must be comparable (e.g., all numbers or all strings).
+*   **reverse()**: Reverses the order of the elements in the list in-place.
+
+There is also a built-in function `sorted(iterable)` which returns a **new** sorted list without modifying the original, unlike the `list.sort()` method.
+
+* **File: list_sort_reverse.py**
+```python
+nums = [5, 1, 4, 2, 3]
+names = ["Eve", "Alice", "Charlie", "Bob"]
+print(f"Original nums: {nums}")
+print(f"Original names: {names}")
+```
+* **sort() in-place (ascending)**
+```python
+nums.sort()
+names.sort()
+print(f"After sort(): {nums}") # Output: [1, 2, 3, 4, 5]
+print(f"After sort(): {names}") # Output: ['Alice', 'Bob', 'Charlie', 'Eve']
+```
+* **sort() in-place (descending)**
+```python
+nums.sort(reverse=True)
+names.sort(reverse=True)
+print(f"After sort(reverse=True): {nums}") # Output: [5, 4, 3, 2, 1]
+print(f"After sort(reverse=True): {names}") # Output: ['Eve', 'Charlie', 'Bob', 'Alice']
+```
+* **reverse() in-place**
+```python
+nums.reverse() # Reverses the already descending list
+print(f"After reverse(): {nums}") # Output: [1, 2, 3, 4, 5]
+```
+
+### 5. Copying Lists
+<section id="copying-lists"></section>
+
+Assigning a list to a new variable doesn't create a copy; both variables point to the same list object. To create a true independent copy, use:
+
+*   **copy()**: Returns a shallow copy of the list.
+*   **Slicing [:]**: `new_list = old_list[:]` also creates a shallow copy.
+* **File: list_copy.py**
+```python
+original = [1, 2, 3]
+```
+* **Assignment (NOT a copy)**
+```python
+alias = original
+alias[0] = 99
+print(f"Original after alias modified: {original}") # Output: [99, 2, 3] (Original is changed!)
+print(f"Alias: {alias}")                           # Output: [99, 2, 3]
+```
+* **Using copy()**
+```python
+original = [1, 2, 3] # Reset original
+copied_list = original.copy()
+copied_list[0] = 100
+print(f"\nOriginal after copy modified: {original}") # Output: [1, 2, 3] (Original unchanged)
+print(f"Copied List: {copied_list}")                 # Output: [100, 2, 3]
+```
+* **Using slice [:]**
+```python
+original = [1, 2, 3] # Reset original
+sliced_copy = original[:]
+sliced_copy[0] = 200
+print(f"\nOriginal after slice copy modified: {original}") # Output: [1, 2, 3] (Original unchanged)
+print(f"Sliced Copy: {sliced_copy}")                     # Output: [200, 2, 3]
+```
+
+(Note: Shallow copy means nested lists inside are still shared. Deep copies are a more advanced topic).
+
+
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/list_methods";
+
+<Quiz questions={pythonQuiz} />

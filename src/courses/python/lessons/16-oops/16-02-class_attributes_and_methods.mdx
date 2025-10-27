@@ -1,0 +1,287 @@
+
+# Class Attributes & Methods
+
+## Recap: Classes and Instances
+<section id="recap-classes-and-instances"></section>
+we introduced the core concepts of OOP: classes as blueprints and instances (objects) as concrete creations from those blueprints. We saw how instances can have their own data (attributes) and behaviors (methods). Methods typically operate on the instance's data via the `self` parameter.
+
+```python
+class Dog:
+    def __init__(self, name): # Instance initializer (more next lesson!)
+        self.name = name # Instance attribute 'name'
+
+    def bark(self): # Instance method (uses self)
+        print(f"{self.name} says Woof!")
+
+d1 = Dog("Buddy")
+d2 = Dog("Lucy")
+d1.bark() # Output: Buddy says Woof!
+d2.bark() # Output: Lucy says Woof!
+# d1.name and d2.name are separate instance attributes
+```
+
+we differentiate between attributes and methods that belong to the **instance** versus those that belong to the **class** itself.
+
+## Instance Attributes vs. Class Attributes
+<section id="instance-attributes-vs-class-attributes"></section>
+
+*   **Instance Attributes:**
+    *   Defined typically within the `__init__` method (or added directly to an instance, though less common).
+    *   Belong to a specific instance (object) of the class.
+    *   Each instance has its own copy of instance attributes. Changes to an instance attribute in one object do not affect other objects of the same class.
+    *   Accessed via the instance: instance_name.attribute_name (or `self.attribute_name inside instance methods).
+    *   Examples: A specific dog's name (d1.name), a specific car's color (car1.color).
+*   **Class Attributes:**
+    *   Defined directly inside the class body, outside of any methods (usually at the top).
+    *   Belong to the class itself, not to any specific instance.
+    *   Shared by all instances of the class. There is only one copy of a class attribute.
+    *   Can be accessed via the class name: ClassName.attribute_name, or via an instance: instance_name.attribute_name (Python looks it up on the class if not found on the instance).
+    *   Often used for constants associated with the class, default values, or shared state across all instances (use shared state with caution).
+    *   Examples: The species of all dogs (Dog.species), the number of wheels on all standard cars (Car.num_wheels).
+<img src="/images/class_attribute.jpg" alt="variable" className="w-150 h-100 mx-auto" />
+
+* **File: class_vs_instance_attr.py**
+```python
+
+class Pet:
+    # Class attribute (shared by all instances)
+    species = "Unknown Mammal"
+
+    def __init__(self, name, age):
+        # Instance attributes (unique to each instance)
+        self.name = name
+        self.age = age
+```
+* **Create instances**
+```python
+pet1 = Pet("Fluffy", 3)
+pet2 = Pet("Rover", 5)
+```
+* **Accessing instance attributes**
+```python
+print(f"Pet 1 Name: {pet1.name}, Age: {pet1.age}")
+print(f"Pet 2 Name: {pet2.name}, Age: {pet2.age}")
+```
+* **Accessing class attribute (shared)**
+```python
+print(f"\nPet 1 Species: {pet1.species}") # Access via instance
+print(f"Pet 2 Species: {pet2.species}") # Access via instance
+print(f"Species via Class: {Pet.species}") # Access via class name
+```
+* **Modifying the class attribute affects all instances that haven't overridden it**
+```python
+print("\nChanging species via class...")
+Pet.species = "Canis Familiaris"
+print(f"Pet 1 Species now: {pet1.species}")
+print(f"Pet 2 Species now: {pet2.species}")
+print(f"Species via Class now: {Pet.species}")
+```
+* **Assigning to an instance creates an <strong>instance</strong> attribute that shadows the class attribute**
+```python
+print("\nAssigning species directly to pet1...")
+pet1.species = "Felis Catus" # Creates an INSTANCE attribute 'species' for pet1
+print(f"Pet 1 Species now: {pet1.species}") # Now 'Felis Catus'
+print(f"Pet 2 Species now: {pet2.species}") # Still 'Canis Familiaris' (accesses class attr)
+print(f"Species via Class now: {Pet.species}") # Still 'Canis Familiaris'
+```
+
+## Instance Methods vs. Class Methods vs. Static Methods
+<section id="instance-methods-vs-class-methods-vs-static-methods"></section>
+
+Just as there are class and instance attributes, there are different types of methods:
+
+Instance Methods:
+1.   **Regular Methods:**
+2.   **Class Methods:**
+3.   **Static Methods:**
+* **Instance Methodsst common type of method.**
+1.   **Regular Methods:**
+    Defined with self as the first parameter.
+    Operate on a specific instance of the class, having access to instance attributes (via self) and class attributes (via self or ClassName).
+    Called on an instance: instance_name.method_name().
+2.   **Class Methods:**
+    Defined with a decorator @classmethod above the definition.
+    The first parameter is conventionally named cls, representing the class itself (similar to how self represents the instance).
+    Operate on the class itself, not a specific instance. They can access class attributes but not instance attributes directly (as they don't have self).
+    Can be called via the class name: ClassName.method_name() or an instance: instance_name.method_name() (Python passes the class as cls).
+    Often used as alternative constructors or to modify class-level state.
+3.  **Static Methods:**
+    Defined with a decorator @staticmethod above the definition.
+    Do not receive any implicit first argument (self or cls). They behave like regular functions but belong to the class's namespace.
+    Cannot access instance attributes or class attributes directly (unless passed explicitly or accessed via ClassName).
+    Called via the class name: ClassName.method_name() or an instance: instance_name.method_name().
+    Often used for utility functions that are logically related to the class but don't depend on instance or class state.
+
+* **File: method_types.py**
+```python
+class MyClass:
+    class_attribute = "I am a class attribute"
+
+    def __init__(self, instance_value):
+        self.instance_attribute = instance_value
+```
+* **Instance Method**
+```python
+    def instance_method(self):
+        print(f"--- Instance Method ---")
+        print(f"  Accessing instance attribute: {self.instance_attribute}")
+        print(f"  Accessing class attribute via self: {self.class_attribute}")
+        print(f"  Accessing class attribute via ClassName: {MyClass.class_attribute}")
+```
+* **Class Method**
+```python
+   def class_method(cls): # 'cls' refers to the class MyClass
+        print(f"--- Class Method ---")
+        # Cannot access self.instance_attribute here
+        # print(f"  Trying to access instance attribute: {self.instance_attribute}") # Would cause NameError
+        print(f"  Accessing class attribute via cls: {cls.class_attribute}")
+        print(f"  Accessing class attribute via ClassName: {MyClass.class_attribute}")
+        # Often used for alternative constructors
+        return cls("Created via class method") # Calls __init__
+```
+* **Static Method**
+```python
+    def static_method(param1): # No 'self' or 'cls'
+        print(f"--- Static Method ---")
+        print(f"  Received parameter: {param1}")
+        # Cannot access self.instance_attribute or cls.class_attribute directly
+        # print(f"  Trying instance: {self.instance_attribute}") # NameError
+        # print(f"  Trying class via cls: {cls.class_attribute}") # NameError
+        print(f"  Accessing class attribute via ClassName: {MyClass.class_attribute}")
+        # Useful for utility functions related to the class
+        return param1 * 2
+```
+* **Create an instance**
+```python
+obj = MyClass("Instance Value 1")
+```
+* **Call methods**
+```python
+obj.instance_method()
+print("-" * 20)
+MyClass.class_method() # Call via class
+obj.class_method()     # Call via instance (still passes class as cls)
+print("-" * 20)
+
+MyClass.static_method(10) # Call via class
+obj.static_method(20)     # Call via instance (no automatic self/cls passed)
+
+print("-" * 20)
+obj2 = MyClass.class_method() # Use alternative constructor
+obj2.instance_method()
+```
+
+### Example 1: Tracking Number of Instances
+<section id="example-1-tracking-number-of-instances"></section>
+
+
+* **File: instance_counter.py**
+```python
+class Widget:
+    # Class attribute to count instances
+    instance_count = 0
+
+    def __init__(self, name):
+        self.name = name
+        # Increment the class attribute each time a new instance is created
+        Widget.instance_count += 1
+        print(f"Widget '{self.name}' created. Total widgets: {Widget.instance_count}")
+
+    @classmethod
+    def get_instance_count(cls):
+        """Returns the total number of Widget instances created."""
+        return cls.instance_count
+```
+* **Create instances**
+```python
+w1 = Widget("Sprocket")
+w2 = Widget("Cog")
+w3 = Widget("Gear")
+```
+* **Get the count using the class method**
+```python
+print(f"\nTotal number of widgets created: {Widget.get_instance_count()}")
+```
+
+### Example 2: Class with Constants and Utility Method
+<section id="example-2-class-with-constants-and-utility-method"></section>
+
+
+* **File: math_utils.py**
+```python
+import math
+class Geometry:
+    # Class attribute (constant)
+    PI = math.pi
+
+    @staticmethod
+    def circle_area(radius):
+        """Calculates circle area (utility function)."""
+        # Could access PI via Geometry.PI if needed, but doesn't need cls or self
+        return Geometry.PI * (radius ** 2)
+
+    @staticmethod
+    def is_positive(number):
+         """Checks if a number is positive."""
+         return number > 0
+```
+* **Use static methods without creating an instance**
+```python
+radius = 5
+area = Geometry.circle_area(radius)
+print(f"Area of circle with radius {radius}: {area:.2f}")
+
+print(f"Is 10 positive? {Geometry.is_positive(10)}")
+print(f"Is -5 positive? {Geometry.is_positive(-5)}")
+```
+
+### Example 3: Car Class with Shared Property
+<section id="example-3-car-class-with-shared-property"></section>
+
+* **File: car_class.py**
+```python
+class Car:
+    # Class attribute shared by all cars (typically)
+    num_wheels = 4
+
+    def __init__(self, make, model, color):
+        # Instance attributes
+        self.make = make
+        self.model = model
+        self.color = color
+        self.is_engine_on = False
+```
+* **Create instances**
+```python
+    def start_engine(self):
+        if not self.is_engine_on:
+            self.is_engine_on = True
+            print(f"{self.make} {self.model}'s engine started.")
+        else:
+            print("Engine is already running.")
+```
+* **Instance method accessing class attribute**
+```python
+    def display_info(self):
+        print(f"\nCar Info:")
+        print(f"  Make: {self.make}")
+        print(f"  Model: {self.model}")
+        print(f"  Color: {self.color}")
+        print(f"  Wheels: {self.num_wheels}") # Accessing class attribute via self
+        print(f"  Engine On: {self.is_engine_on}")
+
+
+my_car = Car("Toyota", "RAV4", "Silver")
+your_car = Car("Ford", "Mustang", "Red")
+
+my_car.start_engine()
+my_car.display_info()
+your_car.display_info()
+
+print(f"\nAccessing class attribute via class name: {Car.num_wheels}")
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/class_attribute";
+
+<Quiz questions={pythonQuiz} />

@@ -1,0 +1,250 @@
+
+# Bitwise Operators
+
+## What are Bitwise Operators?
+<section id="What-are-bitwise-operators?"></section>
+
+Unlike the arithmetic operators you've used so far that work with numbers as a whole, **bitwise operators** work on the individual bits (binary digits) of an integer. These operators are useful for low-level programming, data compression, encryption, and optimizing certain types of calculations. To understand them, you first need a basic grasp of binary numbers.
+
+In binary, a number is represented by a sequence of 0s and 1s. For example, the number 5 is represented as `0101` in an 8-bit system, and the number 3 is `0011`. Bitwise operators perform operations on these corresponding bits.
+
+## Types of Bitwise Operators
+<section id="Types-of-bitwise-operators"></section>
+
+Python provides a set of operators for bit-level manipulation. Here's a table summarizing them:
+        <table>
+        <thead>
+          <tr>
+            <th>**Operator**</th>
+            <th>**Name**</th>
+            <th>**Description**</th>
+            <th>**Example**</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="inline">&</code></td>
+            <td>Bitwise AND</td>
+            <td>
+              Sets each bit to 1 if and only if both corresponding bits of the
+              operands are 1.
+            </td>
+            <td><code class="inline">x & y</code></td>
+          </tr>
+          <tr>
+            <td><code class="inline">|</code></td>
+            <td>Bitwise OR</td>
+            <td>
+              Sets each bit to 1 if at least one of the corresponding bits of
+              the operands is 1.
+            </td>
+            <td><code class="inline">x | y</code></td>
+          </tr>
+          <tr>
+            <td><code class="inline">^</code></td>
+            <td>Bitwise XOR</td>
+            <td>
+              (Exclusive OR) Sets each bit to 1 if only one of the
+              corresponding bits is 1, but not both.
+            </td>
+            <td><code class="inline">x ^ y</code></td>
+          </tr>
+          <tr>
+            <td><code class="inline">~</code></td>
+            <td>Bitwise NOT</td>
+            <td>
+              Inverts all the bits of the operand. This is a unary operator.
+            </td>
+            <td><code class="inline">~x</code></td>
+          </tr>
+          <tr>
+            <td><code class="inline">&lt;&lt;</code></td>
+            <td>Left Shift</td>
+            <td>
+              Shifts the bits of the number to the left by the specified number
+              of positions. Fills new positions with zeros. Equivalent to
+              multiplying by 2 to the power of the shift amount.
+            </td>
+            <td><code class="inline">x &lt;&lt; 2</code></td>
+          </tr>
+          <tr>
+            <td><code class="inline">&gt;&gt;</code></td>
+            <td>Right Shift</td>
+            <td>
+              Shifts the bits of the number to the right by the specified number
+              of positions. Equivalent to floor division by 2 to the power of
+              the shift amount.
+            </td>
+            <td><code class="inline">x &gt;&gt; 2</code></td>
+          </tr>
+        </tbody>
+      </table>
+## Examples in Action
+<section id="Examples"></section>
+Let's use two variables for our examples: `a = 10` and `b = 4`.
+
+In binary (8-bit representation):
+* `a = 10` is `0000 1010`
+* `b = 4` is `0000 0100`
+
+### Bitwise AND (&)
+
+The `&` operator performs a bitwise AND. The result bit is 1 only if both bits are 1.
+
+```python
+# File: bitwise_and.py
+a = 10  # 0000 1010
+b = 4   # 0000 0100
+
+c = a & b
+print(f"a & b = {c}") 
+print(f"Binary of a: {a:08b}")
+print(f"Binary of b: {b:08b}")
+print(f"Binary of c: {c:08b}")
+
+# Calculation:
+#   0000 1010  (10)
+# & 0000 0100  (4)
+# -----------
+#   0000 0000  (0)
+# Output: a & b = 0
+```
+
+### Bitwise OR (|)
+
+The `|` operator performs a bitwise OR. The result bit is 1 if at least one of the bits is 1.
+
+```python
+# File: bitwise_or.py
+a = 10  # 0000 1010
+b = 4   # 0000 0100
+
+c = a | b
+print(f"a | b = {c}") 
+print(f"Binary of a: {a:08b}")
+print(f"Binary of b: {b:08b}")
+print(f"Binary of c: {c:08b}")
+
+# Calculation:
+#   0000 1010  (10)
+# | 0000 0100  (4)
+# -----------
+#   0000 1110  (14)
+# Output: a | b = 14
+```
+
+### Bitwise XOR (^)
+
+The `^` operator performs a bitwise XOR. The result bit is 1 if the two bits are different.
+
+```python
+# File: bitwise_xor.py
+a = 10  # 0000 1010
+b = 4   # 0000 0100
+
+c = a ^ b
+print(f"a ^ b = {c}")
+print(f"Binary of a: {a:08b}")
+print(f"Binary of b: {b:08b}")
+print(f"Binary of c: {c:08b}")
+
+# Calculation:
+#   0000 1010  (10)
+# ^ 0000 0100  (4)
+# -----------
+#   0000 1110  (14)
+# Output: a ^ b = 14
+```
+
+### Bitwise NOT (~)
+
+The `~` operator inverts all the bits of the number. The result is the one's complement of the number, which for positive integers `x` is equivalent to `-(x+1)`.
+
+```python
+# File: bitwise_not.py
+a = 10  # 0000 1010
+c = ~a
+print(f"~a = {c}")
+
+# Calculation (in 8-bit, two's complement):
+# a = 0000 1010
+# ~a = 1111 0101
+# In two's complement, this represents -11.
+# The simple formula is -(x+1). So, -(10+1) = -11.
+# Output: ~a = -11
+```
+
+### Left Shift ()
+
+The `<<` operator shifts the bits to the left. Shifting `n` bits to the left is equivalent to multiplying by $2^n$.
+
+```python
+# File: left_shift.py
+a = 10  # 0000 1010
+
+c = a << 2
+print(f"a << 2 = {c}")
+print(f"Binary of a: {a:08b}")
+print(f"Binary of c: {c:08b}")
+
+# Calculation:
+#   0000 1010  (10)
+# << 2
+# -----------
+#   0010 1000  (40)
+# Also: 10 * (2**2) = 10 * 4 = 40
+# Output: a << 2 = 40
+```
+
+### Right Shift (>>)
+
+The `>>` operator shifts the bits to the right. Shifting `n` bits to the right is equivalent to floor division by $2^n$.
+
+```python
+# File: right_shift.py
+a = 10  # 0000 1010
+
+c = a >> 2
+print(f"a >> 2 = {c}")
+print(f"Binary of a: {a:08b}")
+print(f"Binary of c: {c:08b}")
+
+# Calculation:
+#   0000 1010  (10)
+# >> 2
+# -----------
+#   0000 0010  (2)
+# Also: 10 // (2**2) = 10 // 4 = 2
+# Output: a >> 2 = 2
+```
+
+### Combined with Assignment Operators
+<section id="Combined-with-assignment-operators"></section>
+
+Similar to arithmetic operators, bitwise operators also have their corresponding compound assignment operators (`&=`, `|=`, `^=`, `<<=`, `>>=`).
+
+```python
+# File: bitwise_assign.py
+x = 12  # 0000 1100
+y = 5   # 0000 0101
+
+x &= y  # x = x & y
+print(f"x after x &= y: {x}")  # x becomes 4 (0000 0100)
+
+x = 12  # Reset x
+x |= y  # x = x | y
+print(f"x after x |= y: {x}")  # x becomes 13 (0000 1101)
+
+x = 12
+x ^= y  # x = x ^ y
+print(f"x after x ^= y: {x}")  # x becomes 9 (0000 1001)
+
+x = 12
+x <<= 2 # x = x << 2
+print(f"x after x <<= 2: {x}") # x becomes 48 (0011 0000)
+```
+
+import Quiz from '../../../../components/Quiz'
+import pythonQuiz from '../../../../Data/Bitwise_Operator'
+
+<Quiz questions={pythonQuiz} />

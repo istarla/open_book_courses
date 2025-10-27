@@ -1,0 +1,254 @@
+# Introduction to sets
+
+## Collections of Unique Items
+<section id="collections-of-unique-items"></section>
+
+We've learned about lists (ordered, mutable), tuples (ordered, immutable), and dictionaries (key-value pairs, mutable). Python offers another fundamental built-in data structure: the set.
+
+A set is an unordered collection of unique, immutable items.
+
+*   **Unordered:** Sets do not maintain any specific order for their elements. The order you add items in is not necessarily the order you get them back (though in recent Python versions, iteration order might appear consistent for CPython, it's not guaranteed by the language specification). You cannot access items using numerical indices like lists or tuples.
+*   **Unique:** Duplicate elements are automatically discarded. A set can only contain one instance of any given item.
+*   **Mutable (The Set Itself):** You can add or remove elements from a set after it's created.
+*   **Immutable Elements:** The items **within** a set must be of immutable types (like numbers, strings, tuples). You cannot have mutable items like lists or other sets inside a set.
+
+Sets are primarily used for membership testing (checking if an item exists in the collection) and for performing mathematical set operations (like union, intersection, difference), which we'll cover tomorrow.
+<img src="/images/sets.png" alt="variable" className="w-150 h-100 mx-auto" />
+## Creating Sets
+<section id="creating-sets"></section>
+
+Sets are created using curly braces `{}`, similar to dictionaries, but without key-value pairs. Alternatively, you can use the `set()` constructor, especially for creating sets from existing iterables or for creating an empty set.
+
+
+* **Creating a set with curly braces**
+```python
+numbers_set = {1, 2, 3, 4, 5}
+print(f"Numbers set: {numbers_set}, Type: {type(numbers_set)}")
+```
+* **Duplicates are automatically removed**
+```python
+repeated_set = {1, 2, 2, 3, 1, 4, 4, 4}
+print(f"Set with repeated elements: {repeated_set}") # Output: {1, 2, 3, 4}
+```
+* **Creating a set from a list (removes duplicates)**
+```python
+my_list = ['a', 'b', 'c', 'a', 'b']
+set_from_list = set(my_list)
+print(f"Set from list: {set_from_list}") # Output: {'c', 'a', 'b'} (order may vary)
+```
+* **Creating a set from a string**
+```python
+set_from_string = set("hello")
+print(f"Set from string 'hello': {set_from_string}") # Output: {'e', 'o', 'h', 'l'} (order may vary)
+```
+* **IMPORTANT: Creating an EMPTY set requires set() constructor**
+```python
+empty_set = set() # Use this!
+not_empty_set = {} # This creates an EMPTY DICTIONARY, not a set!
+print(f"Empty set: {empty_set}, Type: {type(empty_set)}")
+print(f"Empty dict: {not_empty_set}, Type: {type(not_empty_set)}")
+```
+
+* **Set elements must be immutable**
+```python
+# invalid_set = {1, 2, [3, 4]} # This would raise a TypeError: unhashable type: 'list'
+valid_set_with_tuple = {1, 2, (3, 4)} # Tuples are immutable, so this is okay
+print(f"Set with tuple: {valid_set_with_tuple}")
+```
+
+## Basic Set Operations
+<section id="basic-set-operations"></section>
+
+### 1. Adding Elements
+
+1. **add(element):** Adds a single element to the set. If the element is already present, the set remains unchanged (due to uniqueness).
+2. **update(iterable):** Adds all elements from an iterable (like another set, list, tuple, string) into the set. Duplicates are ignored.
+
+
+* **File: set_add.py**
+```python
+colors = {"red", "green"}
+print(f"Initial set: {colors}")
+```
+* **add() a single element**
+```python
+colors.add("blue")
+print(f"After add('blue'): {colors}")
+```
+* **add() an existing element (no change)**
+```python
+colors.add("red")
+print(f"After add('red'): {colors}")
+```
+* **update() with another set**
+```python
+more_colors = {"blue", "yellow", "orange"}
+colors.update(more_colors)
+print(f"After update(more_colors): {colors}") # Includes 'yellow', 'orange'
+```
+* **update() with a list**
+```python
+list_colors = ["purple", "green"]
+colors.update(list_colors)
+print(f"After update(list_colors): {colors}") # Includes 'purple'
+```
+
+### 2. Removing Elements
+
+1. **remove(element)**: Removes the specified element from the set. Raises a `KeyError` if the element is not found.
+2. **discard(element)**: Removes the specified element if it is present. Does **not** raise an error if the element is not found (safer if you're unsure).
+3. **pop()**: Removes and returns an arbitrary element from the set. Raises a `KeyError` if the set is empty. Since sets are unordered, you don't know which element will be popped.
+4. **clear()**: Removes all elements from the set.
+
+* **File: set_remove.py**
+```python
+items = {10, 20, 30, 40, 50}
+print(f"Initial set: {items}")
+```
+* **remove() existing element**
+```python
+items.remove(30)
+print(f"After remove(30): {items}")
+```
+* **discard() existing element**
+```python
+items.discard(10)
+print(f"After discard(10): {items}")
+```
+* **discard() non-existent element (no error)**
+```python
+items.discard(99)
+print(f"After discard(99): {items}") # No change, no error
+```
+* **remove() non-existent element (causes KeyError)**
+```python
+try:
+    items.remove(99)
+except KeyError as e:
+    print(f"\nError trying remove(99): {e}")
+```
+* **pop() an arbitrary element**
+```python
+popped_item = items.pop()
+print(f"\nAfter pop(): {items}, Popped item: {popped_item}") # Which item was popped is arbitrary
+```
+* **clear()**
+```python
+items.clear()
+print(f"After clear(): {items}")
+```
+
+### 3. Membership Testing (`in`)
+
+Checking if an item exists in a set is very efficient, much more so than checking for membership in a list, especially for large collections. Use the `in` keyword.
+
+
+* **File: set_membership.py**
+```python
+allowed_users = {"alice", "bob", "charlie"}
+user_to_check = "bob"
+
+if user_to_check in allowed_users:
+    print(f"'{user_to_check}' is an allowed user.")
+else:
+    print(f"'{user_to_check}' is NOT an allowed user.")
+
+user_to_check = "david"
+if user_to_check not in allowed_users: # Can also use 'not in'
+    print(f"'{user_to_check}' is NOT an allowed user.")
+```
+
+### 4. Iterating Through Sets
+
+You can iterate through the elements of a set using a `for` loop. Remember that the order of iteration is not guaranteed.
+
+
+* **File: set_iteration.py**
+```python
+colors = {"red", "green", "blue"}
+unique_tags = {"python", "web", "data", "ai", "python"} # Duplicate "python" ignored
+
+print("Tags in the set:")
+for tag in unique_tags:
+    print(f"- {tag}") # Order is not guaranteed
+```
+
+### Example 1: Finding Unique Characters
+<section id="example-1-finding-unique-characters"></section>
+
+
+* **File: unique_chars.py**
+```python
+sentence = "programming is fun and useful"
+unique_letters = set(sentence)
+```
+* **Remove space if needed (optional)**
+```python
+unique_letters.discard(' ')
+
+print(f"Original sentence: '{sentence}'")
+print(f"Unique characters: {unique_letters}")
+print(f"Number of unique characters: {len(unique_letters)}")
+```
+
+### Example 2: Tracking Attended Workshops
+<section id="example-2-tracking-attended-workshops"></section>
+
+
+* **File: workshop_attendees.py**
+```python
+attended = set() # Start with an empty set
+```
+* **Simulate people attending**
+```python
+attended.add("Alice")
+attended.add("Bob")
+attended.add("Alice") # Adding again has no effect
+attended.add("Charlie")
+attended.update(["David", "Bob"])
+
+print("Current Attendees:")
+for person in attended:
+    print(f"- {person}")
+```
+* **Check attendance**
+```python
+name_check = "Eve"
+if name_check in attended:
+    print(f"\n{name_check} attended.")
+else:
+    print(f"\n{name_check} did not attend.")
+
+name_check = "Charlie"
+if name_check in attended:
+    print(f"{name_check} attended.")
+else:
+    print(f"{name_check} did not attend.")
+```
+
+### Example 3: Removing Duplicates from a List
+<section id="example-3-removing-duplicates-from-a-list"></section>
+
+A common idiom is to convert a list to a set to remove duplicates, and then optionally convert it back to a list (losing the original order).
+
+
+* **File: remove_duplicates.py**
+```python
+data = [1, 2, 5, 1, 4, 2, 6, 7, 5, 1, 8]
+print(f"Original list: {data}")
+```
+* **Convert to set to get unique elements**
+```python
+unique_elements_set = set(data)
+print(f"Unique elements (set): {unique_elements_set}")
+```
+* **Convert back to list (order is not preserved from original)**
+```python
+unique_elements_list = list(unique_elements_set)
+print(f"Unique elements (list): {unique_elements_list}") # Order might differ
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/introduction_to_sets";
+
+<Quiz questions={pythonQuiz} />

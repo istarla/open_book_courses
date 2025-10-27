@@ -1,0 +1,206 @@
+# Getting User Input & Formatted Output
+
+## Making Programs Interactive: The `input()` Function
+<section id="interactive-programs"></section>
+
+So far, our programs have run from start to finish without any interaction. To make programs more dynamic and useful, we often need to get data from the user while the program is running. Python's built-in `input()` function allows us to do this.
+
+The `input()` function does the following:
+
+1.  Displays an optional prompt message on the screen to tell the user what to enter.
+2.  Pauses the program execution and waits for the user to type something in the console and press Enter.
+3.  Returns the text entered by the user as a **string**.
+
+```python
+# Ask the user for their name
+name = input("Please enter your name: ")
+
+# Greet the user
+print(f"Hello, {name}! Welcome.")
+
+# Ask for their favorite color
+color = input("What is your favorite color? ")
+print(f"Ah, {color} is a nice color!")
+```
+
+When you run this code, the program will stop at the **input()** lines, display the prompt, and wait for your keyboard input.
+
+**Important:** The `input()` function **always** returns the user's input as a string, even if they type numbers. If you need to perform mathematical operations, you must convert the input string to a numeric type (like `int` or `float`) first.
+
+```python
+age_str = input("Enter your age: ")
+print(f"Type of input initially: {type(age_str)}") # Output: <class 'str'>
+
+# Convert the string to an integer
+age_int = int(age_str)
+print(f"Type after conversion: {type(age_int)}") # Output: <class 'int'>
+
+# Now we can do calculations
+age_next_year = age_int + 1
+print(f"Next year you will be {age_next_year}.")
+
+# Trying to add without conversion would cause a TypeError
+# print("Next year: " + age_str + 1) # This would fail!
+```
+
+Always be prepared to handle potential `ValueError` exceptions if the user enters text that cannot be converted to the desired numeric type (e.g., typing "abc" when you try to convert to **int**). We'll cover error handling later.
+
+## Formatted Output with F-Strings
+<section id="f-strings"></section>
+
+We've already been using f-strings (formatted string literals) sprinkled in previous examples. They are the modern and generally preferred way to embed expressions inside string literals for output formatting.
+
+An f-string is created by prefixing a string literal with the letter `f` or `F`. Inside the string, you can embed Python expressions within curly braces `{}`. These expressions are evaluated at runtime, and their results are included in the string.
+
+```python
+item = "widgets"
+quantity = 15
+price_each = 2.50
+
+# Using f-string to create a summary message
+total_cost = quantity * price_each
+message = f"You ordered {quantity} {item} at ${price_each} each, for a total of ${total_cost}."
+print(message)
+# Output: You ordered 15 widgets at $2.5 each, for a total of $37.5.
+```
+
+### Formatting Specifiers within F-Strings
+<section id="f-string-formatting"></section>
+
+F-strings allow you to control the formatting of the embedded expressions using a **format specifier**, which follows the expression inside the curly braces, separated by a colon (`:`).
+
+Common uses include:
+
+*   **Controlling decimal places for floats:** `:.Nf` where N is the number of decimal places.
+*   **Padding and alignment:** Controlling the total width and alignment (left `<`, right `>`, center `^`).
+*   **Adding signs:** Force display of + sign for positive numbers.
+*   **Using commas as thousands separators:** `:,`
+*   **Percentage formatting:** `:.N%`
+
+```python
+pi = 3.1415926535
+amount = 12345.6789
+ratio = 0.75
+```
+* **Format float to 2 decimal places**
+```python
+print(f"Pi rounded to 2 decimals: {pi:.2f}") # Output: 3.14
+```
+* **Format float to 4 decimal places**
+```python
+print(f"Pi rounded to 4 decimals: {pi:.4f}") # Output: 3.1416 (note rounding)
+```
+* **Format amount with comma separator and 2 decimal places**
+```python
+print(f"Amount: ${amount:,.2f}") # Output: $12,345.68
+```
+* **Pad number to a width of 10 characters, right-aligned**
+```python
+print(f"Padded Pi: |{pi:>10.2f}|") # Output: |      3.14|
+```
+* **Pad string to a width of 15 characters, center-aligned**
+```python
+name = "Alice"
+print(f"Centered Name: |{name:^15}|") # Output: |     Alice     |
+```
+* **Format ratio as percentage with 1 decimal place**
+```python
+print(f"Ratio as percentage: {ratio:.1%}") # Output: 75.0%
+```
+
+There are many more format specifiers available. Refer to the Python documentation for a complete list.
+
+### Example 1: Simple Calculator
+<section id="simple-calculator"></section>
+* **File: simple_calc.py**
+```python
+
+num1_str = input("Enter the first number: ")
+num2_str = input("Enter the second number: ")
+```
+* **Convert input strings to floats**
+```python
+try:
+    num1 = float(num1_str)
+    num2 = float(num2_str)
+
+    # Perform calculations
+    sum_result = num1 + num2
+    diff_result = num1 - num2
+    prod_result = num1 * num2
+    quot_result = num1 / num2 if num2 != 0 else "Undefined (division by zero)"
+
+    # Display results using f-strings
+    print(f"\n--- Results ---")
+    print(f"{num1} + {num2} = {sum_result}")
+    print(f"{num1} - {num2} = {diff_result}")
+    print(f"{num1} * {num2} = {prod_result}")
+    print(f"{num1} / {num2} = {quot_result}")
+
+except ValueError:
+    print("Invalid input. Please enter valid numbers.")
+```
+
+### Example 2: Personal Greeting Generator
+<section id="greeting-generator"></section>
+* **File: greeting_gen.py**
+```python
+
+user_name = input("What's your name? ")
+user_city = input("Which city do you live in? ")
+user_age_str = input("How old are you? ")
+
+# Process and format the output
+try:
+    user_age = int(user_age_str)
+    print(f"\nHello {user_name.strip().title()}!") # Clean up name input
+    print(f"Nice to know you live in {user_city.strip()}.")
+    print(f"Being {user_age} years old is a great age!")
+except ValueError:
+    print("Please enter a valid whole number for your age.")
+```
+
+### Example 3: Formatting a Receipt
+<section id="receipt-formatter"></section> 
+* **File: receipt_formatter.py**
+```python
+item1 = "Bread"
+price1 = 2.99
+qty1 = 2
+
+item2 = "Milk"
+price2 = 1.49
+qty2 = 1
+
+item3 = "Apples"
+price3 = 0.75
+qty3 = 5
+```
+* **Calculate totals**
+```python
+total1 = price1 * qty1
+total2 = price2 * qty2
+total3 = price3 * qty3
+grand_total = total1 + total2 + total3
+```
+* **Print formatted receipt**
+```python
+print("-" * 30)
+print("      SALES RECEIPT")
+print("-" * 30)
+# Header for items - Adjust widths as needed
+print(f"{ 'Item':<10} { 'Qty':>3} { 'Price':>7} { 'Total':>7}")
+print("-" * 30)
+# Item lines
+print(f"{item1:<10} {qty1:>3} {price1:>7.2f} {total1:>7.2f}")
+print(f"{item2:<10} {qty2:>3} {price2:>7.2f} {total2:>7.2f}")
+print(f"{item3:<10} {qty3:>3} {price3:>7.2f} {total3:>7.2f}")
+print("-" * 30)
+# Grand Total
+print(f"{ 'GRAND TOTAL':<21} {grand_total:>7.2f}")
+print("-" * 30)
+```
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/input_questions";
+
+<Quiz questions={pythonQuiz} />

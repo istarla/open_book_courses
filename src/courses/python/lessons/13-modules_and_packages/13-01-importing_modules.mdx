@@ -1,0 +1,216 @@
+
+# Importing Modules
+
+## Introduction to Python Modules
+    
+<section id="extending-pythons-capabilities"></section>
+
+While Python's built-in functions (`print()`, `len()`, etc.) and data types are powerful, they don't cover every possible programming need. To keep the core language lean and efficient, Python uses a system of **modules** to organize and provide additional functionality.
+
+A **module** is simply a file containing Python definitions (functions, classes, variables). By importing a module into your script, you gain access to the code defined within that module.
+
+Python comes with a vast **Standard Library**, a collection of modules included with every Python installation, providing tools for tasks like:
+
+*   Mathematical operations (`math` module)
+*   Generating random numbers (`random` module)
+*   Working with dates and times (`datetime` module)
+*   Interacting with the operating system (`os` module)
+*   Working with files and directories (`os`, `shutil` modules)
+*   Handling data formats like JSON and CSV (`json`, `csv` modules)
+*   Making web requests (`urllib`, `http` modules)
+*   And much more...
+
+You can also install third-party modules (using tools like **pip**, which we'll cover later) and create your own modules (which we'll cover tomorrow).
+
+## Importing Entire Modules: The `import` Statement
+<section id="importing-entire-modules-the-import-statement"></section>
+
+
+The most basic way to use a module is to import it using the `import` keyword followed by the module name.
+
+```python
+import module_name
+```
+
+Once a module is imported this way, you need to use the **module name as a prefix** followed by a dot (`.`) to access the functions, variables, or classes defined within that module. This acts like a namespace, preventing naming conflicts between different modules or your own code.
+
+
+* **File: import_math.py**
+```python
+import math # Import the built-in math module
+```
+* **Access functions and constants using 'math.' prefix**
+```python
+print(f"The value of pi is approximately: {math.pi}")
+print(f"The square root of 16 is: {math.sqrt(16)}")
+print(f"Cosine of 0 radians is: {math.cos(0)}")
+```
+* **File: import_random.py**
+```python
+import random # Import the random module
+```
+* **Generate a random integer between 1 and 10 (inclusive)**
+```python
+random_number = random.randint(1, 10)
+print(f"\nRandom number: {random_number}")
+```
+* **Choose a random element from a list**
+```python
+my_list = ['apple', 'banana', 'cherry']
+random_choice = random.choice(my_list)
+print(f"Random choice from {my_list}: {random_choice}")
+```
+
+## Importing Specific Names: The `from...import` Statement
+<section id="importing-specific-names-the-from-import-statement"></section>
+
+If you only need specific functions or variables from a module, you can import them directly into your current script's namespace using the `from...import` statement.
+
+```python
+from module_name import name1, name2, ...
+```
+
+When you use `from...import`, you can call the imported functions or use the variables directly **without** the module name prefix.
+
+
+* **File: from_import.py**
+```python
+* **Import specific functions and constants from math**
+```
+```python
+from math import pi, sqrt, pow
+print(f"Value of pi directly: {pi}") # No 'math.' prefix needed
+print(f"Square root of 25: {sqrt(25)}") # No prefix
+print(f"3 raised to the power of 4: {pow(3, 4)}") # No prefix
+```
+* **Import specific functions from random**
+```python
+from random import randint, choice
+
+random_int = randint(100, 200) # Call directly
+print(f"\nRandom integer (100-200): {random_int}")
+
+options = ['rock', 'paper', 'scissors']
+computer_move = choice(options) # Call directly
+print(f"Computer chose: {computer_move}")
+```
+
+**Potential for Naming Conflicts:** While **from...import** can make code slightly shorter, it introduces the possibility of naming conflicts if the imported name clashes with a variable or function already defined in your script. Using the standard **import module_name** approach avoids this by keeping module contents within their own namespace.
+
+## Importing with an Alias: The `as` Keyword
+<section id="importing-with-an-alias-the-as-keyword"></section>
+
+Sometimes module names can be long, or you might want to use a shorter or more convenient name. You can import a module (or specific names) and give it an alias using the `as` keyword.
+
+```python
+File: import_alias.py
+```
+* **Import math module with alias 'm'**
+```python
+import math as m
+print(f"Pi using alias: {m.pi}")
+print(f"Ceiling of 4.3 using alias: {m.ceil(4.3)}")
+```
+* **Import specific name with alias**
+```python
+from random import randint as random_integer_generator
+r_int = random_integer_generator(1, 1000) # Use the alias
+print(f"\nRandom int using alias: {r_int}")
+```
+
+Aliasing is common with libraries that have long names or standard conventions (e.g., **import pandas as pd**, **import numpy as np**).
+
+## Importing Everything (Generally Discouraged)
+<section id="importing-everything-generally-discouraged"></section>
+
+You can technically import all names from a module into the current namespace using `from module_name import *`.
+
+```python
+Example only - Generally AVOID this
+from math import *
+print(pi) # Works, but pollutes namespace
+print(sqrt(9)) # Works, but pollutes namespace
+```
+
+This is generally considered bad practice ([PEP 8 discourages it](https://peps.python.org/pep-0008/#imports)) because:
+
+*   It makes it unclear where specific functions or variables came from ("namespace pollution").
+*   It significantly increases the risk of naming collisions.
+*   It can make code harder for static analysis tools and IDEs to understand.
+
+Avoid using `import *` except perhaps in very specific, controlled situations (like interactive console sessions or within certain frameworks that explicitly recommend it).
+
+### Example 1: Using the **datetime** Module
+
+* **File: use_datetime.py**
+```python
+import datetime as dt # Import with a common alias
+```
+* **Get the current date and time**
+```python
+now = dt.datetime.now()
+print(f"Current date and time: {now}")
+```
+* **Get just the current date**
+```python
+today = dt.date.today()
+print(f"Today's date: {today}")
+```
+* **Format the date**
+```python
+formatted_date = today.strftime("%Y-%m-%d") # Year-Month-Day format
+print(f"Formatted date: {formatted_date}")
+formatted_time = now.strftime("%H:%M:%S") # Hour:Minute:Second format
+print(f"Formatted time: {formatted_time}")
+```
+
+### Example 2: Using **os** Module for File System Info
+* **File: use_os.py**
+```python
+import os
+```
+* **Get the current working directory**
+```python
+cwd = os.getcwd()
+print(f"Current Working Directory: {cwd}")
+```
+* **List files and directories in the CWD**
+```python
+print("\nContents of CWD:")
+try:
+    # listdir can raise FileNotFoundError if cwd doesn't exist (unlikely for getcwd result)
+    contents = os.listdir(cwd)
+    for item in contents:
+        print(f"- {item}")
+except FileNotFoundError:
+     print("Could not list directory contents.")
+```
+* **Check if a file exists (conceptual - create a dummy file first if needed)**
+```python
+file_to_check = "my_dummy_file.txt"
+if os.path.exists(file_to_check):
+    print(f"\nFile '{file_to_check}' exists.")
+else:
+    print(f"\nFile '{file_to_check}' does not exist.")
+```
+
+### Example 3: Combining **from...import** and Aliases
+1. File: from_import_alias.py
+2. Import specific items from the math module
+```python
+from math import factorial as fact, log10 as common_log
+```
+3. Use the imported names (or aliases) directly**
+```python
+num = 5
+print(f"Factorial of {num} is: {fact(num)}") # Use alias 'fact'
+```
+```python
+value = 1000
+print(f"Base-10 logarithm of {value} is: {common_log(value)}") # Use alias 'common_log'
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/importing_modules";
+
+<Quiz questions={pythonQuiz} />

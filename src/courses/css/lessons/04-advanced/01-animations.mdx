@@ -1,0 +1,48 @@
+# 04-advanced/01-animations.mdx
+
+<section id="keyframes">
+## Using @keyframes
+
+Create custom animations with keyframe rules.
+
+```css
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+```
+</section>
+
+<section id="transitions">
+## CSS Transitions
+
+Smooth property changes with transitions.
+
+```css
+.button {
+  transition: background-color 0.3s ease;
+}
+.button:hover {
+  background-color: #3498db;
+}
+```
+</section>
+
+<section id="animation-properties">
+## Animation Properties
+
+Control animation behavior with various properties.
+
+```css
+.animated {
+  animation-name: slideIn;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+```
+</section>

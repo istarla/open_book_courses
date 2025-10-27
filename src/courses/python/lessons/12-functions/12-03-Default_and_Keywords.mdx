@@ -1,0 +1,221 @@
+# Default & Keyword Arguments
+
+<section id="recap-positional-and-keyword-arguments"></section>
+
+We've learned about defining functions with parameters and calling them with arguments. We saw two main ways to pass arguments:
+
+*   **Positional Arguments:** Matched to parameters based on their order.
+*   **Keyword Arguments:** Matched to parameters based on their name (`parameter_name=value`), allowing order independence.
+
+```python
+def describe(item, quantity):
+    print(f"Item: {item}, Quantity: {quantity}")
+
+describe("Apples", 5) # Positional
+describe(quantity=10, item="Oranges") # Keyword
+describe("Bananas", quantity=12) # Mixed (positional must be first)
+```
+
+Today we introduce **default argument values**, which make function parameters optional.
+
+## Default Argument Values
+<section id="default-argument-values"></section>
+
+You can provide a default value for one or more parameters in a function definition. This makes it optional for the caller to provide an argument for that parameter. If the caller doesn't provide an argument, the default value is used.
+
+Default values are specified using the assignment operator (`=`) directly in the parameter list of the function definition.
+
+Parameters with default values **must come after** any parameters without default values in the function definition.
+
+
+* **File: default_values.py**
+```python
+
+# 'power' has a default value of 2
+# 'base' does not have a default, so it's a required positional parameter
+def calculate_power(base, power=2):
+    """Calculates base raised to the power, defaulting power to 2 (square)."""
+    result = base ** power
+    print(f"{base} to the power of {power} is {result}")
+
+print("Calling with only the required argument (uses default power):")
+calculate_power(10) # Uses power=2 -> prints 100
+
+print("\nCalling with both arguments (overrides default power):")
+calculate_power(10, 3) # Uses power=3 -> prints 1000
+
+print("\nCalling using keyword argument (overrides default power):")
+calculate_power(base=5, power=4) # Uses power=4 -> prints 625
+
+# Using keyword for the required argument and default for optional
+calculate_power(base=7) # Uses power=2 -> prints 49
+
+# Defining with default before non-default causes SyntaxError
+# def invalid_func(val1=10, val2): # SyntaxError: non-default argument follows default argument
+#     pass
+```
+
+## Combining Positional, Keyword, and Default Arguments
+<section id="combining-positional-keyword-and-default-arguments"></section>
+
+Python offers flexibility in how you call functions with default values:
+
+1. You can provide only the required positional arguments.
+2. You can provide positional arguments, overriding defaults positionally.
+3. You can use keyword arguments for any parameter, including those with defaults, overriding the default if specified.
+4. You can mix positional and keyword arguments (remembering positional must come first).
+
+
+* **File: combining_args.py**
+```python
+
+
+def create_user(username, is_active=True, role="guest"):
+    """Creates a user representation."""
+    print("\nCreating user...")
+    print(f"  Username: {username}")
+    print(f"  Active: {is_active}")
+    print(f"  Role: {role}")
+```
+* **1. Only required argument (uses defaults for is_active and role)**
+```python
+create_user("alice123")
+```
+* **2. Positional argument overriding the first default**
+```python
+create_user("bob_dev", False) # username="bob_dev", is_active=False, role="guest"
+```
+* **3. All arguments positionally**
+```python
+create_user("charlie_mgr", True, "manager")
+```
+* ** 4.Using keywords to override specific defaults**
+```python
+create_user("david_admin", role="admin") # username="david_admin", is_active=True, role="admin"
+```
+* **5. Using keyword for required, relying on defaults**
+```python
+create_user(username="eve_test") # username="eve_test", is_active=True, role="guest"
+```
+* **6. Mixing positional and keyword (positional first)**
+```python
+create_user("frank_support", role="support") # username="frank_support", is_active=True, role="support"
+```
+
+## Common Use Cases for Default Arguments
+<section id="common-use-cases-for-default-arguments"></section>
+
+*   Making function behavior optional (e.g., a **verbose=False** flag).
+*   Providing sensible defaults for common parameters (e.g., **timeout=30**).
+*   Allowing functions to be called in simpler ways for common scenarios, while still offering customization for advanced use.
+
+Important Note on Default Values and Mutable Objects:**
+Be very careful when using mutable objects (like lists or dictionaries) as default values. The default value is evaluated only **once**, when the function is defined, not each time it's called. If you modify a mutable default value inside the function, that change will persist across subsequent calls, which is usually not what you want.
+
+* **File: mutable_default_warning.py**
+ ```python
+ # Problematic example: default value is a list
+ def add_to_list(item, target_list=[]): # Default [] is created only ONCE
+     target_list.append(item)
+     return target_list
+ 
+ print("Mutable Default Warning:")
+ list1 = add_to_list(1) # target_list becomes [1]
+ print(f"List 1: {list1}")
+ list2 = add_to_list(2) # Uses the **same** list from before! target_list becomes [1, 2]
+ print(f"List 2: {list2}") # Unexpected: [1, 2]
+ list3 = add_to_list(3) # Uses the **same** list again! target_list becomes [1, 2, 3]
+ print(f"List 3: {list3}") # Unexpected: [1, 2, 3]
+ ```
+* **The standard idiom to avoid this:**
+```python
+ def add_to_list_safe(item, target_list=None):
+     if target_list is None: # Check if the default None was used
+         target_list = [] # Create a **new**empty list inside the function call
+     target_list.append(item)
+     return target_list
+ 
+ print("\nSafe Mutable Default:")
+ list_safe1 = add_to_list_safe(1)
+ print(f"Safe List 1: {list_safe1}") # Output: [1]
+ list_safe2 = add_to_list_safe(2)
+ print(f"Safe List 2: {list_safe2}") # Output: [2] (Correct)
+ ```
+ The safe approach uses **None** as the default and creates a new mutable object inside the function if needed.
+
+### Example 1: Sending a Message with Optional Priority
+<section id="example-1-sending-a-message-with-optional-priority"></section>
+
+* **File: send_message.py**
+```python
+def send_message(recipient, message_body, priority="Normal"):
+    """Simulates sending a message with optional priority."""
+    print(f"\nSending message to: {recipient}")
+    print(f"Priority: {priority}")
+    print(f"Body: {message_body}")
+    print("--- Message Sent ---")
+
+send_message("support@example.com", "Server down!") # Uses default priority
+send_message("boss@example.com", "Project update attached.", priority="High") # Override priority
+send_message("marketing@example.com", message_body="Newsletter draft", priority="Low") # Using keyword
+```
+
+### Example 2: Formatting Text with Optional Width
+<section id="example-2-formatting-text-with-optional-width"></section>
+
+
+* **File: format_text.py**
+```python
+def format_line(text, line_width=80, alignment="left"):
+    """Formats text within a given width (simplified)."""
+    if alignment == "left":
+        print(text.ljust(line_width))
+    elif alignment == "right":
+        print(text.rjust(line_width))
+    elif alignment == "center":
+        print(text.center(line_width))
+    else:
+        print("Invalid alignment. Printing as is:")
+        print(text)
+
+format_line("Chapter 1") # Use defaults (80, left)
+format_line("Chapter 1", line_width=40) # Override width
+format_line("Centered Title", alignment="center", line_width=50) # Keywords for clarity
+format_line("Right Aligned", alignment="right") # Use default width
+```
+
+### Example 3: Database Connection (Conceptual)
+<section id="example-3-database-connection-conceptual"></section>
+
+
+* **File: db_connect.py**
+```python
+
+def connect_db(db_name, host="localhost", port=5432, user="guest"):
+    """Simulates connecting to a database with default parameters."""
+    print("\nAttempting DB Connection...")
+    print(f"  Database: {db_name}")
+    print(f"  Host: {host}")
+    print(f"  Port: {port}")
+    print(f"  User: {user}")
+    # Actual connection logic would go here
+    print("Connection established (simulated).")
+```
+* **Connect to required DB, use defaults for others**
+```python
+connect_db("production_db")
+```
+* **Connect to a different host, use defaults for others**
+```python
+connect_db("testing_db", host="192.168.1.100")
+```
+* **Connect with a specific user and port**
+```python
+connect_db("staging_db", user="admin", port=5433)
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/default_and_keyword";
+
+<Quiz questions={pythonQuiz} />
+

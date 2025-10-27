@@ -1,0 +1,156 @@
+# Nested Conditionals
+<section id="Introduction-to-Nested-Conditionals"></section>
+
+## Adding More Layers of Logic
+
+We've seen how `if`, `if-else`, and `if-elif-else` allow us to choose between different paths of execution based on conditions. Sometimes, however, the logic required is more complex. After making one decision, you might need to make another decision **within** that chosen path.
+
+This is achieved using nested conditionals. A nested conditional is simply an `if`, `if-else`, or `if-elif-else` statement that is placed inside the indented block of another conditional statement.
+
+## Syntax and Structure
+<section id="syntax-and-structure"></section>
+Nesting follows the standard rules of indentation. The inner conditional statement is indented relative to the outer one.
+
+```python
+# Outer conditional
+if outer_condition:
+    # Code block for outer condition being True
+    print("Outer condition is True.")
+
+    # Inner (nested) conditional
+    if inner_condition1:
+        # Executes if outer_condition is True AND inner_condition1 is True
+        print("Inner condition 1 is True.")
+    elif inner_condition2:
+         # Executes if outer_condition is True AND inner_condition1 is False AND inner_condition2 is True
+        print("Inner condition 2 is True.")
+    else:
+        # Executes if outer_condition is True AND both inner conditions are False
+        print("Neither inner condition is True.")
+
+    print("Finished processing inner conditions.")
+
+else:
+    # Code block for outer condition being False
+    print("Outer condition is False.")
+    # You could have another nested conditional here if needed
+
+print("Finished outer conditional.")
+```
+
+* **Key points:**
+
+- The inner conditional structure is only reached and evaluated if the outer condition controlling its block is True.
+- Indentation clearly defines which block each statement belongs to. The inner `if/elif/else` must be indented further than the outer `if/else` line it belongs to.
+- You can nest conditionals multiple levels deep, but excessive nesting can make code hard to read and debug.
+
+## When to Use Nested Conditionals
+<section id="when-to-use-nested-conditionals"></section>
+
+Nested conditionals are useful when a decision depends on the outcome of a previous decision.
+
+- Checking multiple criteria sequentially where the second criterion only matters if the first is met (e.g., check if logged in, then check user role).
+- Categorizing items based on multiple factors (e.g., classify a shape by number of sides, then by angles).
+- Implementing complex decision trees or workflows.
+
+**Readability Warning:** While powerful, deep nesting (more than 2-3 levels) can significantly decrease code readability. If your nesting gets too complex, consider restructuring your code, perhaps by using functions (which we'll learn later) or combining conditions with logical operators (`and`, `or`) where appropriate.
+
+### Example 1: Login and Role Check
+<section id="example-1-login-and-role-check"></section>
+
+```python
+# File: nested_login.py
+is_logged_in = True # Assume user logged in successfully
+user_role = "editor" # Role could be "admin", "editor", "viewer"
+
+if is_logged_in:
+    print("Welcome!")
+    # Inner check: Determine capabilities based on role
+    if user_role == "admin":
+        print("You have full administrative privileges.")
+    elif user_role == "editor":
+        print("You can edit content.")
+    elif user_role == "viewer":
+        print("You have view-only access.")
+    else:
+        print("Unknown user role.")
+else:
+    print("Please log in to access the system.")
+
+print("System check complete.")
+```
+
+Change **is_logged_in** to **False** or change **user_role** to see different outputs.
+
+### Example 2: Number Range Classification
+<section id="example-2-number-range-classification"></section>
+
+```python
+# File: number_range.py
+num_str = input("Enter an integer: ")
+
+try:
+    num = int(num_str)
+
+    if num >= 0:
+        print("Number is non-negative.")
+        # Inner check for specific ranges within non-negative numbers
+        if num == 0:
+            print("It is exactly zero.")
+        elif num <= 50:
+            print("It is between 1 and 50 (inclusive).")
+        else: # num > 50
+            print("It is greater than 50.")
+    else: # num < 0
+        print("Number is negative.")
+        # Inner check for specific negative range (example)
+        if num >= -10:
+            print("It is between -10 and -1 (inclusive).")
+        else: # num < -10
+             print("It is less than -10.")
+
+except ValueError:
+    print("Invalid input. Please enter an integer.")
+```
+
+### Example 3: Ticket Pricing based on Age and Day
+<section id="example-3-ticket-pricing-based-on-age-and-day"></section>
+
+```python
+# File: ticket_price.py
+age_str = input("Enter age: ")
+day = input("Enter day (e.g., 'Monday', 'Saturday'): ").strip().capitalize()
+
+try:
+    age = int(age_str)
+    price = 0
+
+    if age < 0:
+        print("Invalid age.")
+    elif age < 5: # Free for very young children
+        price = 0
+        print("Ticket is free (Age < 5).")
+    elif age < 18: # Child/Student price
+        price = 8
+        print("Child/Student ticket: $8")
+    else: # Adult or Senior (age >= 18)
+        # Inner check based on day for adults/seniors
+        if day == "Saturday" or day == "Sunday":
+            price = 15 # Weekend price
+            print("Adult/Senior Weekend ticket: $15")
+        else: # Weekday price
+            price = 12 # Weekday price
+            print("Adult/Senior Weekday ticket: $12")
+
+    # You might print the final price here if it's > 0 and valid
+    # if price > 0:
+    #    print(f"Final Price: ${price}")
+
+except ValueError:
+    print("Invalid age input. Please enter a number.")
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/nested";
+
+<Quiz questions={pythonQuiz} />

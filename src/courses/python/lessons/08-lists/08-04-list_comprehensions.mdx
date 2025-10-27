@@ -1,0 +1,157 @@
+# List Comprehensions
+
+## A Concise Way to Create Lists
+<section id="a-concise-way-to-create-lists"></section>
+
+A very common task in Python is to create a new list based on the items of an existing iterable (like another list, a range, or a string). Often, this involves iterating with a `for` loop, possibly applying some transformation or filtering condition, and appending results to a new list.
+
+Consider creating a list of squares of numbers from 0 to 9:
+
+
+* **Traditional approach using a for loop**
+```python
+squares = [] # Initialize an empty list
+for x in range(10):
+    squares.append(x * x) # Calculate square and append
+
+print(f"Squares (loop): {squares}")
+# Output: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+```
+
+This pattern (initialize empty list, loop, transform/filter, append) is so common that Python provides a more compact and often more readable syntax called a list comprehension.
+
+List comprehensions offer a shorter syntax for creating lists derived from existing iterables. They are often considered more "Pythonic" and can be more efficient than explicit for loops with append() for this specific task.
+
+## Basic List Comprehension Syntax
+<section id="basic-list-comprehension-syntax"></section>
+
+* **The simplest form of a list comprehension is:**
+
+```python
+new_list = [expression for item in iterable]
+```
+
+Let's break it down:
+
+*   **[]**: The square brackets indicate that the result will be a list.
+*   **expression**: The operation or value to include in the new list. It typically uses the item variable.
+*   **for item in iterable**: A standard for loop clause that iterates over the source iterable. The item variable takes on each value from the iterable in turn.
+
+Rewriting the squares example using a list comprehension:
+
+* **List comprehension approach**
+```python
+squares_comp = [x * x for x in range(10)]
+print(f"Squares (comp): {squares_comp}")
+# Output: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+```
+
+This single line achieves the same result as the previous four-line loop.
+
+## Adding a Conditional Filter
+<section id="adding-a-conditional-filter"></section>
+
+List comprehensions can also include an optional if condition to filter items from the source iterable before applying the expression.
+
+```python
+new_list = [expression for item in iterable if condition]
+```
+
+The expression is only evaluated and added to the `new_list` if the condition (which can also use the `item` variable) evaluates to True for that specific item.
+
+Example: Create a list of squares only for even numbers from 0 to 9.
+* **Traditional loop with filter**
+```python
+even_squares = []
+for x in range(10):
+    if x % 2 == 0: # Condition: is x even?
+        even_squares.append(x * x)
+print(f"Even squares (loop): {even_squares}")
+# Output: [0, 4, 16, 36, 64]
+```
+* **List comprehension with filter**
+```python
+even_squares_comp = [x * x for x in range(10) if x % 2 == 0]
+print(f"Even squares (comp): {even_squares_comp}")
+# Output: [0, 4, 16, 36, 64]
+```
+
+## Conditional Expression within Comprehension
+<section id="conditional-expression-within-comprehension"></section>
+
+You can combine list comprehensions with the conditional expressions (ternary operator) learned previously to apply different expressions based on a condition.
+
+
+* **Example: Create a list labeling numbers as 'even' or 'odd'**
+```python
+number_labels = ["even" if x % 2 == 0 else "odd" for x in range(10)]
+print(f"Number labels: {number_labels}")
+# Output: ['even', 'odd', 'even', 'odd', 'even', 'odd', 'even', 'odd', 'even', 'odd']
+```
+
+* **Note the structure:** the conditional expression value_if_true if condition else value_if_false comes before the for clause when it's part of the main expression. The filtering if comes after the for clause.
+
+### Example 1: Uppercasing Names
+<section id="example-1-uppercasing-names"></section>
+
+
+* **File: uppercase_names.py**
+```python
+names = ["alice", "bob", "charlie"]
+```
+* **Using a loop**
+```python
+upper_names_loop = []
+for name in names:
+    upper_names_loop.append(name.upper())
+print(f"Loop: {upper_names_loop}")
+```
+* **Using list comprehension**
+```python
+upper_names_comp = [name.upper() for name in names]
+print(f"Comp: {upper_names_comp}") # Output: ['ALICE', 'BOB', 'CHARLIE']
+```
+
+### Example 2: Filtering Short Words
+<section id="example-2-filtering-short-words"></section>
+
+
+* **File: filter_words.py**
+```python
+words = ["programming", "is", "fun", "and", "powerful"]
+min_length = 4
+```
+* **Using a loop**
+```python
+long_words_loop = []
+for word in words:
+    if len(word) >= min_length:
+        long_words_loop.append(word)
+print(f"Long words (loop): {long_words_loop}")
+```
+* **Using list comprehension with filter**
+```python
+long_words_comp = [word for word in words if len(word) >= min_length]
+print(f"Long words (comp): {long_words_comp}") # Output: ['programming', 'powerful']
+```
+
+### Example 3: Extracting Digits from a String
+<section id="example-3-extracting-digits-from-a-string"></section>
+
+```python
+* **File: extract_digits.py**
+```python
+text = "Order Placed: ID 12345, Amount $99.50"
+```
+* **Using list comprehension with filter and type conversion**
+```python
+digits = [int(char) for char in text if char.isdigit()]
+print(f"Digits found: {digits}") # Output: [1, 2, 3, 4, 5, 9, 9, 5, 0]
+```
+
+This comprehension iterates through each character, checks if it's a digit using `isdigit()`, and if so, converts it to an integer and adds it to the new list.
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/list_comprehensions";
+
+<Quiz questions={pythonQuiz} />

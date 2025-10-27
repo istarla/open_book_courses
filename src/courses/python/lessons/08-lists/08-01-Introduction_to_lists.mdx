@@ -1,0 +1,208 @@
+# Introduction to Lists
+<section id="storing-collections-of-data"></section>
+
+So far, we've primarily worked with individual data items stored in variables (like numbers, strings, booleans). However, we often need to store and work with collections of related items. Imagine needing to keep track of multiple scores, a list of names, or the prices of various products.
+
+Python provides several built-in data structures for storing collections. The most versatile and commonly used one is the list.
+
+A list is an ordered, mutable (changeable) collection of items.
+
+*   **Ordered:** The items in a list maintain a specific order, and this order will not change unless you explicitly modify it.
+*   **Mutable:** You can change the contents of a list after it has been created (add items, remove items, modify existing items).
+*   **Heterogeneous:** Lists can contain items of different data types (e.g., a mix of integers, strings, and even other lists).
+<img src="/images/list.png" alt="variable" className="w-150 h-100 mx-auto" />
+## Creating Lists
+<section id="creating-lists"></section>
+
+Lists are created by enclosing a comma-separated sequence of items within square brackets `[]`.
+
+*   **An empty list**
+```python
+empty_list = []
+print(f"Empty list: {empty_list}, Type: {type(empty_list)}")
+```
+*   **A list of integers**
+```python
+numbers = [10, 20, 30, 40, 50]
+print(f"Numbers list: {numbers}")
+```
+
+*   **A list of strings**
+```python
+fruits = ["apple", "banana", "cherry"]
+print(f"Fruits list: {fruits}")
+```
+*   **A list with mixed data types**
+```python
+mixed_list = [1, "hello", 3.14, True, "world"]
+print(f"Mixed list: {mixed_list}")
+```
+* **You can also use the list() constructor (less common for simple cases)**
+```python
+list_from_string = list("abc") # Creates ['a', 'b', 'c']
+print(f"List from string: {list_from_string}")
+```
+
+## Accessing List Items (Indexing)
+<section id="accessing-list-items-indexing"></section>
+
+Just like strings, you access items in a list using their index within square brackets `[]`. Lists also use zero-based indexing.
+
+```python
+#         0        1         2         3
+colors = ["red", "green", "blue", "yellow"]
+```
+* **Get the first item**
+```python
+first_color = colors[0]
+print(f"First color: {first_color}") # Output: red
+```
+* **Get the third item**
+```python
+third_color = colors[2]
+print(f"Third color: {third_color}") # Output: blue
+```
+* **Get the last item using negative indexing**
+```python
+last_color = colors[-1]
+print(f"Last color: {last_color}") # Output: yellow
+```
+
+## Accessing an index outside the range causes an IndexError
+
+
+
+## Modifying List Items
+<section id="modifying-list-items"></section>
+
+Because lists are mutable, you can change the value of an item at a specific index by assigning a new value to it using its index.
+
+```python
+planets = ["Mercury", "Venus", "Earth", "Mars"]
+print(f"Original planets: {planets}")
+```
+* **Change the second item (index 1)**
+```python
+planets[1] = "Jupiter" # Oops, wrong order, but demonstrates modification
+print(f"Modified planets: {planets}") # Output: ['Mercury', 'Jupiter', 'Earth', 'Mars']
+```
+
+* **Change the last item**
+```python
+planets[-1] = "Saturn"
+print(f"Modified again: {planets}") # Output: ['Mercury', 'Jupiter', 'Earth', 'Saturn']
+```
+
+* **Finding the Length of a List (`len()`)**
+<section id="finding-the-length-of-a-list"></section>
+
+The same built-in `len()` function used for strings can be used to find the number of items in a list.
+
+```python
+scores = [88, 92, 75, 100, 95]
+num_scores = len(scores)
+print(f"The list contains {num_scores} scores.") # Output: 5
+```
+* **Empty list**
+```python
+empty = []
+print(f"Length of empty list: {len(empty)}") # Output: 0
+```
+
+## Iterating Over Lists with for Loops
+<section id="iterating-over-lists-with-for-loops"></section>
+
+for loops are perfectly suited for iterating through the items in a list.
+
+* **File: list_iteration.py**
+```python
+
+ingredients = ["flour", "sugar", "eggs", "butter"]
+print("Recipe Ingredients:")
+```
+
+* **The loop variable 'item' will hold each ingredient string in turn**
+```python
+for item in ingredients:
+    print(f"- {item.capitalize()}")
+
+print("\nProcessing scores:")
+grades = [65, 78, 91, 82]
+total = 0
+for grade in grades:
+    print(f"Processing grade: {grade}")
+    total += grade
+
+average = total / len(grades) if len(grades) > 0 else 0
+print(f"\nAverage grade: {average:.2f}")
+```
+
+### Example 1: Storing and Accessing Usernames
+<section id="storing-and-accessing-usernames"></section>
+* **File: usernames.py**
+
+```python
+users = ["alice123", "bob_dev", "charlie_art"]
+print(f"Total users: {len(users)}")
+```
+
+* **Access specific users**
+```python
+print(f"First user: {users[0]}")
+print(f"Last user: {users[-1]}")
+```
+* **Modify a username**
+```python
+print(f"\nUpdating user '{users[1]}'...")
+users[1] = "robert_dev" # Changed bob to robert
+
+print("\nCurrent Users:")
+for user in users:
+    print(f"- {user}")
+```
+
+### Example 2: Creating a List with `range()`
+<section id="creating-a-list-with-range"></section>
+
+You can easily create a list of numbers using `range()` and the `list()` constructor.
+
+* **Create a list of numbers from 0 to 9**
+```python
+nums_0_to_9 = list(range(10))
+print(f"Numbers 0-9: {nums_0_to_9}")
+```
+
+* **Create a list of even numbers from 2 to 10**
+```python
+
+even_nums = list(range(2, 11, 2)) # range(start, stop_before, step)
+print(f"Even numbers 2-10: {even_nums}")
+```
+
+### Example 3: Basic Inventory Check
+<section id="basic-inventory-check"></section>
+
+* **File: inventory.py**
+```python
+inventory = ["sword", "shield", "potion", "gold coin"]
+item_to_find = "potion"
+found = False # Flag variable
+
+print("Checking inventory...")
+for item in inventory:
+    print(f"- Checking {item}...")
+    if item == item_to_find:
+        found = True
+        print(f"Found {item_to_find}!")
+        break # Stop searching once found
+
+if not found:
+    print(f"{item_to_find} not found in inventory.")
+
+print("Inventory check complete.")
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/list";
+
+<Quiz questions={pythonQuiz} />

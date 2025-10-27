@@ -1,0 +1,231 @@
+# Working with Dictionaries (Iteration, Nesting)
+
+## Recap: Dictionary Methods
+<section id="recap-dictionary-methods"></section>
+
+Yesterday, we explored various dictionary methods like `keys()`, `values()`, `items()`, `get()`, `update()`, and `setdefault()`. These methods allow us to view and manipulate the contents of dictionaries effectively.
+
+Today, we'll delve deeper into how to iterate through dictionaries using loops and how to structure more complex data using nested dictionaries.
+
+## Iterating Through Dictionaries
+<section id="iterating-through-dictionaries"></section>
+
+There are several common ways to loop through the contents of a dictionary:
+
+### 1. Iterating Through Keys (Default)
+
+Looping directly over a dictionary using a `for` loop iterates through its keys by default. You can then use the key to access the corresponding value inside the loop.
+* **File: iterate_keys.py**
+```python
+student_ages = {"Alice": 21, "Bob": 25, "Charlie": 19}
+
+print("Student names (keys):")
+for name in student_ages: # Iterates through keys by default
+    print(f"- {name}")
+
+print("\nAccessing values using keys during iteration:")
+for name in student_ages:
+    age = student_ages[name] # Access value using the key
+    print(f"- {name} is {age} years old.")
+
+# Explicitly using .keys() achieves the same result
+# print("\nUsing .keys():")
+# for name in student_ages.keys():
+#     print(f"- {name}")
+```
+
+### 2. Iterating Through Values
+
+If you only need the values and not the keys, you can iterate directly over the view returned by the `values()` method.
+
+```python
+# File: iterate_values.py
+product_prices = {"Laptop": 1200, "Mouse": 25, "Keyboard": 75}
+
+print("Product prices (values):")
+total_value = 0
+for price in product_prices.values():
+    print(f"- ${price:.2f}")
+    total_value += price
+
+print(f"\nTotal value of products: ${total_value:.2f}")
+```
+
+### 3. Iterating Through Key-Value Pairs (Items)
+
+Often, you need both the key and the value during iteration. The most Pythonic way to do this is to iterate over the view returned by the `items()` method. This method yields (key, value) tuples, which can be conveniently unpacked directly in the `for` loop statement.
+
+
+* **File: iterate_items.py**
+```python
+capitals = {'USA': 'Washington D.C.', 'France': 'Paris', 'Japan': 'Tokyo'}
+
+print("Countries and their capitals:")
+for country, capital in capitals.items(): # Unpack the (key, value) tuple
+    print(f"- The capital of {country} is {capital}.")
+```
+
+This approach is generally preferred over iterating through keys and looking up the value each time, as it's more direct and often slightly more efficient.
+
+## Nested Dictionaries
+<section id="nested-dictionaries"></section>
+
+Since dictionary values can be of any type, a value can itself be another dictionary. This allows you to create nested dictionaries, which are useful for representing hierarchical or structured data.
+
+
+* **File: nested_dict.py**
+```python
+Dictionary where keys are user IDs and values are dictionaries of user info
+users = {
+    "user101": {
+        "name": "Alice",
+        "email": "alice@example.com",
+        "active": True
+    },
+    "user102": {
+        "name": "Bob",
+        "email": "bob@sample.net",
+        "active": False,
+        "last_login": "2025-05-01" # Inner dicts can have different keys
+    },
+    "user103": {
+        "name": "Charlie",
+        "email": "charlie@domain.org",
+        "active": True
+    }
+}
+
+print(f"Complete user data:\n{users}\n")
+```
+* **Accessing nested data**
+```python
+print(f"Bob's email: {users['user102']['email']}") # Access outer key, then inner key
+print(f"Alice's active status: {users['user101']['active']}")
+```
+* **Accessing a potentially missing inner key safely**
+```python
+bob_last_login = users["user102"].get("last_login", "N/A")
+alice_last_login = users["user101"].get("last_login", "N/A") # Key doesn't exist for Alice
+print(f"Bob's last login: {bob_last_login}")
+print(f"Alice's last login: {alice_last_login}")
+```
+* **Modifying nested data**
+```python
+users["user101"]["active"] = False # Deactivate Alice
+print(f"\nUser 101 after deactivation: {users['user101']}")
+```
+* **Adding a new inner key**
+```python
+users["user102"]["city"] = "New York"
+print(f"User 102 after adding city: {users['user102']}")
+```
+
+## Iterating Through Nested Dictionaries
+<section id="iterating-through-nested-dictionaries"></section>
+
+You often need nested loops to fully iterate through nested dictionaries. The outer loop iterates through the keys (or items) of the outer dictionary, and the inner loop iterates through the keys (or items) of the inner dictionary.
+
+
+* **File: iterate_nested.py**
+```python
+users = {
+    "user101": {"name": "Alice", "email": "alice@example.com"},
+    "user102": {"name": "Bob", "email": "bob@sample.net"},
+}
+
+print("Iterating through nested structure:")
+```
+* **Outer loop iterates through user IDs (keys of the outer dict)**
+```python
+for user_id in users:
+    print(f"\nUser ID: {user_id}")
+    # Get the inner dictionary for the current user
+    user_info = users[user_id]
+    # Inner loop iterates through the keys ('name', 'email') of the inner dict
+    for key in user_info:
+        value = user_info[key]
+        print(f"  {key.capitalize()}: {value}")
+print("\nIterating using items() for both levels:")
+```
+* **Outer loop unpacks user_id and user_info dictionary**
+```python
+for user_id, user_info in users.items():
+     print(f"\nUser ID: {user_id}")
+     # Inner loop unpacks key and value from the inner user_info dictionary
+     for key, value in user_info.items():
+          print(f"  {key.capitalize()}: {value}")
+```
+
+### Example 1: Printing Inventory Status
+
+
+* **File: inventory_status.py**
+```python
+inventory = {"apples": 10, "bananas": 5, "oranges": 0, "grapes": 25}
+
+print("Inventory Status:")
+for item, quantity in inventory.items():
+    status = "In Stock" if quantity > 0 else "OUT OF STOCK"
+    print(f"- {item.capitalize()}: {quantity} ({status})")
+```
+
+### Example 2: Accessing Specific Data in Nested Structure
+
+
+* **File: nested_access.py**
+```python
+courses = {
+    "CS101": {"title": "Intro to Programming", "credits": 3, "instructor": "Dr. Smith"},
+    "MA105": {"title": "Calculus I", "credits": 4, "instructor": "Prof. Jones"},
+    "EN100": {"title": "English Composition", "credits": 3, "instructor": "Dr. Brown"}
+}
+```
+
+* **Print the title and instructor for each course**
+```python
+print("Course Catalog:")
+for course_code, details in courses.items():
+    title = details.get("title", "N/A")
+    instructor = details.get("instructor", "TBA") # Use get for safety
+    print(f"- {course_code}: {title} (Instructor: {instructor})")
+```
+* **Get total credits**
+```python
+total_credits = 0
+for details in courses.values():
+    total_credits += details.get("credits", 0) # Safely get credits
+
+print(f"\nTotal credits offered: {total_credits}")
+```
+
+### Example 3: Modifying Values During Iteration (Carefully!)
+
+You generally shouldn't add or remove keys from a dictionary while iterating over it directly, as it can cause errors. However, you **can** modify the **values** of existing keys.
+
+
+* **File: modify_during_iteration.py**
+```python
+prices = {"apple": 0.50, "banana": 0.25, "orange": 0.60}
+print(f"Original prices: {prices}")
+```
+* **Apply a 10% price increase**
+```python
+increase_factor = 1.10
+for fruit in prices: # Iterate through keys
+    prices[fruit] *= increase_factor # Modify the value for the existing key
+    # prices[fruit] = round(prices[fruit] * increase_factor, 2) # Alternative with rounding
+
+print(f"Prices after 10% increase: {prices}")
+
+# Trying to add/remove keys inside the loop is risky:
+# for fruit in prices:
+#    if prices[fruit] < 0.30:
+#        del prices[fruit] # This can cause RuntimeError: dictionary changed size during iteration
+
+```
+If you need to add or remove items based on iteration, it's safer to first collect the keys to be modified/removed in a separate list, and then perform the modifications**after** the loop finishes.
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/working_with_dictionaries";
+
+<Quiz questions={pythonQuiz} />

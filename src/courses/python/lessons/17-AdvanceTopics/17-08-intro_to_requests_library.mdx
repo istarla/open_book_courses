@@ -1,0 +1,225 @@
+
+# Introduction to requests (HTTP Library)
+<section id="introduction-to-requests-http-library"></section>
+
+## Making Web Requests
+<section id="making-web-requests"></section>
+
+A huge amount of modern computing involves interacting with the internet, particularly the World Wide Web. This often means fetching data from web pages, interacting with APIs (Application Programming Interfaces) provided by web services, or sending data to web servers.
+
+The fundamental protocol underlying the web is HTTP (Hypertext Transfer Protocol) or its secure version, HTTPS. While Python's standard library has modules like **urllib** for making HTTP requests, they can sometimes be complex to use for common tasks.
+
+The **`requests`** library is a hugely popular third-party package that provides a simple, elegant, and human-friendly interface for making HTTP requests. It's often the go-to library for this purpose in Python.
+
+> **Prerequisite:** Since **requests** is a third-party library, you need to install it first using **pip**, preferably within an activated virtual environment (as learned yesterday).
+> 
+> ```python
+> # Make sure your virtual environment is activated!
+> pip install requests
+> ```
+
+## Making a Simple GET Request
+<section id="making-a-simple-get-request"></section>
+
+The most common type of HTTP request is GET, used to retrieve data from a specified URL. The **requests** library makes this incredibly simple.
+
+```python
+# File: simple_get.py
+import requests # Import the installed library
+
+url = "https://httpbin.org/get" # A test service that echoes request info
+
+try:
+    print(f"Making GET request to: {url}")
+    # Make the GET request
+    response = requests.get(url)
+
+    # Check if the request was successful (status code 2xx)
+    response.raise_for_status() # Raises an HTTPError exception for bad responses (4xx or 5xx)
+
+    print("\nRequest Successful!")
+
+    # --- Inspecting the Response ---
+    print(f"Status Code: {response.status_code}") # e.g., 200 means OK
+    print(f"Response Headers: {response.headers}") # Dictionary of response headers
+
+    # Get the response body (content)
+    # .text assumes text content and decodes based on headers/heuristics
+    print(f"\nResponse Body (text):")
+    print(response.text)
+
+    # If the response is JSON, requests can decode it directly
+    try:
+        json_data = response.json()
+        print("\nResponse Body (JSON decoded):")
+        print(json_data)
+        print(f"Origin IP from JSON: {json_data.get('origin')}")
+    except requests.exceptions.JSONDecodeError:
+        print("\nResponse body is not valid JSON.")
+
+except requests.exceptions.RequestException as e:
+    # Catch potential errors like connection errors, timeouts, invalid URL, etc.
+    print(f"\nAn error occurred during the request: {e}")
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")
+```
+
+The **requests.get()** function returns a `Response` object containing all the information sent back by the server, including status code, headers, and the response body (content).
+
+## Response Object Attributes and Methods
+<section id="response-object-attributes-and-methods"></section>
+
+The **Response** object returned by **requests** functions is very useful:
+
+*   `response.status_code`: The HTTP status code (e.g., 200 OK, 404 Not Found, 500 Internal Server Error).
+*   `response.headers`: A dictionary-like object containing the response headers.
+*   `response.text`: The response body decoded as a string (using encoding guessed from headers or defaults).
+*   `response.content`: The response body as raw bytes (useful for non-text content like images).
+*   `response.json()`: If the response content type is JSON, this attempts to parse the body and return a Python dictionary or list. Raises **JSONDecodeError** if parsing fails.
+*   `response.url`: The final URL after any redirects.
+*   `response.request`: The Request object associated with this response (contains details of the original request).
+*   `response.raise_for_status()`: Raises an **requests.exceptions.HTTPError** if the status code indicates an error (4xx client error or 5xx server error). Useful for simple error checking.
+
+## Passing Parameters in URLs (GET Requests)
+<section id="passing-parameters-in-urls-get-requests"></section>
+
+Often, GET requests need to include parameters in the URL's query string (e.g., **https://example.com/search?query=python&page=2**). The **requests** library allows you to pass these parameters as a dictionary using the `params` argument.
+
+```python
+# File: get_with_params.py
+import requests
+
+url = "https://httpbin.org/get" # This endpoint echoes query parameters
+payload = {"key1": "value1", "search_term": "python programming", "page": 3}
+
+try:
+    # Pass parameters using the 'params' argument
+    response = requests.get(url, params=payload)
+    response.raise_for_status()
+
+    print(f"Request URL (as sent): {response.url}") # Shows the encoded URL
+    print(f"Status Code: {response.status_code}")
+
+    # Look at the echoed 'args' in the JSON response
+    json_response = response.json()
+    print("\nEchoed Arguments from Response:")
+    print(json_response.get("args"))
+
+except requests.exceptions.RequestException as e:
+    print(f"An error occurred: {e}")
+```
+
+Requests automatically handles URL encoding the parameters correctly.
+
+## Other HTTP Methods (POST, PUT, DELETE, etc.)
+
+The **requests** library supports other HTTP methods besides GET using corresponding functions:
+
+*   `requests.post(url, data=payload)`: Sends data (often a dictionary for form data, or a string) in the request body. Used for submitting forms or creating resources.
+*   `requests.put(url, data=payload)`: Similar to POST, often used for updating existing resources.
+*   `requests.delete(url)`: Requests deletion of a resource at the URL.
+*   `requests.head(url)`: Retrieves only the headers, not the response body.
+*   `requests.options(url)`: Retrieves information about communication options for the target resource.
+
+Sending data often involves the **data** (for form-encoded data) or **json** (to automatically send JSON data with correct headers) arguments.
+
+### Example 1: Checking Website Status
+<section id="example-1-checking-website-status"></section>
+
+```python
+# File: check_website.py
+import requests
+
+def check_status(url):
+    """Checks if a website is reachable and reports its status code."""
+    try:
+        response = requests.get(url, timeout=5) # Add a timeout (in seconds)
+        response.raise_for_status() # Check for 4xx/5xx errors
+        print(f"'{url}' is UP! Status Code: {response.status_code}")
+        return True
+    except requests.exceptions.Timeout:
+        print(f"'{url}' timed out.")
+        return False
+    except requests.exceptions.HTTPError as e:
+        print(f"'{url}' returned an error: {e.response.status_code} {e.response.reason}")
+        return False
+    except requests.exceptions.RequestException as e:
+        print(f"Could not connect to '{url}': {e}")
+        return False
+
+# --- Check some websites ---
+sites_to_check = ["https://www.google.com", "https://httpbin.org/delay/10", "https://httpbin.org/status/404", "https://invalid-url-that-does-not-exist.xyz"]
+for site in sites_to_check:
+    check_status(site)
+    print("-" * 20)
+```
+
+### Example 2: Fetching JSON Data from an API
+<section id="example-2-fetching-json-data-from-an-api"></section>
+
+Using the JSONPlaceholder fake API.
+
+```python
+# File: fetch_json_api.py
+import requests
+
+# API endpoint for fetching a specific 'todo' item
+todo_id = 1
+api_url = f"https://jsonplaceholder.typicode.com/todos/{todo_id}"
+
+try:
+    response = requests.get(api_url)
+    response.raise_for_status() # Check for errors
+
+    # Parse the JSON response directly
+    todo_data = response.json()
+
+    print("--- TODO Item Data ---")
+    print(f"User ID: {todo_data.get('userId')}")
+    print(f"ID: {todo_data.get('id')}")
+    print(f"Title: {todo_data.get('title')}")
+    print(f"Completed: {todo_data.get('completed')}")
+
+except requests.exceptions.RequestException as e:
+    print(f"API request failed: {e}")
+except requests.exceptions.JSONDecodeError:
+    print("Failed to decode JSON response from API.")
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")
+```
+
+### Example 3: Simple POST Request
+<section id="example-3-simple-post-request"></section>
+
+Sending data to httpbin.org's /post endpoint, which echoes the data back.
+
+```python
+# File: simple_post.py
+import requests
+import json # To pretty-print the response
+
+url = "https://httpbin.org/post"
+payload = {"username": "testuser", "action": "login"}
+
+try:
+    # Send POST request with data payload
+    response = requests.post(url, data=payload)
+    response.raise_for_status()
+
+    print("POST Request Successful!")
+    print(f"Status Code: {response.status_code}")
+
+    # Echoed data is often in 'form' or 'json' field of the response JSON
+    response_data = response.json()
+    print("\n--- Echoed POST Data (from response) ---")
+    # Use json.dumps for pretty printing the received dictionary
+    print(json.dumps(response_data.get("form", {}), indent=2))
+
+except requests.exceptions.RequestException as e:
+    print(f"An error occurred: {e}")
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/intro_to_requests";
+
+<Quiz questions={pythonQuiz} />

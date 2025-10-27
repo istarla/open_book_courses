@@ -1,0 +1,142 @@
+# Control Flow - The **if-else** Statement
+<section id="Introduction-to-if-else-Statements"></section>
+## Handling the Alternative: The Need for **else**
+
+Yesterday, we learned about the `if` statement, which executes a block of code only when a condition is true. But what if we want to execute a **different** block of code specifically when the condition is false?
+
+This is where the `else` clause comes in. An `if-else` statement provides two possible paths of execution: one for when the condition is true, and another for when it's false.
+
+## The if-else Statement Syntax
+<section id="if-else-statement-syntax"></section>
+
+The structure builds directly on the `if` statement:
+
+```python
+if condition:
+    # Block 1: Executes if condition is True
+    statement_if_true_1
+    statement_if_true_2
+else:
+    # Block 2: Executes if condition is False
+    statement_if_false_1
+    statement_if_false_2
+# Code here executes after either Block 1 or Block 2 has finished
+statement_after_if_else
+```
+
+* **Key components:**
+*   **if condition:**: Same as before, evaluates the condition.
+*   <span className="highlight">Indented Block 1</span>: Executed only if the condition is `True`.
+*   **else:**: The keyword that introduces the alternative block. It must be at the same indentation level as the corresponding `if`. It does **not** have its own condition.
+*   <span className="highlight">Indented Block 2</span>: Executed only if the original `if` condition evaluates to `False`.
+
+<div className="note">
+  **Exactly One Block Executes:** In an if-else structure, either the if block or the else block will execute, never both, and never neither. One path must be taken based on the condition's truth value.
+</div>
+
+## How it Works
+<section id="how-it-works"></section>
+
+1.  The `condition` associated with the `if` statement is evaluated.
+2.  If the condition is `True`:
+    *   The indented code block under the `if` is executed.
+    *   The `else` block is skipped entirely.
+3.  If the condition is `False`:
+    *   The indented code block under the `if` is skipped.
+    *   The indented code block under the `else` is executed.
+4.  Execution continues with the next statement after the entire **if-else** structure.
+
+### Example 1: Checking Even or Odd Numbers
+<section id="example-1-checking-even-or-odd-numbers"></section>
+
+```python
+# File: even_odd.py
+number_str = input("Enter an integer: ")
+
+try:
+    number = int(number_str)
+
+    # Condition: Is the remainder when divided by 2 equal to 0?
+    if number % 2 == 0:
+        # This block runs if the number is even (condition is True)
+        print(f"{number} is an even number.")
+    else:
+        # This block runs if the number is odd (condition is False)
+        print(f"{number} is an odd number.")
+
+    print("Check complete.") # This always runs afterwards
+
+except ValueError:
+    print("Invalid input. Please enter an integer.")
+```
+
+Run this code and enter an even number (like 10) and then an odd number (like 7).
+
+### Example 2: Granting Access Based on Age
+<section id="example-2-granting-access-based-on-age"></section>
+
+```python
+# File: age_access.py
+age_str = input("Please enter your age: ")
+
+try:
+    age = int(age_str)
+    required_age = 18
+
+    # Condition: Is the entered age greater than or equal to the required age?
+    if age >= required_age:
+        # Executes if age is 18 or older
+        print("Access Granted. Welcome!")
+    else:
+        # Executes if age is less than 18
+        print("Access Denied. You must be at least 18 years old.")
+
+except ValueError:
+    print("Invalid input. Please enter a valid age as a number.")
+```
+
+### Example 3: Simple Login Result
+
+<section id="example-3-simple-login-result"></section>
+
+```python
+# File: login_result.py
+username = "admin"
+password = "password123"
+
+entered_user = input("Username: ")
+entered_pass = input("Password: ")
+
+# Condition: Do both the username AND password match?
+if entered_user == username and entered_pass == password:
+    # Executes if both match (condition is True)
+    print("Login Successful!")
+    # (Here you might redirect to a dashboard, etc.)
+else:
+    # Executes if either username or password (or both) is wrong
+    print("Login Failed. Incorrect username or password.")
+
+print("Login attempt processed.") # Always runs after the if-else
+```
+
+## Combining with Truthy/Falsy
+<section id="combining-with-truthy-falsy"></section>
+The **if-else** structure works perfectly with truthy and falsy values as well.
+
+```python
+# File: truthy_else.py
+user_input = input("Enter some text (or leave blank): ")
+
+# Condition: Is user_input truthy (i.e., not an empty string)?
+if user_input:
+    # Executes if user entered something
+    print(f"You entered: '{user_input}'")
+else:
+    # Executes if user pressed Enter without typing (input is "")
+    print("You didn't enter anything.")
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/if_else";
+
+<Quiz questions={pythonQuiz} />

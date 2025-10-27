@@ -1,0 +1,203 @@
+# 03-intermediate/01-forms.mdx
+
+<section id="form-tag">
+## &lt;form&gt; Tag
+
+The `<form>` element creates a container for collecting user input and defines how data should be submitted to a server.
+
+```html
+<!-- Basic form structure -->
+<form action="/submit" method="POST" enctype="multipart/form-data">
+    <fieldset>
+        <legend>User Registration</legend>
+        
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" 
+                   minlength="8" required>
+        </div>
+        
+        <button type="submit">Register</button>
+        <button type="reset">Clear Form</button>
+    </fieldset>
+</form>
+
+<!-- Advanced form with validation -->
+<form id="contact-form" novalidate>
+    <fieldset>
+        <legend>Contact Information</legend>
+        
+        <label for="name">Full Name *</label>
+        <input type="text" id="name" name="fullName" 
+               placeholder="Enter your full name"
+               pattern="[A-Za-z\s]+" 
+               title="Please enter only letters and spaces"
+               required>
+        
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" 
+               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+               placeholder="123-456-7890">
+        
+        <label for="website">Website</label>
+        <input type="url" id="website" name="website" 
+               placeholder="https://example.com">
+    </fieldset>
+    
+    <fieldset>
+        <legend>Message</legend>
+        
+        <label for="subject">Subject *</label>
+        <select id="subject" name="subject" required>
+            <option value="">Choose a subject</option>
+            <option value="general">General Inquiry</option>
+            <option value="support">Support</option>
+            <option value="feedback">Feedback</option>
+        </select>
+        
+        <label for="message">Your Message *</label>
+        <textarea id="message" name="message" rows="5" cols="40"
+                  placeholder="Enter your message here..."
+                  maxlength="500" required></textarea>
+        
+        <small>Characters remaining: <span id="char-count">500</span></small>
+    </fieldset>
+    
+    <div class="form-actions">
+        <input type="hidden" name="csrf_token" value="abc123">
+        <button type="submit">Send Message</button>
+        <button type="button" onclick="resetForm()">Cancel</button>
+    </div>
+</form>
+```
+
+Form attributes control submission behavior: `action` defines the destination URL, `method` specifies HTTP method (GET/POST), and `enctype` sets encoding type for file uploads.
+</section>
+
+<section id="labels">
+## Labels and Accessibility
+
+Proper labeling is crucial for form accessibility, helping screen readers and improving usability for all users.
+
+```html
+<!-- Explicit labeling (recommended) -->
+<form>
+    <div class="form-field">
+        <label for="user-email">Email Address</label>
+        <input type="email" id="user-email" name="email" 
+               aria-describedby="email-help" required>
+        <small id="email-help">We'll never share your email with others.</small>
+    </div>
+    
+    <div class="form-field">
+        <label for="user-age">Age</label>
+        <input type="number" id="user-age" name="age" 
+               min="13" max="120" 
+               aria-describedby="age-requirement">
+        <small id="age-requirement">Must be at least 13 years old</small>
+    </div>
+</form>
+
+<!-- Implicit labeling -->
+<form>
+    <label>
+        First Name
+        <input type="text" name="firstName" placeholder="Enter first name">
+    </label>
+    
+    <label>
+        Subscribe to newsletter
+        <input type="checkbox" name="newsletter" value="yes">
+    </label>
+</form>
+
+<!-- Complex form with fieldsets and accessibility features -->
+<form role="form" aria-labelledby="form-title">
+    <h2 id="form-title">Employee Information Form</h2>
+    
+    <fieldset>
+        <legend>Personal Information</legend>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="first-name">First Name *</label>
+                <input type="text" id="first-name" name="firstName" 
+                       required aria-required="true"
+                       autocomplete="given-name">
+            </div>
+            
+            <div class="form-group">
+                <label for="last-name">Last Name *</label>
+                <input type="text" id="last-name" name="lastName" 
+                       required aria-required="true"
+                       autocomplete="family-name">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <fieldset>
+                <legend>Preferred Contact Method</legend>
+                
+                <label>
+                    <input type="radio" name="contact" value="email" checked>
+                    Email
+                </label>
+                
+                <label>
+                    <input type="radio" name="contact" value="phone">
+                    Phone
+                </label>
+                
+                <label>
+                    <input type="radio" name="contact" value="mail">
+                    Postal Mail
+                </label>
+            </fieldset>
+        </div>
+    </fieldset>
+    
+    <fieldset>
+        <legend>Job Information</legend>
+        
+        <div class="form-group">
+            <label for="department">Department</label>
+            <select id="department" name="department" 
+                    aria-describedby="dept-help">
+                <option value="">Select Department</option>
+                <option value="engineering">Engineering</option>
+                <option value="marketing">Marketing</option>
+                <option value="sales">Sales</option>
+            </select>
+            <small id="dept-help">Choose your primary department</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="skills">Skills and Experience</label>
+            <textarea id="skills" name="skills" 
+                      placeholder="Describe relevant skills..."
+                      aria-describedby="skills-help"></textarea>
+            <small id="skills-help">Include technical skills, certifications, and experience</small>
+        </div>
+    </fieldset>
+    
+    <div class="form-actions">
+        <button type="submit" aria-describedby="submit-help">
+            Submit Application
+        </button>
+        <small id="submit-help">Review your information before submitting</small>
+    </div>
+</form>
+```
+
+Always use `for` attributes on labels that match input `id` values. ARIA attributes provide additional accessibility information for complex forms.
+</section>

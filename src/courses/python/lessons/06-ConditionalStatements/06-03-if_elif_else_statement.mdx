@@ -1,0 +1,150 @@
+
+# Control Flow - The **if-elif-else** Statement
+<section id="Introduction-to-if-elif-else-Statements"></section>
+
+## Handling Multiple Conditions
+
+
+The `if` statement checks one condition. The `if-else` statement checks one condition and provides an alternative if it's false. But what if you have more than two possibilities? For example, grading a score: A, B, C, D, or F.
+
+You could use nested **if-else** statements (which we'll see tomorrow), but that can become messy quickly. Python provides a more elegant solution: the `elif` (else if) clause.
+
+The `if-elif-else` chain allows you to check multiple conditions sequentially and execute a specific block of code as soon as one of the conditions is found to be true. An optional final `else` block can handle the case where none of the preceding conditions were met.
+
+## The if-elif-else Statement Syntax
+<section id="if-elif-else-statement-syntax"></section>
+
+The structure extends the **if-else** statement:
+
+```python
+if condition1:
+    # Block 1: Executes if condition1 is True
+    statement_block_1
+elif condition2:
+    # Block 2: Executes if condition1 is False AND condition2 is True
+    statement_block_2
+elif condition3:
+    # Block 3: Executes if condition1 and condition2 are False AND condition3 is True
+    statement_block_3
+# ... you can have more elif blocks ...
+else:
+    # Optional Block N: Executes if ALL preceding conditions (if, elif) are False
+    statement_block_else
+
+# Code here executes after exactly one block (if, elif, or else) has finished
+statement_after_chain
+```
+
+* **Key components:**
+*   **if condition1:**: The first condition to be checked.
+*   **elif condition2:**: If `condition1` was False, `condition2` is checked. `elif` stands for "else if". You can have zero or more `elif` clauses. Each must have its own condition and end with a colon.
+*   **else:**: (Optional) If all preceding `if` and `elif` conditions were False, this block executes. It doesn't have a condition.
+*   <span className="highlight">Indented Blocks</span>: Each `if`, `elif`, and `else` has its own indented code block.
+
+<div className="note">
+  **Exactly One Block Executes (or None):** In an if-elif-else chain, Python checks the conditions from top to bottom. As soon as it finds a condition that is True, it executes the corresponding block and then skips the rest of the chain (including all subsequent elif and else clauses). If no if or elif condition is True, the optional else block is executed. If there's no else block and all conditions are False, then none of the blocks in the chain execute.
+</div>
+
+## How it Works
+<section id="how-it-works"></section>
+
+1.  Check `condition1`. If True, execute Block 1 and skip the rest of the chain.
+2.  If `condition1` is False, check `condition2`. If True, execute Block 2 and skip the rest.
+3.  If `condition2` is also False, check `condition3` (if it exists). If True, execute Block 3 and skip the rest.
+4.  Continue this process for all `elif` clauses.
+5.  If all `if` and `elif` conditions have evaluated to False, execute the `else` block (if it exists).
+6.  Execution continues with the statement after the entire chain.
+
+### Example 1: Grading System
+<section id="example-1-grading-system"></section>
+* **File: grading.py**
+```python
+score_str = input("Enter the numerical score (0-100): ")
+
+try:
+    score = int(score_str)
+    grade = "" # Initialize grade variable
+
+    if score >= 90:
+        grade = "A"
+    elif score >= 80: # Only checked if score < 90
+        grade = "B"
+    elif score >= 70: # Only checked if score < 80
+        grade = "C"
+    elif score >= 60: # Only checked if score < 70
+        grade = "D"
+    elif score >= 0:  # Only checked if score < 60
+        grade = "F"
+    else: # Handles scores less than 0 (and potentially non-numeric if check was earlier)
+        grade = "Invalid Score (must be >= 0)"
+```
+* **Check if a valid grade was assigned before printing**
+```python
+    if grade and not grade.startswith("Invalid"):
+         print(f"The grade for a score of {score} is: {grade}")
+    else:
+         # Handle cases where score was negative or other potential errors
+         # The 'else' block above already caught score < 0
+         if score < 0:
+              print(f"Invalid Score: {score}. Score cannot be negative.")
+         # We might need more robust checks depending on requirements
+
+
+except ValueError:
+    print("Invalid input. Please enter a whole number for the score.")
+```
+
+Test this with various scores like 95, 82, 70, 65, 40, -5.
+
+### Example 2: Number Comparison
+<section id="example-2-number-comparison"></section>
+
+```python
+# File: number_compare.py
+num_str = input("Enter a number: ")
+
+try:
+    num = float(num_str) # Allow decimals
+
+    if num > 0:
+        print(f"{num} is positive.")
+    elif num < 0:
+        print(f"{num} is negative.")
+    else: # The only remaining possibility is num == 0
+        print("The number is zero.")
+
+except ValueError:
+    print("Invalid input. Please enter a valid number.")
+```
+
+### Example 3: Simple Menu Choice
+<section id="example-3-simple-menu-choice"></section>
+```python
+# File: menu_choice.py
+print("--- MENU ---")
+print("1. View Profile")
+print("2. Edit Settings")
+print("3. Logout")
+print("------------")
+
+choice = input("Enter your choice (1-3): ")
+
+if choice == "1":
+    print("Displaying user profile...")
+    # Code to show profile would go here
+elif choice == "2":
+    print("Opening settings editor...")
+    # Code to edit settings would go here
+elif choice == "3":
+    print("Logging out...")
+    # Code to logout would go here
+else:
+    print("Invalid choice. Please enter 1, 2, or 3.")
+
+print("Menu action complete (or invalid choice handled).")
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/if_elif_else";
+
+<Quiz questions={pythonQuiz} />

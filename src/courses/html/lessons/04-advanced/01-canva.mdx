@@ -1,0 +1,411 @@
+# Canvas
+
+The HTML5 Canvas element provides a powerful way to draw graphics, create animations, and build interactive visualizations directly in the browser using JavaScript. It's like having a digital drawing board that you can control programmatically.
+
+<section id="canvas-basics">
+
+## Canvas Basics
+
+The canvas element creates a drawable region on your webpage. By itself, it's just a blank rectangular area, but with JavaScript, you can draw shapes, images, and create dynamic graphics.
+
+### Creating a Canvas
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Canvas Basics</title>
+</head>
+<body>
+    <canvas id="myCanvas" width="800" height="600">
+        Your browser does not support the HTML5 canvas element.
+    </canvas>
+</body>
+</html>
+```
+
+### Basic Canvas Setup with JavaScript
+
+```html
+<canvas id="basicCanvas" width="400" height="300" style="border: 1px solid #ccc;"></canvas>
+
+<script>
+// Get the canvas element and its context
+const canvas = document.getElementById('basicCanvas');
+const ctx = canvas.getContext('2d');
+
+// Set canvas background
+ctx.fillStyle = '#f0f0f0';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+// Draw a simple rectangle
+ctx.fillStyle = '#3498db';
+ctx.fillRect(50, 50, 100, 80);
+
+// Draw text
+ctx.fillStyle = '#2c3e50';
+ctx.font = '20px Arial';
+ctx.fillText('Hello Canvas!', 50, 30);
+</script>
+```
+
+### Canvas Coordinate System
+
+The canvas uses a coordinate system where (0,0) is the top-left corner:
+
+```html
+<canvas id="coordinateCanvas" width="300" height="200" style="border: 1px solid #999;"></canvas>
+
+<script>
+const coordCanvas = document.getElementById('coordinateCanvas');
+const coordCtx = coordCanvas.getContext('2d');
+
+// Draw coordinate guides
+coordCtx.strokeStyle = '#ddd';
+coordCtx.lineWidth = 1;
+
+// Vertical lines
+for (let x = 0; x <= 300; x += 50) {
+    coordCtx.beginPath();
+    coordCtx.moveTo(x, 0);
+    coordCtx.lineTo(x, 200);
+    coordCtx.stroke();
+}
+
+// Horizontal lines
+for (let y = 0; y <= 200; y += 50) {
+    coordCtx.beginPath();
+    coordCtx.moveTo(0, y);
+    coordCtx.lineTo(300, y);
+    coordCtx.stroke();
+}
+
+// Mark origin
+coordCtx.fillStyle = '#e74c3c';
+coordCtx.fillRect(0, 0, 5, 5);
+coordCtx.fillStyle = '#2c3e50';
+coordCtx.font = '12px Arial';
+coordCtx.fillText('(0,0)', 8, 15);
+</script>
+```
+
+### Canvas Attributes and Styling
+
+```html
+<style>
+.canvas-container {
+    text-align: center;
+    margin: 20px;
+}
+
+.styled-canvas {
+    border: 2px solid #34495e;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: white;
+}
+</style>
+
+<div class="canvas-container">
+    <canvas id="styledCanvas" 
+            class="styled-canvas"
+            width="350" 
+            height="250">
+        Canvas not supported
+    </canvas>
+</div>
+```
+
+</section>
+
+<section id="drawing-api">
+
+## Drawing with API
+
+The Canvas 2D API provides numerous methods for drawing shapes, paths, text, and images. Let's explore the most commonly used drawing functions.
+
+### Drawing Basic Shapes
+
+```html
+<canvas id="shapesCanvas" width="600" height="400" style="border: 1px solid #ccc;"></canvas>
+
+<script>
+const shapesCanvas = document.getElementById('shapesCanvas');
+const shapesCtx = shapesCanvas.getContext('2d');
+
+// Clear the canvas
+shapesCtx.clearRect(0, 0, 600, 400);
+
+// Draw rectangles
+shapesCtx.fillStyle = '#3498db';
+shapesCtx.fillRect(50, 50, 100, 60);  // Filled rectangle
+
+shapesCtx.strokeStyle = '#e74c3c';
+shapesCtx.lineWidth = 3;
+shapesCtx.strokeRect(200, 50, 100, 60);  // Outlined rectangle
+
+// Draw circles
+shapesCtx.fillStyle = '#2ecc71';
+shapesCtx.beginPath();
+shapesCtx.arc(100, 200, 40, 0, 2 * Math.PI);
+shapesCtx.fill();
+
+shapesCtx.strokeStyle = '#f39c12';
+shapesCtx.lineWidth = 2;
+shapesCtx.beginPath();
+shapesCtx.arc(250, 200, 40, 0, 2 * Math.PI);
+shapesCtx.stroke();
+
+// Draw a triangle
+shapesCtx.fillStyle = '#9b59b6';
+shapesCtx.beginPath();
+shapesCtx.moveTo(400, 150);
+shapesCtx.lineTo(350, 250);
+shapesCtx.lineTo(450, 250);
+shapesCtx.closePath();
+shapesCtx.fill();
+</script>
+```
+
+### Working with Paths
+
+```html
+<canvas id="pathCanvas" width="500" height="300" style="border: 1px solid #999;"></canvas>
+
+<script>
+const pathCanvas = document.getElementById('pathCanvas');
+const pathCtx = pathCanvas.getContext('2d');
+
+// Draw a complex path
+pathCtx.strokeStyle = '#34495e';
+pathCtx.lineWidth = 2;
+pathCtx.beginPath();
+pathCtx.moveTo(50, 50);
+pathCtx.lineTo(150, 100);
+pathCtx.quadraticCurveTo(200, 50, 250, 100);
+pathCtx.bezierCurveTo(300, 150, 350, 50, 400, 100);
+pathCtx.stroke();
+
+// Draw a star shape
+function drawStar(ctx, x, y, radius, points) {
+    ctx.beginPath();
+    for (let i = 0; i < points * 2; i++) {
+        const angle = (i * Math.PI) / points;
+        const r = i % 2 === 0 ? radius : radius * 0.5;
+        const px = x + Math.cos(angle) * r;
+        const py = y + Math.sin(angle) * r;
+        
+        if (i === 0) {
+            ctx.moveTo(px, py);
+        } else {
+            ctx.lineTo(px, py);
+        }
+    }
+    ctx.closePath();
+}
+
+pathCtx.fillStyle = '#f1c40f';
+drawStar(pathCtx, 100, 200, 30, 5);
+pathCtx.fill();
+
+pathCtx.strokeStyle = '#e67e22';
+pathCtx.lineWidth = 2;
+drawStar(pathCtx, 250, 200, 30, 6);
+pathCtx.stroke();
+</script>
+```
+
+### Text and Fonts
+
+```html
+<canvas id="textCanvas" width="600" height="300" style="border: 1px solid #bdc3c7;"></canvas>
+
+<script>
+const textCanvas = document.getElementById('textCanvas');
+const textCtx = textCanvas.getContext('2d');
+
+// Different font styles
+textCtx.font = '24px Arial';
+textCtx.fillStyle = '#2c3e50';
+textCtx.fillText('Default Arial Font', 50, 50);
+
+textCtx.font = 'bold 20px Georgia';
+textCtx.fillStyle = '#8e44ad';
+textCtx.fillText('Bold Georgia Font', 50, 90);
+
+textCtx.font = 'italic 18px Times New Roman';
+textCtx.fillStyle = '#16a085';
+textCtx.fillText('Italic Times New Roman', 50, 130);
+
+// Text alignment
+textCtx.font = '16px Arial';
+textCtx.textAlign = 'center';
+textCtx.fillStyle = '#c0392b';
+textCtx.fillText('Centered Text', 300, 170);
+
+textCtx.textAlign = 'right';
+textCtx.fillStyle = '#27ae60';
+textCtx.fillText('Right Aligned', 550, 200);
+
+// Outlined text
+textCtx.font = '28px Arial';
+textCtx.textAlign = 'left';
+textCtx.strokeStyle = '#3498db';
+textCtx.lineWidth = 2;
+textCtx.strokeText('Outlined Text', 50, 250);
+</script>
+```
+
+### Gradients and Patterns
+
+```html
+<canvas id="gradientCanvas" width="500" height="350" style="border: 1px solid #95a5a6;"></canvas>
+
+<script>
+const gradCanvas = document.getElementById('gradientCanvas');
+const gradCtx = gradCanvas.getContext('2d');
+
+// Linear gradient
+const linearGrad = gradCtx.createLinearGradient(0, 0, 200, 0);
+linearGrad.addColorStop(0, '#3498db');
+linearGrad.addColorStop(0.5, '#9b59b6');
+linearGrad.addColorStop(1, '#e74c3c');
+
+gradCtx.fillStyle = linearGrad;
+gradCtx.fillRect(50, 50, 200, 100);
+
+// Radial gradient
+const radialGrad = gradCtx.createRadialGradient(350, 100, 0, 350, 100, 70);
+radialGrad.addColorStop(0, '#f1c40f');
+radialGrad.addColorStop(0.7, '#f39c12');
+radialGrad.addColorStop(1, '#d68910');
+
+gradCtx.fillStyle = radialGrad;
+gradCtx.beginPath();
+gradCtx.arc(350, 100, 70, 0, 2 * Math.PI);
+gradCtx.fill();
+
+// Pattern (create a simple pattern)
+const patternCanvas = document.createElement('canvas');
+patternCanvas.width = 20;
+patternCanvas.height = 20;
+const patternCtx = patternCanvas.getContext('2d');
+
+patternCtx.fillStyle = '#ecf0f1';
+patternCtx.fillRect(0, 0, 20, 20);
+patternCtx.fillStyle = '#bdc3c7';
+patternCtx.fillRect(0, 0, 10, 10);
+patternCtx.fillRect(10, 10, 10, 10);
+
+const pattern = gradCtx.createPattern(patternCanvas, 'repeat');
+gradCtx.fillStyle = pattern;
+gradCtx.fillRect(150, 200, 200, 100);
+</script>
+```
+
+### Interactive Canvas
+
+```html
+<canvas id="interactiveCanvas" width="400" height="300" style="border: 2px solid #34495e; cursor: crosshair;"></canvas>
+<div style="margin-top: 10px;">
+    <button onclick="clearCanvas()">Clear Canvas</button>
+    <button onclick="changeColor()">Change Color</button>
+</div>
+
+<script>
+const intCanvas = document.getElementById('interactiveCanvas');
+const intCtx = intCanvas.getContext('2d');
+
+let isDrawing = false;
+let currentColor = '#3498db';
+
+// Mouse event handlers
+intCanvas.addEventListener('mousedown', startDrawing);
+intCanvas.addEventListener('mousemove', draw);
+intCanvas.addEventListener('mouseup', stopDrawing);
+intCanvas.addEventListener('mouseout', stopDrawing);
+
+function startDrawing(e) {
+    isDrawing = true;
+    const rect = intCanvas.getBoundingClientRect();
+    intCtx.beginPath();
+    intCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+}
+
+function draw(e) {
+    if (!isDrawing) return;
+    
+    const rect = intCanvas.getBoundingClientRect();
+    intCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+    intCtx.strokeStyle = currentColor;
+    intCtx.lineWidth = 3;
+    intCtx.lineCap = 'round';
+    intCtx.stroke();
+}
+
+function stopDrawing() {
+    if (!isDrawing) return;
+    isDrawing = false;
+    intCtx.beginPath();
+}
+
+function clearCanvas() {
+    intCtx.clearRect(0, 0, intCanvas.width, intCanvas.height);
+}
+
+function changeColor() {
+    const colors = ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6'];
+    currentColor = colors[Math.floor(Math.random() * colors.length)];
+}
+</script>
+```
+
+### Animation with Canvas
+
+```html
+<canvas id="animationCanvas" width="400" height="200" style="border: 1px solid #7f8c8d;"></canvas>
+
+<script>
+const animCanvas = document.getElementById('animationCanvas');
+const animCtx = animCanvas.getContext('2d');
+
+let ballX = 20;
+let ballY = 100;
+let ballSpeedX = 3;
+let ballSpeedY = 2;
+const ballRadius = 15;
+
+function animateBall() {
+    // Clear canvas
+    animCtx.clearRect(0, 0, animCanvas.width, animCanvas.height);
+    
+    // Update ball position
+    ballX += ballSpeedX;
+    ballY += ballSpeedY;
+    
+    // Bounce off walls
+    if (ballX + ballRadius > animCanvas.width || ballX - ballRadius < 0) {
+        ballSpeedX = -ballSpeedX;
+    }
+    if (ballY + ballRadius > animCanvas.height || ballY - ballRadius < 0) {
+        ballSpeedY = -ballSpeedY;
+    }
+    
+    // Draw ball
+    animCtx.fillStyle = '#e74c3c';
+    animCtx.beginPath();
+    animCtx.arc(ballX, ballY, ballRadius, 0, 2 * Math.PI);
+    animCtx.fill();
+    
+    // Continue animation
+    requestAnimationFrame(animateBall);
+}
+
+// Start animation
+animateBall();
+</script>
+```
+
+</section>
+
+The Canvas element opens up endless possibilities for creating graphics, games, data visualizations, and interactive applications. With practice, you can build complex visual experiences that run smoothly in the browser.

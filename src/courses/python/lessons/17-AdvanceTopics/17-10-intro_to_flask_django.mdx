@@ -1,0 +1,252 @@
+
+# Introduction to Web Frameworks (Flask/Django)
+<section id="introduction-to-web-frameworks-flask-django"></section>
+
+## Building Web Applications with Python
+
+We've seen how Python can be used for scripting, data analysis, and making basic HTTP requests. A major application area for Python is also **web development** – building websites and web applications.
+
+While you could theoretically handle raw HTTP requests and generate HTML responses from scratch, this is incredibly complex and tedious for anything beyond the simplest cases. **Web frameworks** provide structure, tools, and abstractions to simplify the process of building robust and scalable web applications.
+
+They handle common tasks like:
+
+*   **URL Routing:** Mapping incoming web request URLs to specific Python functions (called views or handlers).
+*   **Request/Response Handling:** Parsing incoming request data (headers, query parameters, form data) and formatting outgoing responses (HTML, JSON).
+*   **Templating:** Generating dynamic HTML content by embedding Python logic within HTML templates.
+*   **Database Interaction:** Providing tools (Object-Relational Mappers - ORMs) to interact with databases more easily.
+*   **Session Management:** Handling user sessions and login states.
+*   **Security:** Offering protection against common web vulnerabilities.
+
+Two of the most popular Python web frameworks are **Flask** and **Django**. Today, we'll provide a very brief conceptual overview and show minimal examples. Building real applications requires much deeper dives into each framework.
+
+> **Prerequisite:** Both Flask and Django are third-party libraries. You would install them using **pip** within a virtual environment.
+> 
+> ```python
+> # For Flask:
+> pip install Flask
+> 
+> # For Django:
+> pip install Django           
+> ```
+
+## Flask: The Microframework
+<section id="flask-the-microframework"></section>
+Flask is considered a **microframework**. This doesn't mean it lacks features, but rather that its core is simple and extensible. It provides the basics of routing and request handling but leaves many other choices (like database layers or form validation tools) up to the developer, often through third-party Flask extensions.
+
+*   **Pros:** Simple, lightweight, flexible, easy to get started with, large ecosystem of extensions.
+*   **Cons:** Requires more decisions and integration work for larger projects (e.g., choosing and adding database support, authentication, etc.).
+
+### Minimal Flask Example
+<section id="minimal-flask-example"></section>
+
+This creates a tiny web server that responds with "Hello, World!" when you visit the root URL (**/**).
+
+```python
+# File: hello_flask.py
+from flask import Flask
+
+# Create a Flask application instance
+app = Flask(__name__) # '__name__' helps Flask find resources
+
+# Define a route decorator for the root URL ('/')
+# This maps the URL '/' to the hello_world function
+@app.route('/')
+def hello_world():
+    """View function for the root route."""
+    return '<h1>Hello, World from Flask!</h1>' # Return HTML string
+
+# Define another route
+@app.route('/about')
+def about():
+    return '<p>This is the about page.</p>'
+
+# Check if the script is run directly
+if __name__ == '__main__':
+    # Run the Flask development server
+    # debug=True enables auto-reloading and detailed error pages (DO NOT use in production)
+    app.run(debug=True)
+```
+
+**To Run This:**
+
+1.  Save the code as **hello_flask.py**.
+2.  Make sure Flask is installed (**pip install Flask**) in your activated virtual environment.
+3.  Run the script from your terminal: **python hello_flask.py**
+4.  Open your web browser and navigate to [http://127.0.0.1:5000/](http://127.0.0.1:5000/) (or the address shown in the terminal). You should see "Hello, World from Flask!".
+5.  Navigate to [http://127.0.0.1:5000/about](http://127.0.0.1:5000/about) to see the other page.
+6.  Press **Ctrl+C** in the terminal to stop the server.
+
+The `@app.route('/')` part is a decorator that Flask uses to associate the URL path **/** with the **hello_world()** function.
+
+## Django: The "Batteries-Included" Framework
+<section id="django-the-batteries-included-framework"></section>
+
+Django takes a different approach. It's a high-level, "batteries-included" framework that provides a comprehensive set of tools needed for building complex web applications out-of-the-box.
+1. Built-in ORM (Object-Relational Mapper) for database interactions.
+2. Admin interface automatically generated from your data models.
+3. Authentication system.
+4. Templating engine.
+5. Forms handling.
+6. Security features.
+
+*   **Pros:** Rapid development for complex applications, enforces project structure, includes many essential components, strong security focus, large community.
+*   **Cons:** Steeper learning curve than Flask, can feel more rigid or "opinionated", might include features you don't need for very simple projects ("more heavyweight").
+
+### Minimal Django Example (Conceptual Steps)
+<section id="minimal-django-example-conceptual-steps"></section>
+
+Setting up even a minimal Django project involves more steps than Flask because it sets up a specific project structure.
+
+1.  **Start a Project:** Django provides a command-line tool (**django-admin**) to create the basic project directory structure.
+    ```python
+    # (Assuming Django is installed and venv is active)
+    django-admin startproject mydjangoapp . # Creates project in current dir               
+    ```
+2.  **Create an App:** Django projects are typically composed of multiple "apps", each handling a specific piece of functionality (e.g., blog posts, user accounts).
+    ```python
+    python manage.py startapp hello_app # Creates an 'hello_app' directory               
+    ```
+3.  **Define a View:** In **hello_app/views.py**, define a function to handle requests.
+    ```python
+    # hello_app/views.py
+    from django.http import HttpResponse
+
+    def index(request):
+        return HttpResponse("<h1>Hello, World from Django!</h1>")
+    ```
+4.  **Define a URL Pattern:** In **hello_app/urls.py** (you might need to create this file), map a URL to the view.
+    ```python
+    # hello_app/urls.py
+    from django.urls import path
+    from . import views # Import views from the current app
+
+    urlpatterns = [
+        path('', views.index, name='index'), # Map root URL of app to index view
+    ]
+    ```
+5.  **Include App URLs in Project URLs:** In the main project's **mydjangoapp/urls.py**, include the URLs from your app.
+    ```python
+    # mydjangoapp/urls.py
+    from django.contrib import admin
+    from django.urls import path, include # Add include
+
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        path('hello/', include('hello_app.urls')), # Include hello_app's URLs under /hello/
+    ]
+    ```
+6.  **Register the App:** Add **'hello_app'** to the **INSTALLED_APPS** list in **mydjangoapp/settings.py**.
+7.  **Run the Development Server:**
+    ```python
+    python manage.py runserver
+    ```
+8.  Visit **http://127.0.0.1:8000/hello/** in your browser.
+
+As you can see, Django involves more initial setup but provides a robust structure for larger applications.
+
+### Example 1: Flask with Dynamic Route
+<section id="example-1-flask-with-dynamic-route"></section>
+
+```python
+# File: flask_dynamic_route.py
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return '<h1>Home Page</h1><p>Try visiting /user/yourname</p>'
+
+# Route with a variable part <username>
+@app.route('/user/<username>')
+def show_user_profile(username):
+    # The value from the URL is passed as an argument
+    # Basic escaping might be needed for real applications
+    return f'<h1>User Profile: {username.title()}</h1>'
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+Run this and visit **/user/alice** or **/user/bob**.
+
+### Example 2: Flask with HTML Templates (Conceptual)
+<section id="example-2-flask-with-html-templates-conceptual"></section>
+
+Flask typically uses the Jinja2 templating engine (installed automatically with Flask). You create HTML files (usually in a **templates** folder) and use special syntax to insert dynamic data.
+
+Create **templates/index.html**:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ page_title }}</title>
+</head>
+<body>
+    <h1>{{ heading }}</h1>
+    <p>Welcome, {{ user }}!</p>
+    <ul>
+        {% for item in items %}
+        <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+```
+
+Python script:
+
+```python
+# File: flask_template.py
+from flask import Flask, render_template # Import render_template
+
+app = Flask(__name__) # Assumes 'templates' folder exists
+
+@app.route('/')
+def home():
+    # Data to pass to the template
+    template_data = {
+        'page_title': 'My Website',
+        'heading': 'Welcome to Templating!',
+        'user': 'Guest User',
+        'items': ['Apple', 'Banana', 'Orange']
+    }
+    # Render the template, passing data
+    return render_template('index.html', **template_data)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+### Example 3: Django View returning JSON (Conceptual)
+<section id="example-3-django-view-returning-json-conceptual"></section>
+
+Illustrates returning data often used by front-end JavaScript or APIs.
+
+```python
+# In an app's views.py (e.g., api_app/views.py)
+from django.http import JsonResponse # Import JsonResponse
+
+def user_data(request, user_id):
+    # In a real app, fetch data from a database based on user_id
+    data = {
+        'id': user_id,
+        'name': f'User {user_id}',
+        'email': f'user{user_id}@example.com',
+        'is_active': True
+    }
+    # JsonResponse automatically converts dict to JSON with correct headers
+    return JsonResponse(data)
+
+# Need corresponding URL pattern in api_app/urls.py:
+# path('users/<int:user_id>/', views.user_data, name='user_data'),
+# And include api_app.urls in project urls.py:
+# path('api/', include('api_app.urls')),
+# Then visit /api/users/123/
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/intro_to_flask";
+
+<Quiz questions={pythonQuiz} />

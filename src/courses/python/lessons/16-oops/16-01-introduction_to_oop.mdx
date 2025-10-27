@@ -1,0 +1,275 @@
+
+# Introduction to Object-Oriented Programming (OOP)
+
+## A New Way of Thinking: Objects
+<section id="a-new-way-of-thinking-objects"></section>
+
+So far, we've primarily focused on procedural programming: writing sequences of instructions and organizing reusable code into functions. This works well for many tasks, but as programs become larger and model more complex real-world or abstract systems, another paradigm often becomes more effective: **Object-Oriented Programming (OOP).
+
+OOP centers around the concept of objects. An object is a self-contained unit that bundles together data (attributes or properties) and functions that operate on that data (methods).
+
+Think about real-world objects:
+
+*   A **car** has attributes (color, make, model, speed) and methods (start_engine, accelerate, brake).
+*   A **dog** has attributes (breed, name, age) and methods (bark, wag_tail, eat).
+*   A **bank account** has attributes (account_number, balance, owner) and methods (deposit, withdraw, check_balance).
+
+OOP allows us to model these entities directly in our code, leading to programs that can be more intuitive, modular, and easier to manage for complex systems.
+
+## Classes: Blueprints for Objects
+<section id="classes-blueprints-for-objects"></section>
+
+How do we create objects? We define a class, which acts as a blueprint or template for creating objects. A class defines the common attributes and methods that all objects of that specific type will have.
+
+An individual object created from a class is called an instance of that class. You can create many instances (objects) from a single class blueprint.
+
+Syntax for defining a simple class:
+
+```python
+class ClassName: # Use CamelCase convention for class names
+    """Optional docstring describing the class."""
+
+    # --- Class Body ---
+    # Define attributes and methods here
+    pass # Use 'pass' if the class is empty for now
+```
+
+*   `class`: Keyword to start the class definition.
+*   `ClassName`: The name of the class (conventionally starts with an uppercase letter and uses CamelCase, e.g., **MyClass**, **BankAccount**).
+*   `:`: Colon ending the class definition line.
+*   **Indented Block (Class Body)**: Contains attribute definitions and method definitions.
+*   `pass`: A placeholder statement used when a block is syntactically required but you don't want to add any code yet.
+
+## Creating Instances (Objects)
+<section id="creating-instances-objects"></section>
+
+Once a class is defined, you create an instance (object) of that class by calling the class name as if it were a function:
+
+* **File: basic_oop.py**
+```python
+# Define a simple class (blueprint)
+class Dog:
+    """Represents a dog."""
+    # For now, the class body is empty
+    pass
+
+# Create instances (objects) of the Dog class
+my_dog = Dog() # Creates a Dog object and assigns it to my_dog
+your_dog = Dog() # Creates a <strong>separate</strong> Dog object
+
+print(f"my_dog is type: {type(my_dog)}")   # Output: <class '__main__.Dog'>
+print(f"your_dog is type: {type(your_dog)}") # Output: <class '__main__.Dog'>
+print(f"Are my_dog and your_dog the same object? {my_dog is your_dog}") # Output: False
+```
+
+Here, **my_dog** and **your_dog** are two distinct instances based on the **Dog** class blueprint. Right now, they don't have any specific data (attributes) or behaviors (methods) defined.
+
+## Adding Attributes (Data)
+<section id="adding-attributes-data"></section>
+
+Attributes are variables associated with an object that store its state or characteristics. We typically initialize attributes within a special method called `__init__` (the constructor, which we'll cover in detail soon). For now, let's add attributes directly to an instance (less common, but illustrates the concept):
+
+
+* **File: adding_attributes.py**
+```python
+
+class Car:
+    """Represents a car."""
+    pass # Still empty blueprint
+```
+* **Create an instance**
+```python
+car1 = Car()
+```
+* **Add attributes directly to the instance using dot notation**
+```python
+car1.make = "Toyota"
+car1.model = "Camry"
+car1.year = 2023
+car1.color = "Blue"
+```
+* **Access attributes using dot notation**
+```python
+print(f"Car 1 Make: {car1.make}")
+print(f"Car 1 Model: {car1.model}")
+print(f"Car 1 Year: {car1.year}")
+print(f"Car 1 Color: {car1.color}")
+```
+* **Create another instance**
+```python
+car2 = Car()
+car2.make = "Honda"
+car2.model = "Civic"
+# car2 doesn't automatically have 'year' or 'color' attributes yet
+print(f"\nCar 2 Make: {car2.make}")
+# print(car2.year) # This would cause an AttributeError
+```
+
+Adding attributes directly like this works, but it's not standard practice because it doesn't enforce that all instances of the class will have the same set of attributes. The proper way is using the **__init__** method.
+
+## Adding Methods (Behavior)
+<section id="adding-methods-behavior"></section>
+
+Methods are functions defined **inside** a class. They define the behaviors or actions that objects of that class can perform. Methods always have at least one parameter, conventionally named `self`, which refers to the instance itself.
+
+
+* **File: adding_methods.py**
+```python
+class Greeter:
+    """A simple class that can greet."""
+
+    # Define a method (function inside the class)
+    # 'self' refers to the instance calling the method
+    def say_hello(self):
+        print("Hello there!")
+```
+* **Create an instance**
+```python
+g = Greeter()
+```
+* **Call the method on the instance using dot notation**
+```python
+g.say_hello() # Python automatically passes the instance 'g' as the 'self' argument
+```
+* **Define a slightly more complex class**
+```python
+class Counter:
+    """A simple counter object."""
+    def __init__(self): # We'll properly cover __init__ next!
+        self.count = 0 # An attribute to store the count
+
+    def click(self):
+        """Increments the counter."""
+        self.count += 1
+        print(f"Clicked! Count is now {self.count}")
+
+    def get_count(self):
+        """Returns the current count."""
+        return self.count
+```
+* **Create Counter instances**
+```python
+c1 = Counter()
+c2 = Counter()
+
+c1.click() # Output: Clicked! Count is now 1
+c1.click() # Output: Clicked! Count is now 2
+c2.click() # Output: Clicked! Count is now 1 (c2 is separate)
+
+print(f"Counter 1 final count: {c1.get_count()}") # Output: 2
+print(f"Counter 2 final count: {c2.get_count()}") # Output: 1
+```
+
+In this **Counter** example, each instance (**c1**, **c2**) has its own separate **count** attribute, and the **click** method modifies the **count** of the specific instance it's called on.
+
+### Example 1: Simple **Point** Class
+<section id="example-1-simple-point-class"></section>
+
+* **File: point_class.py**
+```python
+class Point:
+    """Represents a point in 2D space."""
+    def plot(self):
+        # In a real scenario, this might draw on a graph
+        # We need attributes x and y first! This method won't work yet.
+        # print(f"Plotting point at ({self.x}, {self.y})") # Needs x, y attributes
+        print("Plot method called (needs attributes x, y).")
+```
+* **Create instances**
+```python
+p1 = Point()
+p2 = Point()
+```
+* **Add attributes (better way coming soon!)**
+```python
+p1.x = 3
+p1.y = 5
+p2.x = -1
+p2.y = 2
+```
+* **Now we could potentially call plot if it accessed attributes**
+```python
+# p1.plot() # This would now conceptually work if plot used self.x, self.y
+p1.plot() # Call the basic version
+print(f"Point 1 coordinates: ({p1.x}, {p1.y})")
+```
+
+### Example 2: Simple **Book** Class
+<section id="example-2-simple-book-class"></section>
+* **File: book_class.py**
+```python
+class Book:
+    """Represents a book."""
+    def display_info(self):
+        # This method assumes 'title' and 'author' attributes exist
+        try:
+             print(f"'{self.title}' by {self.author}")
+        except AttributeError:
+             print("Book information (title/author) is incomplete.")
+```
+* **Create instances**
+```python
+book1 = Book()
+book1.title = "Pride and Prejudice"
+book1.author = "Jane Austen"
+
+book2 = Book()
+book2.title = "1984"
+```
+
+
+* **Call method**
+```python
+book1.display_info() # Output: 'Pride and Prejudice' by Jane Austen
+book2.display_info() # Output: Book information (title/author) is incomplete.
+```
+* **Add missing attribute**
+```python
+book2.author = "George Orwell"
+book2.display_info() # Output: '1984' by George Orwell
+```
+
+### Example 3: Basic **Lamp** Class
+<section id="example-3-basic-lamp-class"></section>
+
+
+* **File: lamp_class.py**
+```python
+class Lamp:
+    """Represents a simple lamp."""
+    def __init__(self):
+        self.is_on = False # Attribute: lamp starts off
+
+    def turn_on(self):
+        """Turns the lamp on."""
+        if not self.is_on:
+            self.is_on = True
+            print("Lamp turned ON.")
+        else:
+            print("Lamp is already on.")
+
+    def turn_off(self):
+        """Turns the lamp off."""
+        if self.is_on:
+            self.is_on = False
+            print("Lamp turned OFF.")
+        else:
+            print("Lamp is already off.")
+```
+* **Create instances**
+```python
+desk_lamp = Lamp()
+floor_lamp = Lamp()
+
+desk_lamp.turn_on()
+floor_lamp.turn_on()
+desk_lamp.turn_off()
+desk_lamp.turn_off() # Try turning off again
+```
+
+This example previews the **__init__** method for setting initial attributes, which is the topic for Day 48.
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/introduction_oops";
+
+<Quiz questions={pythonQuiz} />

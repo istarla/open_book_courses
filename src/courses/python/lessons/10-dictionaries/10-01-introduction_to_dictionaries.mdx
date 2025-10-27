@@ -1,0 +1,256 @@
+# Introduction to Dictionaries
+
+## Key-Value Pair Collections
+<section id="key-value-pair-collections"></section>
+
+We've explored lists and tuples, which are ordered sequences accessed by numerical index. However, sometimes we need to associate data based on a meaningful key rather than just its position. For example, looking up a person's email address by their name, or finding the price of a product using its product ID.
+
+This is where Python's dictionary (`dict`) comes in. Dictionaries store data as key-value pairs.
+
+*   **Keys:** Must be unique within a dictionary and must be of an immutable type (like strings, numbers, or tuples containing only immutable elements). Keys are used to look up values.
+*   **Values:** Can be of any data type (numbers, strings, lists, other dictionaries, etc.) and do not need to be unique.
+*   **Unordered (Historically):** Before Python 3.7, dictionaries were unordered. From Python 3.7 onwards, dictionaries remember the order in which items were inserted.
+*   **Mutable:** Dictionaries can be changed after creation (add, remove, modify key-value pairs).
+
+Think of a dictionary like a real-world dictionary: the word (key) lets you look up its definition (value).
+
+## Creating Dictionaries
+<section id="creating-dictionaries"></section>
+
+Dictionaries are created using curly braces `{}`, with key-value pairs separated by colons (`:`), and pairs separated by commas (`,`).
+
+
+* **An empty dictionary**
+```python
+empty_dict = {}
+print(f"Empty dict: {empty_dict}, Type: {type(empty_dict)}")
+```
+* **A dictionary with key-value pairs**
+```python
+simple dictionary: student name -> score
+student_scores = {
+    "Alice": 85,
+    "Bob": 92,
+    "Charlie": 78
+}
+print(f"Student scores: {student_scores}")
+```
+* **Dictionary with different key/value types**
+```python
+product_info = {
+    "id": "A101",
+    "name": "Laptop",
+    "price": 1200.50,
+    "in_stock": True,
+    "tags": ["electronics", "computer", "office"] # Value can be a list
+}
+print(f"Product info: {product_info}")
+
+# Using the dict() constructor (less common for literals)
+# Useful for creating dicts from sequences of key-value pairs
+capitals = dict([('USA', 'Washington D.C.'), ('France', 'Paris'), ('Japan', 'Tokyo')])
+print(f"Capitals (from list of tuples): {capitals}")
+
+# Or using keyword arguments (keys must be valid variable names)
+person = dict(name="Eve", age=28, city="London")
+print(f"Person (from kwargs): {person}")
+```
+
+## Accessing Dictionary Values
+<section id="accessing-dictionary-values"></section>
+
+You access the value associated with a key using square bracket notation `[]`, similar to list indexing, but using the key instead of a numerical index.
+
+```python
+student_scores = {
+    "Alice": 85,
+    "Bob": 92,
+    "Charlie": 78
+}
+```
+* **Get Alice's score**
+```python
+alice_score = student_scores["Alice"]
+print(f"Alice's score: {alice_score}") # Output: 85
+```
+* **Get Bob's score**
+```python
+bob_score = student_scores["Bob"]
+print(f"Bob's score: {bob_score}") # Output: 92
+```
+```python
+# Using the get() method is a safer way to access keys
+# It returns None (or a specified default) if the key is not found
+david_score_safe = student_scores.get("David")
+print(f"\nGetting David's score safely: {david_score_safe}") # Output: None
+
+charlie_score_safe = student_scores.get("Charlie", "N/A") # Provide default
+print(f"Getting Charlie's score safely: {charlie_score_safe}") # Output: 78
+
+david_score_default = student_scores.get("David", "Not Found")
+print(f"Getting David's score with default: {david_score_default}") # Output: Not Found
+```
+
+Using `get()` is often preferred when you're not sure if a key exists, as it avoids crashing the program with a `KeyError`.
+
+## Modifying and Adding Items
+<section id="modifying-and-adding-items"></section>
+
+Since **dictionaries are mutable**, you can change the value associated with an existing key or add new key-value pairs using square bracket assignment.
+
+
+* **Modifying an existing value**
+```python
+File: dict_modify_add.py
+config = {
+    "theme": "light",
+    "font_size": 12
+}
+print(f"Initial config: {config}")
+```
+* **Modify an existing value**
+```python
+config["theme"] = "dark"
+print(f"After changing theme: {config}")
+# Output: {'theme', 'dark', 'font_size',12}
+```
+* **Add a new key-value pair**
+```python
+config["show_line_numbers"] = True
+print(f"After adding line numbers: {config}")
+# Output: {'theme': 'dark', 'font_size': 12, 'show_line_numbers': True}
+```
+* **Update font size**
+```python
+config["font_size"] += 2 # config["font_size"] = config["font_size"] + 2
+print(f"After increasing font size: {config}")
+# Output: {'theme': 'dark', 'font_size': 14, 'show_line_numbers': True}
+```
+
+## Removing Items
+<section id="removing-items"></section>
+
+You can remove key-value pairs using the
+
+1. pop(key, [default]): Removes the item with the specified `key` and returns its value. If the key is not found, it raises a `KeyError` unless a `default` value is provided (in which case the default is returned).
+2. popitem(): Removes and returns an arbitrary (key, value) pair as a tuple. In Python 3.7+, this removes the **last inserted** item (LIFO - Last In, First Out).
+3. del dictionary[key]: Deletes the key-value pair associated with the `key` using the **del** statement. Raises `KeyError` if the key doesn't exist.
+4. clear(): Removes all items from the dictionary.
+
+
+* **File: dict_remove.py**
+```python
+settings = {'user': 'admin', 'level': 5, 'active': True, 'color': 'blue'}
+print(f"Initial settings: {settings}")
+```
+* **pop() a key**
+```python
+level_value = settings.pop('level')
+print(f"After pop('level'): {settings}, Popped value: {level_value}")
+```
+* **pop() a non-existent key with default**
+```python
+default_value = settings.pop('sound', 'default_sound')
+print(f"After pop('sound', ...): {settings}, Popped value: {default_value}")
+```
+* **popitem() (removes last inserted in Python 3.7+)**
+```python
+last_item = settings.popitem()
+print(f"After popitem(): {settings}, Popped item: {last_item}")
+```
+* **del statement**
+```python
+del settings['user']
+print(f"After del settings['user']: {settings}")
+```
+* **clear()**
+```python
+settings.clear()
+print(f"After clear(): {settings}")
+```
+
+### Example 1: Simple Contact List
+<section id="example-1-simple-contact-list"></section>
+
+
+* **File: contacts.py**
+```python
+contacts = {
+    "Alice": "alice@example.com",
+    "Bob": "bob@sample.net",
+}
+print(f"Contacts: {contacts}")
+```
+* **Add a new contact**
+```python
+contacts["Charlie"] = "charlie@domain.org"
+print(f"Added Charlie: {contacts}")
+```
+* **Look up an email**
+```python
+
+email_bob = contacts.get("Bob", "Contact not found")
+print(f"Bob's email: {email_bob}")
+```
+* **Remove Alice**
+```python
+removed_email = contacts.pop("Alice", None)
+print(f"Removed Alice's email: {removed_email}")
+print(f"Current contacts: {contacts}")
+```
+
+### Example 2: Word Frequency Counter (Basic)
+<section id="example-2-word-frequency-counter-basic"></section>
+
+
+* **File: word_count.py**
+```python
+text = "this is a test sentence this test is simple"
+word_counts = {} # Empty dictionary to store counts
+
+words = text.lower().split() # Split text into words, convert to lowercase
+print(f"Words: {words}")
+
+for word in words:
+    if word in word_counts:
+        word_counts[word] += 1 # Increment count if word exists
+    else:
+        word_counts[word] = 1 # Add word with count 1 if new
+
+print(f"\nWord Counts: {word_counts}")
+# Output: {'this': 2, 'is': 2, 'a': 1, 'test': 2, 'sentence': 1, 'simple': 1}
+```
+
+### Example 3: Representing Game Character Stats
+<section id="example-3-representing-game-character-stats"></section>
+* **File: character_stats.py**
+```python
+player = {
+    "name": "Hero",
+    "level": 5,
+    "hp": 100,
+    "mp": 50,
+    "inventory": ["sword", "potion"] # List as a value
+}
+print(f"Player: {player}")
+```
+* **Access nested data**
+```python
+print(f"\nPlayer HP: {player['hp']}")
+print(f"Player Inventory: {player['inventory']}")
+print(f"First item in inventory: {player['inventory'][0]}")
+```
+* **Level up**
+```python
+player["level"] += 1
+player["hp"] += 20 # Increase HP on level up
+print(f"\nPlayer leveled up! New stats: {player}")
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/introduction_to_dictionaries";
+
+<Quiz questions={pythonQuiz} />
+
+
+

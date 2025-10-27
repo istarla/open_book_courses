@@ -1,0 +1,310 @@
+# Context Managers (with statement revisited)
+
+## Managing Resources Reliably: The **with** Statement
+<section id="managing-resources-reliably-the-with-statement"></section>
+
+We previously encountered the `with` statement when discussing file I/O (Day 41). We learned it's the preferred way to open files because it automatically handles closing the file, even if errors occur.
+
+```python
+# Preferred way to open and read a file
+try:
+    with open("my_file.txt", "r") as f:
+        content = f.read()
+        # Process content...
+    # File 'f' is automatically closed here
+except FileNotFoundError:
+    print("File not found.")
+```
+
+The **with** statement isn't just for files. It's a general mechanism for managing resources using objects called **context managers**.
+
+A context manager is an object designed to be used with the **with** statement. It defines specific methods that Python calls automatically: one when entering the **with** block (**setup**) and another when exiting the **with** block (**teardown** or cleanup).
+
+## The Context Management Protocol
+<section id="the-context-management-protocol"></section>
+
+For an object to be usable as a context manager with the **with** statement, it must implement two special methods:
+
+*   `__enter__(self)`: This method is executed when entering the **with** block (right after the **with** statement). Its return value is assigned to the variable specified after the **as** keyword (if **as** is used). It typically performs setup actions (like opening a file, acquiring a lock, connecting to a database).
+*   `__exit__(self, exc_type, exc_val, exc_tb)`: This method is executed when exiting the **with** block. It **always** executes, regardless of whether the block completed successfully or an exception occurred within it. It typically performs teardown or cleanup actions (like closing the file, releasing the lock, closing the database connection).
+    *   **exc_type**: The type of the exception that occurred within the **with** block (or **None** if no exception occurred).
+    *   **exc_val**: The exception object itself (or **None**).
+    *   **exc_tb**: The traceback object associated with the exception (or **None**).
+    If **__exit__** returns **True**, it indicates that any exception passed to it has been handled, and the exception should be suppressed (not propagated further). If it returns **False** (or implicitly **None**), any exception passed to it will be re-raised after **__exit__** completes.
+
+When you write `with expression as variable:`
+
+1.  **expression** is evaluated to get the context manager object.
+2.  The context manager's **__enter__()** method is called.
+3.  The return value of **__enter__()** is assigned to **variable** (if `as variable` is present).
+4.  The code block inside the **with** statement is executed.
+5.  The context manager's **__exit__()** method is called (with exception details, if any).
+
+> File objects returned by **open()** are built-in context managers. Their **__enter__** method returns the file object itself, and their **__exit__** method closes the file.
+
+## Creating Custom Context Managers
+<section id="creating-custom-context-managers"></section>
+
+While many built-in objects and library objects act as context managers, you can also create your own using classes or the **contextlib** module.
+
+### 1. Using a Class
+
+Define a class implementing **__enter__** and **__exit__**.
+
+
+* **File: custom_context_class.py**
+```python
+import time
+
+class TimerContext:
+    """A simple context manager to time a block of code."""
+    def __init__(self, name="Block"):
+        self.name = name
+        self.start_time = None
+
+    def __enter__(self):
+        """Called when entering the 'with' block."""
+        print(f"Entering timer block: '{self.name}'")
+        self.start_time = time.perf_counter()
+        # Optional: Can return a value to be used with 'as'
+        # For this timer, we don't need to return anything specific
+        return self # Can return self if needed, but often None is fine
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Called when exiting the 'with' block."""
+        end_time = time.perf_counter()
+        elapsed = end_time - self.start_time
+        print(f"Exiting timer block: '{self.name}'")
+        print(f"Elapsed time: {elapsed:.4f} seconds")
+
+        # Handle exceptions if necessary
+        if exc_type:
+            print(f"  An exception ({exc_type.__name__}) occurred inside the block: {exc_val}")
+        # Return False (or None) to propagate exceptions, True to suppress them.
+        # We'll let exceptions propagate by implicitly returning None (same as False).
+        # return False
+```
+* **--- Using the custom context manager ---**
+```python
+print("Starting program.")
+
+with TimerContext("Calculation"):
+    print("  Performing calculation...")
+    time.sleep(0.75) # Simulate work
+    print("  Calculation done.")
+
+print("\nTesting with an error:")
+try:
+    with TimerContext("Risky Operation"):
+        print("  Performing risky operation...")
+        time.sleep(0.5)
+        result = 10 / 0 # This will cause an error
+        print("  This won't print.")
+except ZeroDivisionError:
+    print("-> ZeroDivisionError was caught outside the 'with' block.")
+
+print("\nProgram finished.")
+```
+
+Notice how **__exit__** is still called even when the **ZeroDivisionError** occurs inside the second **with** block.
+
+### 2. Using **contextlib.contextmanager** Decorator
+<section id="using-contextlib-contextmanager-decorator"></section>
+
+The **contextlib** module provides a convenient decorator, **@contextmanager**, that lets you create a context manager using a simple generator function.
+
+The generator function should:
+
+1.  Perform setup actions.
+2.  Use a single **yield** statement. The value yielded becomes the result of the **__enter__** method (assigned to the **as** variable).
+3.  Execution pauses at the **yield** while the **with** block runs.
+4.  After the **with** block finishes (or an exception occurs), execution resumes **after** the **yield**.
+5.  Perform teardown/cleanup actions after the **yield**.
+6.  Exceptions occurring in the **with** block are re-raised at the **yield** point, so you can use **try...finally** inside the generator to ensure cleanup.
+
+
+* **File: custom_context_generator.py**
+```python
+import contextlib
+import time
+
+@contextlib.contextmanager # Apply the decorator
+def timed_block(name="Block"):
+    """Context manager created using a generator."""
+    print(f"Entering timed block (generator): '{name}'")
+    start_time = time.perf_counter()
+    try:
+        yield # Execution pauses here, 'with' block runs
+              # Nothing is yielded, so 'as' variable will be None
+    finally:
+        # This code runs after the 'with' block finishes or if an error occurs
+        end_time = time.perf_counter()
+        elapsed = end_time - start_time
+        print(f"Exiting timed block (generator): '{name}'")
+        print(f"Elapsed time: {elapsed:.4f} seconds")
+        # Exceptions are automatically re-raised after finally unless handled here
+```
+* **--- Using the generator-based context manager ---**
+```python
+print("Starting program.")
+
+with timed_block("Simple Task"):
+    print("  Doing simple task...")
+    time.sleep(0.6)
+
+print("\nTesting generator with error:")
+try:
+     with timed_block("Failing Task"):
+        print("  Doing failing task...")
+        time.sleep(0.3)
+        x = 1 / 0 # Cause error
+except ZeroDivisionError:
+    print("-> Caught ZeroDivisionError outside.")
+
+print("\nProgram finished.")
+```
+
+Using **@contextlib.contextmanager** is often simpler than writing a full class for straightforward setup/teardown logic.
+
+### Example 1: Database Connection (Conceptual)
+<section id="example-1-database-connection"></section>
+
+* **File: db_context.py**
+```python
+import contextlib
+
+@contextlib.contextmanager
+def db_connection(db_name):
+    """Conceptual context manager for database connections."""
+    print(f"Connecting to database '{db_name}'...")
+    # connection = actual_db_library.connect(db_name) # Real connection logic
+    connection = f"connection_to_{db_name}" # Simulate connection object
+    try:
+        yield connection # Make connection available via 'as'
+        print(f"Committing transaction for '{db_name}'...")
+        # connection.commit() # Real commit logic
+    except Exception as e:
+        print(f"Error during transaction for '{db_name}': {e}. Rolling back...")
+        # connection.rollback() # Real rollback logic
+        raise # Re-raise the exception after rollback
+    finally:
+        print(f"Closing connection to '{db_name}'...")
+        # connection.close() # Real close logic
+```
+* **--- Usage ---**
+```python
+try:
+    with db_connection("users_db") as conn:
+        print(f"  Got connection: {conn}")
+        print("  Performing DB operations...")
+        # conn.execute("SELECT * FROM users") # Example operation
+        print("  Operations successful.")
+
+    print("\n")
+    with db_connection("orders_db") as conn:
+        print(f"  Got connection: {conn}")
+        print("  Performing DB operations...")
+        # Simulate an error
+        raise ValueError("Invalid order ID found")
+        print("  This won't print.")
+
+except Exception as e:
+     print(f"\nCaught error from DB operation: {e}")
+```
+
+### Example 2: Temporarily Changing Directory (Conceptual)
+<section id="example-2-temporarily-changing-directory"></section>
+* **File: change_dir_context.py**
+```python
+import os
+import contextlib
+
+@contextlib.contextmanager
+def change_directory(new_dir):
+    """Temporarily change the working directory."""
+    original_dir = os.getcwd()
+    print(f"Changing directory to '{new_dir}'")
+    try:
+        os.chdir(new_dir) # Change directory
+        yield # Let the 'with' block run in the new directory
+    except FileNotFoundError:
+        print(f"Error: Directory '{new_dir}' not found.")
+        # Don't yield if chdir failed, exception propagates from os.chdir
+    finally:
+        # Always change back to the original directory
+        print(f"Changing back to '{original_dir}'")
+        os.chdir(original_dir)
+```
+* **--- Usage ---**
+```python
+print(f"Current directory: {os.getcwd()}")
+
+# Create a temporary directory first if needed: os.makedirs("temp_dir", exist_ok=True)
+try:
+    with change_directory("temp_dir"): # Needs 'temp_dir' to exist
+        print(f"  Inside 'with' block, CWD is: {os.getcwd()}")
+        # Perform operations within temp_dir...
+        # with open("test_in_temp.txt", "w") as f: f.write("Hello")
+    print(f"After 'with' block, CWD is: {os.getcwd()}") # Should be back to original
+
+    print("\nTrying non-existent directory:")
+    with change_directory("non_existent_dir"):
+         print("  This won't execute.")
+
+except FileNotFoundError as e:
+     print(f"Caught expected error: {e}")
+
+print(f"\nFinal directory: {os.getcwd()}")
+```
+
+### Example 3: Simple Lock Acquisition (Conceptual)
+<section id="example-3-simple-lock-acquisition"></section>
+
+
+* **File: lock_context.py**
+```python
+import threading # For actual lock object
+import contextlib
+import time
+
+# Simulate a shared resource lock
+my_lock = threading.Lock() # In a real app, this lock protects a shared resource
+
+@contextlib.contextmanager
+def acquire_lock(lock_obj, name="Resource"):
+    """Context manager to acquire and release a lock."""
+    print(f"Attempting to acquire lock for '{name}'...")
+    acquired = lock_obj.acquire() # Blocks if lock is held
+    if acquired:
+        print(f"Lock acquired for '{name}'.")
+        try:
+            yield acquired # Yield True to indicate success
+        finally:
+            print(f"Releasing lock for '{name}'.")
+            lock_obj.release()
+    else:
+        # Should not happen with standard Lock unless timeout is used
+        print(f"Failed to acquire lock for '{name}'.")
+        yield False # Indicate failure
+```
+* **--- Usage ---**
+```python
+print("Main thread starting.")
+with acquire_lock(my_lock, "Shared Data"):
+    print("  Working with shared data...")
+    time.sleep(1)
+    print("  Finished working with shared data.")
+
+# Another attempt (lock is now released)
+with acquire_lock(my_lock, "Another Process"):
+     print("  Doing something else...")
+     time.sleep(0.5)
+
+print("Main thread finished.")
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/context_managers";
+
+<Quiz questions={pythonQuiz} />
+

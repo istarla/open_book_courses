@@ -1,0 +1,186 @@
+# List Slicing & Advanced Indexing
+
+
+## Recap: Basic Indexing
+<section id="recap-basic-indexing"></section>
+
+We know that we can access individual elements in a list using their zero-based index within square brackets, like my_list[0] for the first element or my_list[-1] for the last element.
+
+```python
+letters = ['a', 'b', 'c', 'd', 'e']
+print(f"First letter: {letters[0]}")  # Output: a
+print(f"Last letter: {letters[-1]}") # Output: e
+```
+
+## Extracting Sub-Lists: Slicing
+<section id="extracting-sub-lists-slicing"></section>
+Often, we need to work with a portion of a list, not just a single element. Slicing allows us to create a new list containing a contiguous subsequence of the original list.
+
+The syntax is similar to string slicing: `my_list[start:stop:step]`.
+
+*   **start**: The index where the slice begins (inclusive). Defaults to 0 if omitted.
+*   **stop**: The index where the slice ends (exclusive). Defaults to the end of the list if omitted.
+*   **step**: The amount to increment the index by (can be positive or negative). Defaults to 1 if omitted.
+
+> **Slicing creates a shallow copy.** The new list created by slicing is independent of the original list (modifying the slice won't affect the original, and vice-versa), unless the list contains mutable objects like other lists.
+
+```python
+#        Indices:  0   1   2   3   4   5   6   7   8   9
+numbers =        [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+# Negative Indices: -10 -9  -8  -7  -6  -5  -4  -3  -2  -1
+```
+* **Get elements from index 2 up to (not including) index 5 -> [30, 40, 50]**
+```python
+slice1 = numbers[2:5]
+print(f"numbers[2:5] -> {slice1}")
+```
+* **Get elements from the beginning up to (not including) index 4 -> [10, 20, 30, 40]**
+```python
+slice2 = numbers[:4]
+print(f"numbers[:4] -> {slice2}")
+```
+* **Get elements from index 6 to the end -> [70, 80, 90, 100]**
+```python
+slice3 = numbers[6:]
+print(f"numbers[6:] -> {slice3}")
+```
+* **Get every second element -> [10, 30, 50, 70, 90]**
+```python
+slice4 = numbers[::2] # Same as numbers[0:len(numbers):2]
+print(f"numbers[::2] -> {slice4}")
+```
+* **Get elements from index 1 to 7, taking every third element -> [20, 50, 80] (indices 1, 4, 7)**
+```python
+slice5 = numbers[1:8:3]
+print(f"numbers[1:8:3] -> {slice5}")
+```
+* **Get the last 3 elements -> [80, 90, 100]**
+```python
+slice6 = numbers[-3:]
+print(f"numbers[-3:] -> {slice6}")
+```
+* **Reverse the list using slicing -> [100, 90, ..., 10]**
+```python
+slice7 = numbers[::-1]
+print(f"numbers[::-1] -> {slice7}")
+```
+* **Create a full shallow copy**
+```python
+copy_list = numbers[:]
+print(f"numbers[:] -> {copy_list}")
+```
+
+## Modifying Lists with Slicing
+<section id="modifying-lists-with-slicing"></section>
+
+Unlike string slicing (which only extracts), list slicing can also be used on the left side of an assignment statement to modify multiple elements at once, or even change the list's size.
+
+* **File: slice_modification.py**
+```python
+letters = ['a', 'b', 'c', 'd', 'e', 'f']
+print(f"Original: {letters}")
+```
+* **Replace elements at indices 1 and 2 ('b', 'c') with new values**
+```python
+letters[1:3] = ['B', 'C'] # The slice [1:3] refers to indices 1 and 2
+print(f"After letters[1:3] = ['B', 'C']: {letters}")
+# Output: ['a', 'B', 'C', 'd', 'e', 'f']
+```
+* **Replace elements at indices 3 and 4 ('d', 'e') with more elements**
+```python
+letters[3:5] = ['D1', 'D2', 'E'] # Replaced 2 elements with 3
+print(f"After letters[3:5] = ['D1', 'D2', 'E']: {letters}")
+# Output: ['a', 'B', 'C', 'D1', 'D2', 'E', 'f'] - list size changed
+```
+* **Remove elements at indices 0 and 1 ('a', 'B') by assigning an empty list**
+```python
+letters[0:2] = []
+print(f"After letters[0:2] = []: {letters}")
+# Output: ['C', 'D1', 'D2', 'E', 'f']
+```
+* **Insert elements at the beginning without removing anything**
+```python
+letters[:0] = ['X', 'Y'] # Slice before index 0
+print(f"After letters[:0] = ['X', 'Y']: {letters}")
+# Output: ['X', 'Y', 'C', 'D1', 'D2', 'E', 'f']
+```
+
+Using slice assignment is a powerful way to manipulate list segments.
+
+## Deleting Elements with `del`
+<section id="deleting-elements-with-del"></section>
+
+Besides `pop()` and `remove()`, you can use the `del` statement to remove items by index or to remove an entire slice.
+* **File: del_statement.py**
+```python
+items = [100, 200, 300, 400, 500, 600]
+print(f"Original: {items}")
+```
+* **Delete item at index 2 (value 300)**
+```python
+del items[2]
+print(f"After del items[2]: {items}") # Output: [100, 200, 400, 500, 600]
+```
+* **Delete items from index 1 up to (not including) index 3**
+
+```python
+del items[1:3]
+print(f"After del items[1:3]: {items}") # Output: [100, 500, 600]
+```
+# Delete the entire list variable (less common than list.clear())
+Delete:`del` is a general Python statement, not a list method.
+
+### Example 1: Extracting Middle Elements
+<section id="example-1-extracting-middle-elements"></section>
+* **File: extract_middle.py**
+```python
+data = [5, 10, 15, 20, 25, 30, 35, 40]
+```
+* **Assume we want to exclude the first two and last two elements**
+```python
+middle_elements = data[2:-2] # Start at index 2, stop 2 elements from the end
+print(f"Original data: {data}")
+print(f"Middle elements: {middle_elements}") # Output: [15, 20, 25, 30]
+```
+
+### Example 2: Replacing a Segment of a List
+<section id="example-2-replacing-a-segment-of-a-list"></section>
+* **File: replace_segment.py**
+```python
+schedule = ["wakeup", "breakfast", "work", "lunch", "work", "dinner", "sleep"]
+print(f"Original schedule: {schedule}")
+```
+* **Replace the 'work' segments (indices 2-4) with 'leisure'**
+```python
+schedule[2:5] = ["leisure", "meeting", "leisure"] # Replace 3 items with 3 items
+print(f"Updated schedule: {schedule}")
+# Output: ['wakeup', 'breakfast', 'leisure', 'meeting', 'leisure', 'dinner', 'sleep']
+```
+
+### Example 3: Using Step in Slicing
+<section id="example-3-using-step-in-slicing"></section>
+* **File: step_slicing.py**
+```python
+temps = [72, 75, 78, 76, 80, 82, 79, 77]
+print(f"Temperatures: {temps}")
+```
+* **Get every other temperature starting from the first**
+```python
+every_other_temp = temps[::2]
+print(f"Every other temp (from start): {every_other_temp}") # Output: [72, 78, 80, 79]
+```
+* **Get every other temperature starting from the second (index 1)**
+```python
+every_other_from_second = temps[1::2]
+print(f"Every other temp (from index 1): {every_other_from_second}") # Output: [75, 76, 82, 77]
+```
+* **Get temperatures in reverse order**
+```python
+reversed_temps = temps[::-1]
+print(f"Reversed temps: {reversed_temps}")
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/list_slicing";
+
+<Quiz questions={pythonQuiz} />

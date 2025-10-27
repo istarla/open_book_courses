@@ -1,0 +1,217 @@
+
+
+# Multiple **except** Blocks & **finally**
+
+## Recap: Basic Exception Handling
+<section id="recap-basic-exception-handling"></section>
+
+Yesterday, we learned the fundamental try...except block for handling potential runtime errors (exceptions) gracefully, preventing program crashes. We saw how to catch a specific type of exception, like ValueError or FileNotFoundError.
+
+```python
+try:
+    # Code that might raise ValueError
+    num = int(input("Enter a number: "))
+    print(f"You entered {num}")
+except ValueError:
+    print("That was not a valid number!")
+```
+
+But what if the code in the try block could potentially raise different types of errors that we want to handle differently? And what if we need to perform some cleanup action regardless of whether an error occurred or not?
+
+## Handling Multiple Exception Types
+<section id="handling-multiple-exception-types"></section>
+
+A single try block can be followed by multiple except clauses, each specifying a different exception type. Python checks the except clauses in order.
+
+```python
+try:
+    # Code that might raise different errors
+    # (e.g., ValueError, ZeroDivisionError, TypeError)
+    operation_code
+except ValueError:
+    # Handle ValueError specifically
+    handle_value_error()
+except ZeroDivisionError:
+    # Handle ZeroDivisionError specifically
+    handle_zero_division()
+except ExceptionType3 as err: # Can still capture the error object
+    # Handle ExceptionType3 specifically
+    handle_error_type_3(err)
+# ... more specific except blocks ...
+except Exception as e: # Optional: Catch any other exception type
+    # Handle any other unexpected error
+    handle_generic_error(e)
+```
+
+When an exception occurs in the **try** block:
+
+1.  Python looks for the first except clause whose specified type matches the type of the exception raised (or is a base class of it).
+2.  Once a match is found, the code block for that except clause is executed.
+3.  Crucially, only the first matching except block is executed. All subsequent except blocks in that try...except structure are skipped.
+4.  If no matching except block is found, the exception remains unhandled, and the program terminates (unless handled by an outer try...except block).
+
+Order matters! Place more specific exception types before more general ones (like Exception). If you put except Exception: first, it would catch all exceptions, preventing more specific handlers below it from ever being reached.
+
+## Grouping Exceptions
+<section id="grouping-exceptions"></section>
+
+If you want to perform the same handling logic for multiple different exception types, you can group them in a tuple within a single **except** clause:
+
+```python
+try:
+    # Code that might raise IndexError or KeyError
+    some_lookup_operation
+except (IndexError, KeyError) as e: # Handle both types the same way
+    print(f"Error: Invalid index or key used - {e}")
+except ValueError:
+    print("Error: Invalid value encountered.")
+```
+
+## The **finally** Clause: Guaranteed Execution
+<section id="the-finally-clause-guaranteed-execution"></section>
+
+Sometimes, you need to execute a piece of code regardless of whether an exception occurred in the try block or not. This is often used for cleanup actions, like closing files (although the with statement is preferred for files), releasing network connections, or closing database connections.
+
+The optional finally clause is placed after all except blocks (and also after the optional else block, which we haven't covered yet but executes if no exception occurs). The code inside the finally block is always executed before leaving the try...except...finally structure, no matter what happens:
+
+1. **It executes if the try block completes successfully.**
+2. **It executes if an exception occurs in the try block and is handled by an except block.**
+3. **It executes if an exception occurs in the try block and is not handled by any except block (it runs just before the exception is propagated outwards).**
+4. **It even executes if the try or except block contains a return, break, or continue statement.**
+
+
+* **File: finally_example.py**
+```Python
+f = None # Initialize file variable outside try
+try:
+    print("Attempting to open file...")
+    f = open("important_data.log", "w", encoding="utf-8") # Use 'w' for demo
+    print("File opened.")
+    # Simulate potential error during writing
+    user_input = input("Enter data (type 'error' to simulate failure): ")
+    if user_input.lower() == "error":
+        result = 10 / 0 # Cause a ZeroDivisionError
+    f.write(user_input + "\n")
+    print("Data written successfully.")
+
+except FileNotFoundError:
+    print("Error: Could not open file (permission issue?).")
+except ZeroDivisionError:
+    print("Error: Simulated error during processing.")
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")
+finally:
+    # This block ALWAYS executes
+    print("\nExecuting finally block...")
+    if f and not f.closed: # Check if file was opened and not already closed
+        f.close()
+        print("File closed in finally block.")
+    else:
+        print("File was not opened or already closed.")
+
+print("\nProgram continues after try...except...finally.")
+```
+
+Run this example, entering normal data first, and then entering "error" to see the finally block execute in both success and failure scenarios.
+
+While finally is essential for general resource cleanup (like network sockets, database connections), remember that for file handling, the with open(...) as ...: statement is the preferred, more Pythonic way as it handles the closing automatically, effectively achieving the goal of **finally** for file objects.
+
+### Example 1: Robust Division Calculator
+<section id="example-1-robust-division-calculator"></section>
+
+
+* **File: robust_division.py**
+```python
+def divide_numbers():
+    try:
+        num_str = input("Enter numerator: ")
+        den_str = input("Enter denominator: ")
+        num = float(num_str)
+        den = float(den_str)
+        result = num / den
+        print(f"Result: {result}")
+    except ValueError:
+        print("Invalid input: Please enter numbers only.")
+    except ZeroDivisionError:
+        print("Invalid input: Denominator cannot be zero.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+    finally:
+        print("--- Division attempt complete ---")
+
+divide_numbers()
+```
+
+### Example 2: Handling Different Dictionary/List Errors
+<section id="example-2-handling-different-dictionary-list-errors"></section>
+
+
+* **File: collection_errors.py**
+```python
+data_struct = {"a": [1, 2], "b": [3, 4]}
+# data_struct = [10, 20, 30] # Uncomment to test IndexError
+
+key_or_index = input("Enter key or index to access: ")
+
+try:
+    if isinstance(data_struct, dict): # Check if it's a dictionary
+        value = data_struct[key_or_index] # Might raise KeyError
+    elif isinstance(data_struct, list): # Check if it's a list
+         index = int(key_or_index) # Might raise ValueError
+         value = data_struct[index] # Might raise IndexError
+    else:
+        print("Unsupported data structure type.")
+        value = None # Assign a default
+
+    if value is not None:
+        print(f"Value found: {value}")
+
+except (KeyError, IndexError) as e: # Group common lookup errors
+    print(f"Error: Invalid key or index '{key_or_index}'. Details: {e}")
+except ValueError:
+    print(f"Error: Index '{key_or_index}' must be an integer for lists.")
+except Exception as e:
+    print(f"An unexpected error: {e}")
+```
+
+### Example 3: Resource Cleanup Simulation
+<section id="example-3-resource-cleanup-simulation"></section>
+* **File: resource_cleanup.py**
+```python
+def process_resource(fail_step=None):
+    resource_acquired = False
+    try:
+        print("\nAcquiring resource...")
+        resource_acquired = True # Simulate acquiring
+        print("Resource acquired.")
+
+        if fail_step == "processing":
+            print("Simulating processing error...")
+            raise ValueError("Problem during processing")
+
+        print("Processing resource...")
+        print("Processing complete.")
+
+    except ValueError as e:
+        print(f"Caught processing error: {e}")
+    except Exception as e:
+         print(f"Caught unexpected error: {e}")
+    finally:
+        # Cleanup always happens if resource was acquired
+        print("Entering finally block...")
+        if resource_acquired:
+            print("Releasing resource...")
+            # Code to release the resource (close connection, etc.)
+            print("Resource released.")
+        else:
+            print("No resource was acquired, nothing to release.")
+
+# Test cases
+process_resource() # Success case
+process_resource(fail_step="processing") # Failure case
+```
+
+import Quiz from "../../../../components/Quiz";
+import pythonQuiz from "../../../../Data/multiple_expections";
+
+<Quiz questions={pythonQuiz} />
