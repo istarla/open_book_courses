@@ -1,0 +1,202 @@
+---
+title: Day 01 What Is Css Syntax And Selectors
+---
+
+# What is CSS? Syntax and Selectors
+
+  
+
+Welcome to the first day of your CSS journey! Today, we'll explore the
+fundamental concepts of CSS: what it is, its basic syntax, and how to
+use selectors to target HTML elements for styling.
+
+## What is CSS?
+
+CSS stands for **Cascading Style Sheets**. It's a
+stylesheet language used to describe the presentation of a document
+written in a markup language like HTML. CSS dictates how HTML elements
+should be displayed on screen, on paper, or in other media. Essentially,
+CSS is responsible for the look and feel of a web page – its layout,
+colors, fonts, and overall visual appearance.
+
+Without CSS, web pages would be plain text with unstyled HTML elements.
+CSS allows developers to separate the content (HTML) from the
+presentation (CSS), making websites easier to maintain, more flexible,
+and capable of sophisticated designs.
+
+## CSS Syntax
+
+A CSS rule consists of a selector and a declaration block:
+
+* **Selector:** Points to the HTML element(s) you want to
+  style.
+* **Declaration Block:** Contains one or more declarations
+  separated by semicolons. Each declaration includes a CSS property name
+  and a value, separated by a colon.
+
+Here's the basic structure:
+
+```
+selector {
+  property: value; /* This is a declaration */
+  another-property: another-value; /* Another declaration */
+}
+```
+
+For example, to make all paragraph (`<p>`) elements red
+and have a font size of 16 pixels, the CSS rule would be:
+
+```
+p {
+  color: red;
+  font-size: 16px;
+}
+```
+
+## Basic CSS Selectors
+
+Selectors are patterns that select the HTML elements you want to style.
+Here are some of the most basic and commonly used selectors:
+
+### 1. Element Selector (or Type Selector)
+
+This selector targets all HTML elements of a specific type.
+
+**Example:** Selects all `<h2>` elements.
+
+```
+h2 {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+```
+
+This rule would apply the Arial font (or a generic sans-serif font if
+Arial is not available) and center-align the text for all
+`<h2>` headings on the page.
+
+### 2. Class Selector
+
+The class selector targets HTML elements that have a specific
+`class` attribute. To select elements with a specific class,
+write a period (`.`) character, followed by the class name.
+
+**HTML Example:**
+
+```
+<p class="highlight">This paragraph will be highlighted.</p>
+<div class="highlight">This div will also be highlighted.</div>
+<p>This paragraph will not.</p>
+```
+
+**CSS Example:** Selects all elements with
+`class="highlight"`.
+
+```
+.highlight {
+  background-color: yellow;
+  font-weight: bold;
+}
+```
+
+An element can have multiple classes, separated by spaces (e.g.,
+`class="highlight important"`). You can target elements with
+multiple specific classes by chaining them without spaces (e.g.,
+`.highlight.important`).
+
+### 3. ID Selector
+
+The ID selector targets a single HTML element that has a specific
+`id` attribute. IDs must be unique within an HTML document.
+To select an element with a specific ID, write a hash (`#`)
+character, followed by the ID of the element.
+
+**HTML Example:**
+
+```
+<div id="main-header">This is the main header.</div>
+```
+
+**CSS Example:** Selects the element with
+`id="main-header"`.
+
+```
+main-header {
+  padding: 20px;
+  border-bottom: 1px solid #ccc;
+}
+```
+
+While powerful, ID selectors have high specificity and should be used
+sparingly, often for unique page landmarks or JavaScript hooks, rather
+than general styling.
+
+### 4. Universal Selector
+
+The universal selector (`*`) selects all HTML elements on the
+page. It's often used to apply global resets or default styles, but
+should be used with caution as it can have performance implications and
+override desired styles if not handled carefully.
+
+**CSS Example:** Applies a red border to every element (not
+generally recommended for this purpose, but illustrates the selector).
+
+```
+* {
+  /* A common use case is for box-sizing reset: */
+  /* box-sizing: border-box; */
+  /* Example for illustration: */
+  border: 1px dotted red; /* Not practical for all elements */
+}
+```
+
+A more practical use is setting a default box-sizing for all elements:
+
+```
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+```
+
+### 5. Grouping Selector
+
+You can apply the same styles to multiple selectors by grouping them
+with commas. This helps to reduce code duplication.
+
+**CSS Example:** Applies the same styles to
+`<h1>`, `<h2>`, and
+`<p>` elements.
+
+```
+h1, h2, p {
+  color: navy;
+  margin-bottom: 10px;
+}
+```
+
+## Quiz Time!
+
+1. What does CSS stand for?
+
+Cascading Style Sheets.
+
+2. What are the two main parts of a CSS rule?
+
+A selector and a declaration block.
+
+3. How do you select an HTML element with the class name "info-box" in
+CSS?
+
+`.info-box`
+
+4. What character is used to denote an ID selector in CSS?
+
+The hash character (`#`).
+
+5. How can you apply the style `color: green;` to both
+`h3` elements and elements with the class
+`.lead` using a single CSS rule?
+
+`h3, .lead { color: green; }`

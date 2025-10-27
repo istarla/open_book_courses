@@ -219,7 +219,9 @@ except requests.exceptions.RequestException as e:
     print(f"An error occurred: {e}")
 ```
 
-import Quiz from "../../../../components/Quiz";
-import pythonQuiz from "../../../../Data/intro_to_requests";
+import Quiz from "../../../components/Quiz";
+import pythonQuiz from "../../quiz-data/intro_to_requests";
+
+<section id="Quiz-time"></section>
 
 <Quiz questions={pythonQuiz} />

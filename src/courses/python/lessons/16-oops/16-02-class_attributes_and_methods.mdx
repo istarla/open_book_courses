@@ -38,7 +38,7 @@ we differentiate between attributes and methods that belong to the **instance** 
     *   Can be accessed via the class name: ClassName.attribute_name, or via an instance: instance_name.attribute_name (Python looks it up on the class if not found on the instance).
     *   Often used for constants associated with the class, default values, or shared state across all instances (use shared state with caution).
     *   Examples: The species of all dogs (Dog.species), the number of wheels on all standard cars (Car.num_wheels).
-<img src="/images/class_attribute.jpg" alt="variable" className="w-150 h-100 mx-auto" />
+<img src="/src/courses/python/images/class_attribute.jpg" alt="variable" className="w-150 h-100 mx-auto" />
 
 * **File: class_vs_instance_attr.py**
 ```python
@@ -281,7 +281,9 @@ your_car.display_info()
 print(f"\nAccessing class attribute via class name: {Car.num_wheels}")
 ```
 
-import Quiz from "../../../../components/Quiz";
-import pythonQuiz from "../../../../Data/class_attribute";
+import Quiz from "../../../components/Quiz";
+import pythonQuiz from "../../quiz-data/class_attribute";
+
+<section id="Quiz-time"></section>
 
 <Quiz questions={pythonQuiz} />

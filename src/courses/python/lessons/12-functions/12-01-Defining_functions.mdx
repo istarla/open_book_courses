@@ -7,7 +7,7 @@
 As our programs grow larger and more complex, simply writing code sequentially becomes difficult to manage, read, and maintain. We often find ourselves repeating the same blocks of code in different places.
 
 **Functions**: are named blocks of reusable code that perform a specific task. They allow us to break down our program into smaller, logical units, making the code more organized, modular, and easier to understand and debug.
-<img src="/images/functions.png" alt="variable" className="w-150 h-100 mx-auto" />
+<img src="/src/courses/python/images/functions.png" alt="variable" className="w-150 h-100 mx-auto" />
 ### Key benefits of using functions:
 
 *   **Reusability:** Write the code once and call the function multiple times from different parts of your program.
@@ -180,7 +180,10 @@ display_items(empty) # Call with default title
 
 (This example previews **enumerate** and default arguments).
 
-import Quiz from "../../../../components/Quiz";
-import pythonQuiz from "../../../../Data/define_functions";
+import Quiz from "../../../components/Quiz";
+import pythonQuiz from "../../quiz-data/define_functions";
+
+<section id="Quiz-time"></section>
+
 
 <Quiz questions={pythonQuiz} />

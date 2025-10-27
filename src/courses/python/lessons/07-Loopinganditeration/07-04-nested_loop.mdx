@@ -8,7 +8,7 @@ Just as we can nest conditional statements (`if` inside `if`), we can also nest 
 The loop containing the other loop is called the outer loop, and the loop inside is called the inner loop.
 
 Nested loops are commonly used when you need to work with two-dimensional data structures (like grids or tables, which we'll see with lists of lists later), generate combinations, or perform an action multiple times for each item processed by the outer loop.
-<img src="/images/nested_loop.png" alt="variable" className="w-150 h-100 mx-auto" />
+<img src="/src/courses/python/images/nested_loop.png" alt="variable" className="w-150 h-100 mx-auto" />
 ## Syntax and Structure
 <section id="nested-loop-syntax"></section>
 The structure involves indenting the inner loop within the block of the outer loop.
@@ -143,7 +143,9 @@ print("Finished all loops.")
 
 If you need to break out of *both* loops, you often use a flag variable or restructure the code (e.g., putting the loops in a function and using `return`).
 
-import Quiz from "../../../../components/Quiz";
-import pythonQuiz from "../../../../Data/nested_loop";
+import Quiz from "../../../components/Quiz";
+import pythonQuiz from "../../quiz-data/nested_loop";
+
+<section id="Quiz-time"></section>
 
 <Quiz questions={pythonQuiz} />

@@ -148,7 +148,9 @@ print("\nProgram finished.")
 
 Notice how the ValueError raised in inner_function is caught by outer_function, logged, and then re-raised to be caught by the try...except block in the main part of the script.
 
-import Quiz from "../../../../components/Quiz";
-import pythonQuiz from "../../../../Data/raising_exceptions";
+import Quiz from "../../../components/Quiz";
+import pythonQuiz from "../../quiz-data/raising_exceptions";
+
+<section id="Quiz-time"></section>
 
 <Quiz questions={pythonQuiz} />

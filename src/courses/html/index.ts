@@ -16,7 +16,7 @@ const htmlCourse: Course = {
   folderName: "html",
   folderPath: "/src/courses/html",
   noOfLessons: 8,
-  imageURL: "/src/courses/assets/images/html.png",
+  imageURL: "/src/courses/assets/src/courses/python/images/html.png",
   description:
     "Learn HTML step by step from introduction to advanced features. Covers tags, elements, forms, inputs, multimedia, and best practices.",
   instructor: "OpenBook Team",

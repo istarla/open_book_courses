@@ -42,13 +42,13 @@ Some operating systems such as **Linux** come with the Python package manager pr
                     **Step 1: Go to the official Python website:**
                       [python.org/downloads/windows/](https://www.python.org/downloads/windows/)
                       
-                     ![downloaded](/images/download_pythonlink.png)
+                     ![downloaded](/src/courses/python/images/download_pythonlink.png)
 
                     
                     **Step 2: Download the latest stable release installer:**
                       Download the latest stable release installer (e.g., Python 3.x.y).
                       Choose the 64-bit installer if you have a 64-bit system.
-                    ![downloaded](/images/Download_py.png)
+                    ![downloaded](/src/courses/python/images/Download_py.png)
 
                     **Step 3: Run the installer:**
                       Run the installer.
@@ -56,34 +56,34 @@ Some operating systems such as **Linux** come with the Python package manager pr
                         PATH"**
                       during the installation. This makes Python accessible from the
                       command line.
-                      ![downloaded](/images/images.png)
+                      ![downloaded](/src/courses/python/images/images.png)
                     
                         1. Choose "Install Now" for the recommended setup.
-                         ![downloaded](/images/Set_up.png)
+                         ![downloaded](/src/courses/python/images/Set_up.png)
                         2. Verify the installation by opening Command Prompt or PowerShell
                       and typing **python --version**.
-                           ![downloaded](/images/sucessfully_py.png)
+                           ![downloaded](/src/courses/python/images/sucessfully_py.png)
                     
               **macOS:**
 
               
                     **Step 1: Go to the official Python website:**
                       [python.org/downloads/macos/](https://www.python.org/downloads/macos/)
-                      ![downloaded](/images/Mac_os.png)
+                      ![downloaded](/src/courses/python/images/Mac_os.png)
                     
                     **Step 2: Download the macOS 64-bit installer package:**
                       Download the macOS 64-bit installer package.
-                     ![downloaded](/images/Mac_version.png)
+                     ![downloaded](/src/courses/python/images/Mac_version.png)
                     **Step 3: Run the installer package:**
                       Run the installer package, following the prompts.
-                    ![downloaded](/images/sucessful_macos.png)
+                    ![downloaded](/src/courses/python/images/sucessful_macos.png)
                     **Step 4: Verify the installation:**
                       Verify the installation by opening Terminal (Applications &gt;
                       Utilities &gt; Terminal) and typing
                       **python3 --version**. (macOS often comes with Python
                       2 accessible via **python**, so use
                       **python3**).
-                      ![downloaded](/images/installer_macos.png)
+                      ![downloaded](/src/courses/python/images/installer_macos.png)
                     
                         
                     
@@ -94,14 +94,14 @@ Some operating systems such as **Linux** come with the Python package manager pr
               **Linux (Debian/Ubuntu):**
               
                         
-                      ![downloaded](/images/Linux.png)
+                      ![downloaded](/src/courses/python/images/Linux.png)
                     
 
                     
                         **Step 2: Install Python 3 if not installed:**
                       If not installed or you need a specific version, use the package
                       manager:
-                     ![downloaded](/images/Linux_step.png)
+                     ![downloaded](/src/courses/python/images/Linux_step.png)
                   
               
             
@@ -109,9 +109,9 @@ Some operating systems such as **Linux** come with the Python package manager pr
               **Linux (Fedora):**
               
                         1. Check with **python3 --version**.
-                        ![downloaded](/images/python_linux.png)
+                        ![downloaded](/src/courses/python/images/python_linux.png)
                         1. Install using dnf:
-                         ![downloaded](/images/Dnf_image.png)
+                         ![downloaded](/src/courses/python/images/Dnf_image.png)
              
       
 
@@ -238,7 +238,9 @@ C:\Users\YourUser\AppData\Local\Programs\Python\Python310\python.exe
 Do you want me to also make the examples inline code styled consistently?
    
 
-import Quiz from '../../../../components/Quiz'
-import pythonQuiz from '../../../../Data/setup_question'
+import Quiz from '../../../components/Quiz'
+import pythonQuiz from '../../quiz-data/setup_question'
+
+<section id="Quiz-time"></section>
 
 <Quiz questions={pythonQuiz} />

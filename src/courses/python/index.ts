@@ -117,7 +117,7 @@ const pythonCourse: Course = {
   folderName: "python",
   folderPath: "/src/courses/python",
   noOfLessons: 12,
-  imageURL: "/src/courses/assets/images/python.png",
+  imageURL: "/src/courses/assets/src/courses/python/images/python.png",
   description: "Learn Python step by step from introduction to advanced features. Covers variables, data types, control flow, functions, modules, and object-oriented programming.",
 
   lessons: [

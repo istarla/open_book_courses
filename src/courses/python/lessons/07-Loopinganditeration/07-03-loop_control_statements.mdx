@@ -9,7 +9,7 @@ Python provides two main statements for this purpose, usable within both `for` a
 
 *   `break`: Immediately terminates the innermost loop it's contained within. Execution resumes at the first statement **after** the loop.
 *   `continue`: Skips the rest of the code **inside the current iteration** of the loop block and proceeds directly to the next iteration (for `for` loops) or re-evaluates the condition (for `while` loops).
-<img src="/images/break_continue.jpg" alt="variable" className="w-150 h-100 mx-auto" />
+<img src="/src/courses/python/images/break_continue.jpg" alt="variable" className="w-150 h-100 mx-auto" />
 ## The break Statement
 <section id="break-statement"></section>
 
@@ -151,7 +151,10 @@ while True: # Loop indefinitely until explicitly broken
 print(f"\nFinal total: {total}")
 ```
 
-import Quiz from "../../../../components/Quiz";
-import pythonQuiz from "../../../../Data/loop_control";
+import Quiz from "../../../components/Quiz";
+import pythonQuiz from "../../quiz-data/loop_control";
+
+
+<section id="Quiz-time"></section>
 
 <Quiz questions={pythonQuiz} />

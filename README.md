@@ -207,7 +207,7 @@ export const COURSES: Course[] = [
     folderName: "javascript",
     folderPath: "/src/courses/javascript",
     noOfLessons: 8,   // here ,  no of lessons is equal to no of mdx files inside lessons folder
-    imageURL: "/src/courses/assets/images/javascript.png",
+    imageURL: "/src/courses/assets/src/courses/python/images/javascript.png",
     description: "Learn JavaScript from basics to advanced topics.",
     instructor: "Your Name",
     category: "Web Development",
@@ -217,7 +217,7 @@ export const COURSES: Course[] = [
 ```
 
 - Make sure `folderName` matches your course folder.
-- Update `imageURL` if you add a course image in `assets/images/`.
+- Update `imageURL` if you add a course image in `assets/src/courses/python/images/`.
 
 ### 6. Add Assets or Components (Optional)
 

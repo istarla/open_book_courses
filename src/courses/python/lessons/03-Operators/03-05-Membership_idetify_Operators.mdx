@@ -133,7 +133,10 @@ This is a common point of confusion. Remember the golden rule:
 *   Use `is` to check if the **objects are the same**. This is for checking object identity, which is a more specific and less common use case.
 *   The most common use of `is` is to check if a variable is `None`, e.g., `if my_variable is None:`. This is considered best practice.
 
-import Quiz from '../../../../components/Quiz'
-import pythonQuiz from '../../../../Data/Membership_Operator'
+import Quiz from '../../../components/Quiz'
+import pythonQuiz from '../../quiz-data/Membership_Operator'
+
+<section id="Quiz-time"></section>
+
 
 <Quiz questions={pythonQuiz} />

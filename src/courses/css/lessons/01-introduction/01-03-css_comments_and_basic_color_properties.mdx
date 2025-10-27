@@ -1,0 +1,235 @@
+---
+title: Day 03 Css Comments And Basic Color Properties
+---
+
+# CSS Comments and Basic Color Properties
+
+  
+
+On our third day, we'll cover how to add comments to your CSS code for
+better readability and maintainability. We'll also dive into one of the
+most fundamental aspects of styling: CSS color properties, focusing on
+how to define colors for text and backgrounds.
+
+## CSS Comments
+
+Comments in CSS are used to explain your code, make it more readable, or
+temporarily disable parts of your stylesheet. Browsers ignore comments,
+so they don't affect the functionality of your CSS.
+
+CSS comments start with `/*` and end with `*/`.
+They can span multiple lines.
+
+**Syntax:**
+
+```
+/* This is a single-line comment */
+
+p {
+  color: green; /* Set paragraph text color to green */
+  font-size: 16px;
+}
+
+/*
+This is a
+multi-line comment.
+It can be used to explain a larger block of code
+or to temporarily comment out a section.
+
+.unused-style {
+  background-color: red;
+  border: 1px solid black;
+}
+*/
+
+h1 {
+  /* color: blue; Temporarily disabled this rule */
+  font-weight: bold;
+}
+```
+
+### Why Use Comments?
+
+* **Explanation:** Clarify complex or non-obvious CSS rules
+  for yourself or other developers.
+* **Organization:** Divide your stylesheet into logical
+  sections.
+* **Debugging:** Temporarily disable rules to isolate
+  issues.
+* **Documentation:** Provide information about authorship,
+  version, or purpose of the styles.
+
+**Tip:** Write comments that explain *why* you did
+something, not just *what* you did. Good code often explains
+itself, but the reasoning behind a choice might not be obvious.
+
+## Basic CSS Color Properties
+
+Color is a fundamental aspect of web design. CSS provides several
+properties to control the colors of various parts of your HTML elements.
+Today, we'll focus on two primary ones: `color` for text and
+`background-color` for element backgrounds.
+
+We'll explore different ways to define color values (like keywords, hex,
+RGB) in a later lesson. For now, we'll primarily use named colors and
+simple hex codes.
+
+### 1. The `color` Property
+
+The `color` property is used to set the color of the text
+content of an HTML element.
+
+**Example:**
+
+```
+/* styles.css */
+h1 {
+  color: navy; /* Sets the text color of h1 elements to navy */
+}
+
+p {
+  color: #333333; /* Sets paragraph text color to a dark gray */
+}
+
+.special-text {
+  color: crimson; /* Sets text color for elements with class 'special-text' */
+}
+```
+
+```
+<!-- index.html -->
+<h1>Main Title</h1>
+<p>This is a standard paragraph with dark gray text.</p>
+<p class="special-text">This paragraph has special crimson text.</p>
+```
+
+In this example, `<h1>` elements will have navy blue
+text, regular paragraphs will have dark gray text, and any element with
+the class `special-text` will have crimson text.
+
+### 2. The `background-color` Property
+
+The `background-color` property sets the background color of
+an element. The background extends to the outer edge of the element's
+padding (or border if `box-sizing: border-box` is used and
+padding is included).
+
+**Example:**
+
+```
+/* styles.css */
+body {
+  background-color: #f0f8ff; /* AliceBlue background for the whole page */
+}
+
+div.highlight {
+  background-color: yellow;
+  padding: 10px; /* Padding to see the background color better */
+}
+
+button {
+  background-color: seagreen;
+  color: white; /* Text color on the button */
+  padding: 8px 15px;
+  border: none;
+}
+```
+
+```
+<!-- index.html -->
+<body>
+  <div class="highlight">
+    This div has a yellow background.
+  </div>
+  <p>This paragraph is on the page's AliceBlue background.</p>
+  <button>Click Me</button>
+</body>
+```
+
+Here, the entire page background is set to a light blue (AliceBlue). The
+`div` with class `highlight` has a yellow
+background. The button has a seagreen background and white text for
+contrast.
+
+### Named Colors
+
+CSS supports a list of predefined
+[named colors](https://www.w3schools.com/colors/colors_names.asp)
+(e.g., `red`, `blue`, `green`,
+`lightcoral`, `mediumseagreen`). These are easy to
+remember and use for basic styling or quick prototyping.
+
+**Example using named colors:**
+
+Tomato
+
+DodgerBlue
+
+Gold
+
+```
+.error-message {
+  color: red;
+  background-color: lightpink;
+}
+
+.success-message {
+  color: green;
+  background-color: lightgreen;
+}
+
+nav {
+  background-color: steelblue;
+  padding: 1em;
+}
+
+nav a {
+  color: white;
+}
+```
+
+```
+<!-- index.html -->
+<nav>
+  <a href="#">Home</a> | <a href="#">About</a>
+</nav>
+<p class="error-message">Something went wrong!</p>
+<p class="success-message">Operation successful!</p>
+```
+
+While named colors are convenient, for more precise color control and a
+wider range of colors, you'll often use hexadecimal, RGB, or HSL values,
+which we will cover in detail in Week 5.
+
+## Quiz Time!
+
+1. How do you write a single-line comment in CSS?
+
+`/* This is a comment */`
+
+2. Can CSS comments span multiple lines? If so, how?
+
+Yes, they can. They start with `/*` and end with
+`*/`, and anything between these markers is a comment,
+regardless of the number of lines.
+
+3. Which CSS property is used to change the text color of an element?
+
+The `color` property.
+
+4. Which CSS property is used to change the background color of an
+element?
+
+The `background-color` property.
+
+5. Write a CSS rule to make all `<h2>` elements have
+blue text and a lightgray background.
+
+Answer
+
+```
+h2 {
+            color: blue;
+            background-color: lightgray;
+          }
+```

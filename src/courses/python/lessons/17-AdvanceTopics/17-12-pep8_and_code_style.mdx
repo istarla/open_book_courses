@@ -234,7 +234,9 @@ Manually checking for PEP 8 compliance can be tedious. Thankfully, there are exc
 Integrating these tools into your development workflow (e.g., in your code editor or via pre-commit hooks) is highly recommended for maintaining consistent code style.
 
 
-import Quiz from "../../../../components/Quiz";
-import pythonQuiz from "../../../../Data/pep8_and_code";
+import Quiz from "../../../components/Quiz";
+import pythonQuiz from "../../quiz-data/pep8_and_code";
+
+<section id="Quiz-time"></section>
 
 <Quiz questions={pythonQuiz} />

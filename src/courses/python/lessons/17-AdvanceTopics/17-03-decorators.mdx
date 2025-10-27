@@ -1,4 +1,3 @@
-
 # Decorators
 <section id="decorators"></section>
 
@@ -9,7 +8,7 @@ As programs grow, you might find yourself wanting to add similar functionality (
 
 **Decorators** provide a powerful and elegant way to modify or enhance functions and methods in Python. They are a form of metaprogramming, allowing you to wrap existing functions with additional code.
 
-<img src="/images/decorators.jpg" alt="variable" className="w-150 h-100 mx-auto" />
+<img src="/src/courses/python/images/decorators.jpg" alt="variable" className="w-150 h-100 mx-auto" />
 
 Decorators leverage several concepts we've already learned:
 
@@ -230,7 +229,9 @@ say_whee("Python")
 # timer finishes and prints runtime
 ```
 
-import Quiz from "@/components/Quiz";
-import pythonQuiz from "@/Data/decorators";
+import Quiz from "../../../components/Quiz";
+import pythonQuiz from "../../quiz-data/decorators";
 
-<Quiz questions={pythonQuiz} />
+<section id="Quiz-time"></section>
+
+<Quiz questions={pythonQuiz} > </Quiz>

@@ -179,8 +179,8 @@ a_tag = build_tag(
 )
 print(a_tag) # Output: <a href="https://example.com" id="link1" target="_blank" data-info="some_value">Click here</a>
 
-img_tag = build_tag("img", "", src="/images/logo.png", alt="Logo") # Content is empty for img
-print(img_tag) # Output: <img src="/images/logo.png" alt="Logo" /> (Note: Self-closing tag logic not added here)
+img_tag = build_tag("img", "", src="/src/courses/python/images/logo.png", alt="Logo") # Content is empty for img
+print(img_tag) # Output: <img src="/src/courses/python/images/logo.png" alt="Logo" /> (Note: Self-closing tag logic not added here)
 ```
 
 ### Example 3: Processing Report Data
@@ -213,7 +213,9 @@ process_report("Experiment-X", 0.5, 0.6, 0.55, researcher="Dr. Lee", date="2025-
 process_report("Empty-Report") # Just the ID
 ```
 
-import Quiz from "../../../../components/Quiz";
-import pythonQuiz from "../../../../Data/arbitrary_arguments";
+import Quiz from "../../../components/Quiz";
+import pythonQuiz from "../../quiz-data/arbitrary_arguments";
+
+<section id="Quiz-time"></section>
 
 <Quiz questions={pythonQuiz} />

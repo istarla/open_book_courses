@@ -13,7 +13,7 @@ A set is an unordered collection of unique, immutable items.
 *   **Immutable Elements:** The items **within** a set must be of immutable types (like numbers, strings, tuples). You cannot have mutable items like lists or other sets inside a set.
 
 Sets are primarily used for membership testing (checking if an item exists in the collection) and for performing mathematical set operations (like union, intersection, difference), which we'll cover tomorrow.
-<img src="/images/sets.png" alt="variable" className="w-150 h-100 mx-auto" />
+<img src="/src/courses/python/images/sets.png" alt="variable" className="w-150 h-100 mx-auto" />
 ## Creating Sets
 <section id="creating-sets"></section>
 
@@ -248,7 +248,9 @@ unique_elements_list = list(unique_elements_set)
 print(f"Unique elements (list): {unique_elements_list}") # Order might differ
 ```
 
-import Quiz from "../../../../components/Quiz";
-import pythonQuiz from "../../../../Data/introduction_to_sets";
+import Quiz from "../../../components/Quiz";
+import pythonQuiz from "../../quiz-data/introduction_to_sets";
+
+<section id="Quiz-time"></section>
 
 <Quiz questions={pythonQuiz} />

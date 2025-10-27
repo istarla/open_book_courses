@@ -16,7 +16,7 @@ const cssCourse: Course = {
   folderName: "css",
   folderPath: "/src/courses/css",
   noOfLessons: 8,
-  imageURL: "/src/courses/assets/images/css.png",
+  imageURL: "/src/courses/assets/src/courses/python/images/css.png",
   description:
     "Master CSS step by step, from styling basics to advanced features. Covers borders, margins, lists, tables, animations, shadows, and modern design practices.",
   instructor: "OpenBook Team",

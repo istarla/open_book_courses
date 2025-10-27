@@ -1,0 +1,290 @@
+---
+title: Day 04 Background Properties
+---
+
+# Background Properties
+
+  
+
+Yesterday we covered basic color properties. Today, we'll expand on that
+by exploring the various CSS properties used to control the background
+of HTML elements. This includes not just colors, but also images, their
+repetition, position, and size.
+
+## Recap: `background-color`
+
+As we learned, `background-color` sets a solid color for the
+background of an element.
+
+```
+.element {
+  background-color: #f0e68c; /* Khaki */
+}
+```
+
+## `background-image`
+
+The `background-image` property sets one or more background
+images for an element. The image is specified using the
+`url()` function.
+
+This box has a tiled background image.
+
+```
+.hero-section {
+  background-image: url("images/hero-banner.jpg");
+  /* If the image can't be found, it's good to have a fallback color */
+  background-color: #cccccc;
+  height: 400px; /* Set a height to see the background */
+  color: white; /* Text color for contrast */
+  text-align: center;
+  padding: 20px;
+}
+```
+
+By default, if the background image is smaller than the element, it will
+repeat to fill the element.
+
+## `background-repeat`
+
+The `background-repeat` property controls if and how a
+background image repeats.
+
+Common values:
+
+* `repeat`: The default value. The image is repeated both
+  horizontally and vertically.
+* `repeat-x`: The image is repeated only horizontally.
+* `repeat-y`: The image is repeated only vertically.
+* `no-repeat`: The image is not repeated. It will only be
+  shown once.
+* `space`: The image is repeated as much as possible without
+  clipping. The first and last images are pinned to either side of the
+  element, and whitespace is distributed evenly between the images.
+* `round`: The image is repeated and squished or stretched to
+  fill the space with whole tiles.
+
+`background-repeat: no-repeat;`
+
+```
+.header-pattern {
+  background-image: url("patterns/small-pattern.png");
+  background-repeat: repeat-x; /* Repeat horizontally along the top */
+  height: 50px;
+}
+
+.sidebar-icon {
+  background-image: url("icons/info.svg");
+  background-repeat: no-repeat;
+  padding-left: 30px; /* Make space for the icon */
+  background-position: left center; /* We'll cover this next */
+}
+```
+
+## `background-position`
+
+The `background-position` property sets the initial position
+of a background image. If `background-repeat` is set to
+`no-repeat`, this property determines where the single image
+is placed.
+
+Values can be keywords (`top`, `bottom`,
+`left`, `right`, `center`),
+percentages, or length units.
+
+**Keyword examples:** `top left`,
+`center center`, `bottom right`,
+`center` (equivalent to `center center`).
+
+**Percentage/Length examples:**
+`50% 50%` (center), `20px 10px` (20px from left,
+10px from top).
+
+`background-position: center center;`
+
+```
+.icon-button {
+  background-image: url("icons/arrow-right.png");
+  background-repeat: no-repeat;
+  background-position: right center; /* Icon on the right, vertically centered */
+  padding-right: 25px; /* Space for the icon */
+}
+
+.full-bg-image {
+  background-image: url("images/scenic.jpg");
+  background-repeat: no-repeat;
+  background-position: center top; /* Center horizontally, at the top */
+  height: 300px;
+}
+```
+
+## `background-size`
+
+The `background-size` property specifies the size of the
+background images.
+
+Common values:
+
+* `auto`: The default value. The image is displayed in its
+  original size.
+* `cover`: Scales the image (while preserving its aspect
+  ratio) to be as large as possible so that the background area is
+  completely covered by the background image. Some parts of the
+  background image may not be in view.
+* `contain`: Scales the image (while preserving its aspect
+  ratio) to the largest size such that both its width and its height can
+  fit inside the content area.
+* `<length>`: Sets a specific size (e.g.,
+  `100px 50px` for width and height). A single value sets the
+  width, and height becomes `auto`.
+* `<percentage>`: Sets the size in percentage of the
+  parent element.
+
+`background-size: cover;` (Random nature image)
+
+`background-size: contain;` (Random technology image)
+
+```
+.promo-banner {
+  background-image: url("images/large-promo.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; /* Ensures the image covers the banner area */
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2em;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+.logo-container {
+  background-image: url("images/company-logo.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain; /* Ensures the entire logo is visible */
+  width: 150px;
+  height: 75px;
+  border: 1px solid #ccc;
+}
+```
+
+**Tip:** When using `background-size: cover`,
+ensure that important parts of your image are near the center, as
+edges might get cropped on different screen sizes.
+
+## `background-attachment`
+
+The `background-attachment` property sets whether a
+background image scrolls with the rest of the page, or is fixed.
+
+Common values:
+
+* `scroll`: The default value. The background image scrolls
+  with the page.
+* `fixed`: The background image is fixed with regard to the
+  viewport. It does not scroll with its containing element. This can
+  create a parallax effect.
+* `local`: The background image scrolls with the element's
+  content. If the element has a scrollbar, the background scrolls with
+  it.
+
+```
+body {
+  /* This example is best seen on a page with enough content to scroll */
+  /* For a parallax effect: */
+  /* background-image: url("images/parallax-bg.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 1000px; /* Ensure scrollability */
+  */
+}
+
+.scrolling-content-box {
+  width: 300px;
+  height: 200px;
+  overflow: auto; /* Make content scrollable */
+  background-image: url("patterns/light-pattern.png");
+  background-attachment: local;
+  border: 1px solid black;
+  padding: 10px;
+}
+```
+
+This box has `background-attachment: local`. Scroll inside
+this box to see the effect.   
+More content...
+
+## Shorthand: `background` Property
+
+You can combine all these background properties into a single shorthand
+property: `background`. The order for the values is generally
+recommended as:
+
+`background: [background-color] [background-image] [background-repeat]
+[background-attachment] [background-position] / [background-size];`
+
+(The `background-size` must be specified after
+`background-position`, separated by a '`/`'.)
+
+```
+.complex-background {
+  background: lightblue url("images/bg-texture.png") no-repeat fixed center center / cover;
+  height: 500px;
+  color: #333;
+  padding: 20px;
+  border: 1px solid #aaa;
+}
+
+/* A simpler example */
+.simple-bg {
+  background: #eee url("icons/info.png") no-repeat left center;
+  padding: 10px 10px 10px 30px; /* Left padding for icon */
+}
+```
+
+Not all values need to be present, but the order can matter for parsing,
+especially with `background-size`.
+
+## Quiz Time!
+
+1. Which CSS property is used to set an image as the background of an
+element?
+
+`background-image`
+
+2. What is the default value for `background-repeat`?
+
+`repeat` (the image is repeated both horizontally and
+vertically).
+
+3. How can you make a background image cover the entire element,
+potentially cropping parts of the image, while maintaining its aspect
+ratio?
+
+Using `background-size: cover;`.
+
+4. What does `background-attachment: fixed;` do?
+
+It fixes the background image relative to the viewport, so it doesn't
+scroll with its containing element, creating a parallax-like effect.
+
+5. Write the shorthand CSS `background` property to set a
+background color of `#f0f0f0`, an image named
+`flower.png` that does not repeat, and is positioned in the
+top right corner.
+
+Answer
+
+```
+.element {
+      background: #f0f0f0 url("flower.png") no-repeat top right;
+    }
+```
+
+(Note: `background-size` would be added after position with a
+`/` if needed, and `background-attachment` could
+also be included.)

@@ -214,8 +214,11 @@ connect_db("testing_db", host="192.168.1.100")
 connect_db("staging_db", user="admin", port=5433)
 ```
 
-import Quiz from "../../../../components/Quiz";
-import pythonQuiz from "../../../../Data/default_and_keyword";
+import Quiz from "../../../components/Quiz";
+import pythonQuiz from "../../quiz-data/default_and_keyword";
+
+
+<section id="Quiz-time"></section>
 
 <Quiz questions={pythonQuiz} />
 

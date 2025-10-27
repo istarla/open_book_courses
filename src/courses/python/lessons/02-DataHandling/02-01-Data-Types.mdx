@@ -7,7 +7,7 @@ Data is the information we store and manipulate in a Python program. Example: nu
 
 Every value in Python, from a simple number to a complex object, has a specific data type. This classification tells the interpreter what kind of value a variable holds, which is crucial because it determines the operations you can perform. You can check the type of any object using the built-in `type()` function.
 
-<img src="/images/data_img.jpg" alt="variable" className="w-150 h-100 mx-auto" />
+<img src="/src/courses/python/images/data_img.jpg" alt="variable" className="w-150 h-100 mx-auto" />
 
 ### Introduction to Data Types
 <section id="Introduction-to-data-types"></section>
@@ -25,7 +25,7 @@ print(type(value)) # Output: <class 'int'>
 value = "Hello"
 print(type(value)) # Output: <class 'str'>
 ```
-<img src="/images/1.jpg" alt="variable" className="w-150 h-100 mx-auto" />
+<img src="/src/courses/python/images/1.jpg" alt="variable" className="w-150 h-100 mx-auto" />
 ### 1. Integers (`int`)
 <section id="Integers"></section>
 Integers represent whole numbers, both positive and negative, without any decimal points. Python integers have arbitrary precision, meaning they can be as large as your computer's memory allows.
@@ -237,7 +237,9 @@ print(f"Can enter admin area? {can_enter_admin}") # False (because is_admin is F
 print(f"Is locked out? {locked_out}")            # False (because can_enter_basic is True)
 ```
 
-import Quiz from '../../../../components/Quiz'
-import pythonQuiz from '../../../../Data/datatypes_questions'
+import Quiz from '../../../components/Quiz'
+import pythonQuiz from '../../quiz-data/datatypes_questions'
+
+<section id="Quiz-time"></section>
 
 <Quiz questions={pythonQuiz} />

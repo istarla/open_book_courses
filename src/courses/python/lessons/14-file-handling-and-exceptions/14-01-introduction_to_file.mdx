@@ -174,7 +174,9 @@ finally:
 Be cautious with `readlines()` on very large files, as it reads the entire file into memory at once.
 
 
-import Quiz from "../../../../components/Quiz";
-import pythonQuiz from "../../../../Data/introduction_to_files";
+import Quiz from "../../../components/Quiz";
+import pythonQuiz from "../../quiz-data/introduction_to_files";
+
+<section id="Quiz-time"></section>
 
 <Quiz questions={pythonQuiz} />
