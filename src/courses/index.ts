@@ -43,7 +43,7 @@ export const COURSES: Course[] = [
     folderName: "html",
     folderPath: "/src/courses/html",
     noOfLessons: 8,
-    imageURL: "/src/courses/assets/src/courses/python/images/html.png",
+    imageURL: "/src/courses/assets/images/html.png",
     description:
       "Learn HTML step by step from introduction to advanced features. Covers tags, elements, forms, inputs, multimedia, and best practices.",
     instructor: "OpenBook Team",
@@ -57,7 +57,7 @@ export const COURSES: Course[] = [
     folderName: "css",
     folderPath: "/src/courses/css",
     noOfLessons: 8,
-    imageURL: "/src/courses/assets/src/courses/python/images/css.png",
+    imageURL: "/src/courses/assets/images/css.png",
     description:
       "Master CSS step by step, from styling basics to advanced features. Covers borders, margins, lists, tables, animations, shadows, and modern design practices.",
     instructor: "OpenBook Team",
@@ -71,7 +71,7 @@ export const COURSES: Course[] = [
     folderName: "python",
     folderPath: "/src/courses/python",
     noOfLessons: 8,
-    imageURL: "/src/courses/assets/src/courses/python/images/python.jpg",
+    imageURL: "/src/courses/assets/images/python.jpg",
     description:
       "Learn Python step by step from introduction to advanced features. Covers variables, data types, control flow, functions, modules, and object-oriented programming.",
     instructor: "OpenBook Team",
