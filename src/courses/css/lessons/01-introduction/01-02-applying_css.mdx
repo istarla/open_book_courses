@@ -1,0 +1,214 @@
+# Applying CSS (Inline, Internal, External)
+<section id="Applying-CSS"></section>
+
+  
+
+Yesterday, we learned what CSS is and its basic syntax. Today, we'll
+focus on the different ways you can apply CSS rules to an HTML document:
+inline styles, internal stylesheets, and external stylesheets.
+Understanding these methods is crucial for organizing your styles
+effectively.
+
+## 1. Inline Styles
+<section id="inline-styles"></section>
+
+Inline styles are applied directly to individual HTML elements using the
+`style` attribute. Each declaration is written directly
+within the attribute's value, separated by semicolons.
+
+**Syntax:**
+
+```css
+<element style="property1: value1; property2: value2;">...</element>
+```
+
+**Example:**
+
+```css
+<h1 style="color: blue; text-align: center;">This is a Blue, Centered Heading</h1>
+<p style="font-size: 18px; background-color: lightyellow;">This paragraph has a larger font and a light yellow background.</p>
+```
+
+  
+
+### Pros and Cons of Inline Styles:
+<section id="pros-and-cons-of-inline-styles"></section>
+**Pros:**
+  + Quick for testing or applying a unique style to a single element.
+  + Highest specificity in the cascade (unless overridden by
+    `!important`).
+**Cons:**
+  + Mixes presentation with content, making HTML harder to read and
+    maintain.
+  + Not reusable; styles must be individually applied to each element.
+  + Difficult to manage for larger websites.
+  + Generally considered bad practice for structuring site-wide
+    styles.
+
+**Note:** Inline styles should be used sparingly. They
+are often used in HTML emails (due to limited CSS support in some
+email clients) or by JavaScript to dynamically change styles.
+
+## 2. Internal Stylesheets (Embedded CSS)
+<section id="internal-stylesheets"></section>
+Internal stylesheets are defined within the
+`<style>` element, placed inside the
+`<head>` section of an HTML document. The CSS rules
+written here apply only to the current HTML page.
+
+**Syntax:**
+
+```css
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Internal CSS Example</title>
+  <style>
+    body {
+      background-color: #f0f0f0;
+    }
+    h1 {
+      color: green;
+      font-family: Verdana, sans-serif;
+    }
+    p {
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Heading Styled with Internal CSS</h1>
+  <p>This paragraph is also styled by the internal stylesheet.</p>
+</body>
+</html>
+```
+
+### Pros and Cons of Internal Stylesheets:
+<section id="pros-and-cons-of-internal-stylesheets"></section>
+**Pros:**
+  + Keeps styles for a single page in one place.
+  + Selectors and classes can be used, allowing styles to be applied
+    to multiple elements on the page.
+  + No extra HTTP request is needed to fetch the CSS file (unlike
+    external stylesheets).
+**Cons:**
+  + Styles are only for the current page; cannot be reused across
+    multiple pages of a website.
+  + For larger websites, this can lead to code duplication if similar
+    styles are needed on different pages.
+  + Increases the size of the HTML document.
+
+**Note:** Internal stylesheets are useful for single-page
+websites or for styles that are truly unique to one specific page.
+
+## 3. External Stylesheets
+<section id="external-stylesheets"></section>
+
+External stylesheets are the most common and recommended method for
+applying CSS. Styles are defined in separate `.css` files
+(e.g., `styles.css`), which are then linked to HTML documents
+using the `<link>` element within the
+`<head>` section.
+
+**Syntax:**
+
+First, create a CSS file (e.g., `mystyles.css`):
+
+```css
+/* mystyles.css */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  background-color: #e9ecef;
+}
+
+header {
+  background-color: #333;
+  color: white;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
+  padding: 20px;
+}
+```
+
+Then, link this CSS file in your HTML document:
+
+```css
+<!DOCTYPE html>
+<html>
+<head>
+  <title>External CSS Example</title>
+  <link rel="stylesheet" type="text/css" href="mystyles.css">
+</head>
+<body>
+  <header>
+    <h1>Website Title</h1>
+  </header>
+  <div class="container">
+    <p>This page uses an external stylesheet for its design.</p>
+  </div>
+</body>
+</html>
+```
+
+The `<link>` element has a few important attributes:
+
+* `rel="stylesheet"`: Specifies the relationship between the
+  HTML document and the linked file.
+* `type="text/css"`: Specifies the media type of the linked
+  document (though this is often omitted in HTML5 as it's the default
+  for `rel="stylesheet"`).
+* `href="mystyles.css"`: Specifies the path to the CSS file.
+
+### Pros and Cons of External Stylesheets:
+<section id="pros-and-cons-of-external-stylesheets"></section>
+**Pros:**
+  + **Separation of Concerns:** Keeps HTML (content) and
+    CSS (presentation) completely separate.
+  + **Reusability:** The same CSS file can be linked to
+    multiple HTML pages, ensuring a consistent look and feel across an
+    entire website.
+  + **Maintainability:** Easier to manage and update
+    styles for large websites, as changes in one
+    `.css` file can affect many pages.
+  + **Caching:** Browsers can cache external CSS files,
+    leading to faster page loads on subsequent visits.
+  + **Cleaner HTML:** HTML markup remains cleaner and
+    more semantic.
+**Cons:**
+  + Requires an additional HTTP request to load the CSS file (though
+    caching mitigates this).
+  + Pages might not render correctly until the external CSS is fully
+    loaded (though this is usually very fast).
+```css
+**Best Practice:** For most web development projects,
+external stylesheets are the preferred method for managing CSS.
+```
+## Order of Precedence (The Cascade)
+<section id="order-of-precedence-the-cascade"></section>
+When multiple styles are applied to the same element, the browser needs
+to decide which style to use. This is where the "Cascading" part of CSS
+comes in. The general order of precedence is (from lowest to highest):
+
+1. Browser default styles
+2. External stylesheets
+3. Internal stylesheets
+4. Inline styles
+
+Styles marked with `!important` can override this order, but
+should be used with extreme caution. We'll delve deeper into specificity
+and the cascade in a later lesson.
+
+
+import Quiz from '../../../components/Quiz'
+import cssMCQs from '../quiz-data/apply_css.js'
+
+
+<section id="quiz-time"></section>
+<Quiz questions={cssMCQs} />

@@ -18,10 +18,10 @@ import MembershipidentifyOperators from "./lessons/03-Operators/03-05-Membership
 import conditionalExpressions from "./lessons/03-Operators/03-06-Conditional_Expressions.mdx";
 
 // ===== 04 - Strings =====
-import IntroductionToStrings from "./lessons/04-Strings/04-01-Introduction_to_strings.mdx";
+import IntroductionToStrings from "./lessons/04-Strings/04-01-Introduction_to_Strings.mdx";
 
 // ===== 05 - Input & Output =====
-import inputandoutput from "./lessons/05-InputandOutput/05-01-input_and_output.mdx";
+import inputandoutput from "./lessons/05-InputandOutput/05-01-Input_and_output.mdx";
 
 // ===== 06 - Conditional Statements =====
 import ifStatement from "./lessons/06-ConditionalStatements/06-01-if_Statement.mdx";
@@ -42,7 +42,7 @@ import listcomprehensions from "./lessons/08-lists/08-04-list_comprehensions.mdx
 import Tuples from "./lessons/09-Tuples/09-01-Introduction_to_tuples.mdx";
 import workingwithtuples from "./lessons/09-Tuples/09-02-working_with_tuples.mdx";
 //============10-dictionaries============================
-import Introductiontodictionaries from "./lessons/10-dictionaries/10-01-introduction_to_dictionaries.mdx";
+import Introductiontodictionaries from "./lessons/10-dictionaries/10-01-Introduction_to_dictionaries.mdx";
 import workingwithdictionaries from "./lessons/10-dictionaries/10-02-working_with_dictionaries.mdx";
 //============11-sets============================
 import introductiontosets from "./lessons/11-sets/11-01-introduction_to_sets.mdx";

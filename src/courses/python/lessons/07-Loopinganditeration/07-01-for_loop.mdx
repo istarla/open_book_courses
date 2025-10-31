@@ -6,7 +6,7 @@ Conditional statements (`if`, `elif`, `else`) allow us to choose which code path
 Loops are control flow structures designed to execute a block of code repeatedly. Python provides two main types of loops: `for` loops and `while` loops (which we'll cover next).
 
 `for` loops are typically used when you know how many times you want to iterate (repeat) or when you want to iterate over the items in a sequence (like a string, list, or tuple).
-<img src="/src/courses/python/images/for_loop.jpg" alt="variable" className="w-150 h-100 mx-auto" />
+
 
 ## for Loop Syntax
 <section id="for-loop-syntax"></section>
@@ -23,8 +23,16 @@ for loop_variable in iterable:
 statement_after_loop
 ```
 
+### for example:
+        ```python
+            n = 4
+            for i in range(0, n):
+            print(i)
+        ```
+### output:
+    0 1 2 3
+<img src="/src/courses/python/images/for_loop.png" alt="variable" className=" w-100 h-150 mx-auto" />
 ## Key components:
-
 *   **for**: The keyword that starts the loop.
 *   **loop_variable**: A variable name you choose. In each iteration of the loop, this variable will automatically be assigned the current item from the iterable.
 *   **in**: Keyword separating the loop variable from the iterable.
