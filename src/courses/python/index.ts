@@ -26,7 +26,7 @@ import inputandoutput from "./lessons/05-Inputandoutput/05-01-Input_and_output.m
 // ===== 06 - Conditional Statements =====
 import ifStatement from "./lessons/06-ConditionalStatements/06-01-if_Statement.mdx";
 import ifelseStatement from "./lessons/06-ConditionalStatements/06-02-if_else_Statement.mdx";
-import ifelefelseStatement from "./lessons/06-ConditionalStatements/06-03-if_elif_else_Statement.mdx";
+import ifelefelseStatement from "./lessons/06-ConditionalStatements/06-03-if_elif_else_statement.mdx";
 import nestedstatement from "./lessons/06-ConditionalStatements/06-04-Nested_Statement.mdx";
 //============07-looping-and-iterations============================
 import forloop from "./lessons/07-Loopinganditeration/07-01-for_loop.mdx";
@@ -42,7 +42,7 @@ import listcomprehensions from "./lessons/08-lists/08-04-list_comprehensions.mdx
 import Tuples from "./lessons/09-Tuples/09-01-Introduction_to_tuples.mdx";
 import workingwithtuples from "./lessons/09-Tuples/09-02-working_with_tuples.mdx";
 //============10-dictionaries============================
-import Introductiontodictionaries from "./lessons/10-dictionaries/10-01-Introduction_to_dictionaries.mdx";
+import Introductiontodictionaries from "./lessons/10-dictionaries/10-01-introduction_to_dictionaries.mdx";
 import workingwithdictionaries from "./lessons/10-dictionaries/10-02-working_with_dictionaries.mdx";
 //============11-sets============================
 import introductiontosets from "./lessons/11-sets/11-01-introduction_to_sets.mdx";
@@ -54,39 +54,39 @@ import Defaultandkeyword from "./lessons/12-functions/12-03-Default_and_Keywords
 import arbitraryarguments from "./lessons/12-functions/12-04-arbitrary_arguments.mdx";
 import returningvalues from "./lessons/12-functions/12-05-return_values_and_scope.mdx";
 import lambdafunctions from "./lessons/12-functions/12-06-lambda_functions.mdx";
-//=================modules_and_packages================================
+//=================13-odules_and_packages================================
 import importingmodules from "./lessons/13-modules_and_packages/13-01-importing_modules.mdx";
 import creatingmodules from "./lessons/13-modules_and_packages/13-02-creating_modules.mdx";
-//=====================file_handling_and_exceptions======================
+//=====================14-file_handling_and_exceptions======================
 import filehandling from "./lessons/14-file-handling-and-exceptions/14-01-introduction_to_file.mdx";
 import writingtofiles from "./lessons/14-file-handling-and-exceptions/14-02-writing_to_files.mdx";
 import filemodesandwithstatements from "./lessons/14-file-handling-and-exceptions/14-03-file_modes_and_with_statement.mdx";
-//============================exceptions==========================================
+//============================15-exceptions==========================================
 import introductionexceptions from "./lessons/15-exceptions/15-01-introduction_to_exceptions.mdx";
 import handlingexceptions from "./lessons/15-exceptions/15-02-handling_exceptions_try_exception.mdx";
 import  multipleexceptionblocksfinally from "./lessons/15-exceptions/15-03-multiple_exception_blocks_finally.mdx";
 import  raisingexceptions from "./lessons/15-exceptions/15-04-raising_exceptions.mdx";
-//===============================oops==================================================
+//===============================16-oops==================================================
 import introductiontoops from "./lessons/16-oops/16-01-introduction_to_oop.mdx";
 import classattributesandmethods from "./lessons/16-oops/16-02-class_attributes_and_methods.mdx";
 import instanceattributesandmethods from "./lessons/16-oops/16-03-instance_attributes_init_method.mdx";
 import inheritance from "./lessons/16-oops/16-04-inheritance.mdx";
 import polymorphism from "./lessons/16-oops/16-05-polymorphism_and_encapsulation.mdx";
 //========================AdvanceTopics================================
-import iteratorsanditerables from "./lessons/17-Advancetopics/17-01-iterators_and_iterables.mdx";
-import generators from "./lessons/17-Advancetopics/17-02-generators.mdx";
-import decorators from "./lessons/17-Advancetopics/17-03-decorators.mdx";
-import  context_managers from "./lessons/17-Advancetopics/17-04-context_managers_with.mdx";
-import standardlibraryoverviewpt1 from "./lessons/17-Advancetopics/17-05-standard_library_overview_pt1.mdx";
-import standardlibraryoverviewpt2 from "./lessons/17-Advancetopics/17-06-standard_library_overview_pt2.mdx";
-import virtualenvironments from "./lessons/17-Advancetopics/17-07-virtual_environments.mdx";
-import  introtorequestslibrary from "./lessons/17-Advancetopics/17-08-intro_to_requests_library.mdx";
-import introtonumpyandpandas from "./lessons/17-Advancetopics/17-09-intro_to_numpy_pandas.mdx";
-import introtoflaskdjango from "./lessons/17-Advancetopics/17-10-intro_to_flask_django.mdx";
-import basictestingwithunittest from "./lessons/17-Advancetopics/17-11-basic_testing_with_unittest.mdx";
-import pep8andcodestyle from "./lessons/17-Advancetopics/17-12-pep8_and_code_style.mdx";
-import coursereviewandprojectideas from "./lessons/17-Advancetopics/17-13-course_review_and_project_ideas.mdx";
-import furtherlearningresources from "./lessons/17-Advancetopics/17-14-further_learning_resources.mdx";
+import iteratorsanditerables from "./lessons/17-AdvanceTopics/17-01-iterators_and_iterables.mdx";
+import generators from "./lessons/17-AdvanceTopics/17-02-generators.mdx";
+import decorators from "./lessons/17-AdvanceTopics/17-03-decorators.mdx";
+import  context_managers from "./lessons/17-AdvanceTopics/17-04-context_managers_with.mdx";
+import standardlibraryoverviewpt1 from "./lessons/17-AdvanceTopics/17-05-standard_library_overview_pt1.mdx";
+import standardlibraryoverviewpt2 from "./lessons/17-AdvanceTopics/17-06-standard_library_overview_pt2.mdx";
+import virtualenvironments from "./lessons/17-AdvanceTopics/17-07-virtual_environments.mdx";
+import  introtorequestslibrary from "./lessons/17-AdvanceTopics/17-08-intro_to_requests_library.mdx";
+import introtonumpyandpandas from "./lessons/17-AdvanceTopics/17-09-intro_to_numpy_pandas.mdx";
+import introtoflaskdjango from "./lessons/17-AdvanceTopics/17-10-intro_to_flask_django.mdx";
+import basictestingwithunittest from "./lessons/17-AdvanceTopics/17-11-basic_testing_with_unittest.mdx";
+import pep8andcodestyle from "./lessons/17-AdvanceTopics/17-12-pep8_and_code_style.mdx";
+import coursereviewandprojectideas from "./lessons/17-AdvanceTopics/17-13-course_review_and_project_ideas.mdx";
+import furtherlearningresources from "./lessons/17-AdvanceTopics/17-14-further_learning_resources.mdx";
 import furtherlearning from "./lessons/17-AdvanceTopics/17-15-further_learning_resources.mdx"
 
 
