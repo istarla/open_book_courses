@@ -1,9 +1,6 @@
----
-title: Day 03 Css Comments And Basic Color Properties
----
 
 # CSS Comments and Basic Color Properties
-
+<section id="css-comments-and-basic-color-properties"></section>
   
 
 On our third day, we'll cover how to add comments to your CSS code for
@@ -12,7 +9,7 @@ most fundamental aspects of styling: CSS color properties, focusing on
 how to define colors for text and backgrounds.
 
 ## CSS Comments
-
+<section id="css-comments"></section>
 Comments in CSS are used to explain your code, make it more readable, or
 temporarily disable parts of your stylesheet. Browsers ignore comments,
 so they don't affect the functionality of your CSS.
@@ -22,7 +19,7 @@ They can span multiple lines.
 
 **Syntax:**
 
-```
+```css
 /* This is a single-line comment */
 
 p {
@@ -49,7 +46,7 @@ h1 {
 ```
 
 ### Why Use Comments?
-
+<section id="why-use-comments"></section>
 * **Explanation:** Clarify complex or non-obvious CSS rules
   for yourself or other developers.
 * **Organization:** Divide your stylesheet into logical
@@ -64,7 +61,7 @@ something, not just *what* you did. Good code often explains
 itself, but the reasoning behind a choice might not be obvious.
 
 ## Basic CSS Color Properties
-
+<section id="basic-css-color-properties"></section>
 Color is a fundamental aspect of web design. CSS provides several
 properties to control the colors of various parts of your HTML elements.
 Today, we'll focus on two primary ones: `color` for text and
@@ -75,13 +72,13 @@ RGB) in a later lesson. For now, we'll primarily use named colors and
 simple hex codes.
 
 ### 1. The `color` Property
-
+<section id="the-color-property"></section>
 The `color` property is used to set the color of the text
 content of an HTML element.
 
 **Example:**
 
-```
+```css
 /* styles.css */
 h1 {
   color: navy; /* Sets the text color of h1 elements to navy */
@@ -96,7 +93,7 @@ p {
 }
 ```
 
-```
+```html
 <!-- index.html -->
 <h1>Main Title</h1>
 <p>This is a standard paragraph with dark gray text.</p>
@@ -108,7 +105,7 @@ text, regular paragraphs will have dark gray text, and any element with
 the class `special-text` will have crimson text.
 
 ### 2. The `background-color` Property
-
+<section id="the-background-color-property"></section>
 The `background-color` property sets the background color of
 an element. The background extends to the outer edge of the element's
 padding (or border if `box-sizing: border-box` is used and
@@ -116,7 +113,7 @@ padding is included).
 
 **Example:**
 
-```
+```css
 /* styles.css */
 body {
   background-color: #f0f8ff; /* AliceBlue background for the whole page */
@@ -135,7 +132,7 @@ button {
 }
 ```
 
-```
+```html
 <!-- index.html -->
 <body>
   <div class="highlight">
@@ -152,7 +149,7 @@ background. The button has a seagreen background and white text for
 contrast.
 
 ### Named Colors
-
+<section id="named-colors"></section>
 CSS supports a list of predefined
 [named colors](https://www.w3schools.com/colors/colors_names.asp)
 (e.g., `red`, `blue`, `green`,
@@ -167,7 +164,7 @@ DodgerBlue
 
 Gold
 
-```
+```css
 .error-message {
   color: red;
   background-color: lightpink;
@@ -188,7 +185,7 @@ nav a {
 }
 ```
 
-```
+```html
 <!-- index.html -->
 <nav>
   <a href="#">Home</a> | <a href="#">About</a>
@@ -201,35 +198,9 @@ While named colors are convenient, for more precise color control and a
 wider range of colors, you'll often use hexadecimal, RGB, or HSL values,
 which we will cover in detail in Week 5.
 
-## Quiz Time!
 
-1. How do you write a single-line comment in CSS?
+import Quiz from '../../../components/Quiz'
+import cssMCQs from '../quiz-data/css_comments.js'
 
-`/* This is a comment */`
-
-2. Can CSS comments span multiple lines? If so, how?
-
-Yes, they can. They start with `/*` and end with
-`*/`, and anything between these markers is a comment,
-regardless of the number of lines.
-
-3. Which CSS property is used to change the text color of an element?
-
-The `color` property.
-
-4. Which CSS property is used to change the background color of an
-element?
-
-The `background-color` property.
-
-5. Write a CSS rule to make all `<h2>` elements have
-blue text and a lightgray background.
-
-Answer
-
-```
-h2 {
-            color: blue;
-            background-color: lightgray;
-          }
-```
+<section id="quiz-time"></section>
+<Quiz questions={cssMCQs} />

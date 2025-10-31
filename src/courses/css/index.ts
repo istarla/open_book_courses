@@ -2,6 +2,7 @@ import type { Course } from "../index";
 
 import Introduction from "./lessons/01-introduction/01-01-what_is_css_syntax_and_selectors.mdx";
 import applyingcss from "./lessons/01-introduction/01-02-applying_css.mdx";
+import csscomments from "./lessons/01-introduction/01-03-css_comments_and_basic_color_properties.mdx";
 
 
 
@@ -60,6 +61,24 @@ const cssCourse: Course = {
         {id:"quiz-time",title:"quiz-time"},
     ],
    },
+   {
+    type:"file",
+    id:"css-comments,",
+    title:"css-comments",
+    component:csscomments,
+    sections:[
+      {id:"css-comments-and-basic-color-properties",title:"css-comments-and-basic-color-properties"},
+      {id:"css-comments",title:"css-comments"},
+      {id:"why-use-comments",title:"why-use-comments"},
+      {id:"basic-css-color-properties",title:"basic-css-color-properties"},
+      {id:"named-colors",title:"named-colors"},
+      {id:"quiz-time",title:"quiz-time"}
+      
+
+    ],
+
+   },
+      
    ],
 
     },

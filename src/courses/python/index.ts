@@ -21,7 +21,7 @@ import conditionalExpressions from "./lessons/03-Operators/03-06-Conditional_Exp
 import IntroductionToStrings from "./lessons/04-Strings/04-01-Introduction_to_Strings.mdx";
 
 // ===== 05 - Input & Output =====
-import inputandoutput from "./lessons/05-InputandOutput/05-01-Input_and_output.mdx";
+import inputandoutput from "./lessons/05-Inputandoutput/05-01-Input_and_output.mdx";
 
 // ===== 06 - Conditional Statements =====
 import ifStatement from "./lessons/06-ConditionalStatements/06-01-if_Statement.mdx";
@@ -29,7 +29,7 @@ import ifelseStatement from "./lessons/06-ConditionalStatements/06-02-if_else_St
 import ifelefelseStatement from "./lessons/06-ConditionalStatements/06-03-if_elif_else_Statement.mdx";
 import nestedstatement from "./lessons/06-ConditionalStatements/06-04-Nested_Statement.mdx";
 //============07-looping-and-iterations============================
-import forloop from "./lessons/07-loopinganditeration/07-01-for_loop.mdx";
+import forloop from "./lessons/07-Loopinganditeration/07-01-for_loop.mdx";
 import whileloop from "./lessons/07-Loopinganditeration/07-02-while_loop.mdx";
 import loopcontrol from "./lessons/07-Loopinganditeration/07-03-loop_control_statements.mdx";
 import nestedloop from "./lessons/07-Loopinganditeration/07-04-nested_loop.mdx";
@@ -73,20 +73,20 @@ import instanceattributesandmethods from "./lessons/16-oops/16-03-instance_attri
 import inheritance from "./lessons/16-oops/16-04-inheritance.mdx";
 import polymorphism from "./lessons/16-oops/16-05-polymorphism_and_encapsulation.mdx";
 //========================AdvanceTopics================================
-import iteratorsanditerables from "./lessons/17-advancetopics/17-01-iterators_and_iterables.mdx";
-import generators from "./lessons/17-advancetopics/17-02-generators.mdx";
-import decorators from "./lessons/17-advancetopics/17-03-decorators.mdx";
-import  context_managers from "./lessons/17-advancetopics/17-04-context_managers_with.mdx";
-import standardlibraryoverviewpt1 from "./lessons/17-advancetopics/17-05-standard_library_overview_pt1.mdx";
-import standardlibraryoverviewpt2 from "./lessons/17-advancetopics/17-06-standard_library_overview_pt2.mdx";
-import virtualenvironments from "./lessons/17-advancetopics/17-07-virtual_environments.mdx";
-import  introtorequestslibrary from "./lessons/17-advancetopics/17-08-intro_to_requests_library.mdx";
-import introtonumpyandpandas from "./lessons/17-advancetopics/17-09-intro_to_numpy_pandas.mdx";
-import introtoflaskdjango from "./lessons/17-advancetopics/17-10-intro_to_flask_django.mdx";
-import basictestingwithunittest from "./lessons/17-advancetopics/17-11-basic_testing_with_unittest.mdx";
-import pep8andcodestyle from "./lessons/17-advancetopics/17-12-pep8_and_code_style.mdx";
-import coursereviewandprojectideas from "./lessons/17-advancetopics/17-13-course_review_and_project_ideas.mdx";
-import furtherlearningresources from "./lessons/17-advancetopics/17-14-further_learning_resources.mdx";
+import iteratorsanditerables from "./lessons/17-Advancetopics/17-01-iterators_and_iterables.mdx";
+import generators from "./lessons/17-Advancetopics/17-02-generators.mdx";
+import decorators from "./lessons/17-Advancetopics/17-03-decorators.mdx";
+import  context_managers from "./lessons/17-Advancetopics/17-04-context_managers_with.mdx";
+import standardlibraryoverviewpt1 from "./lessons/17-Advancetopics/17-05-standard_library_overview_pt1.mdx";
+import standardlibraryoverviewpt2 from "./lessons/17-Advancetopics/17-06-standard_library_overview_pt2.mdx";
+import virtualenvironments from "./lessons/17-Advancetopics/17-07-virtual_environments.mdx";
+import  introtorequestslibrary from "./lessons/17-Advancetopics/17-08-intro_to_requests_library.mdx";
+import introtonumpyandpandas from "./lessons/17-Advancetopics/17-09-intro_to_numpy_pandas.mdx";
+import introtoflaskdjango from "./lessons/17-Advancetopics/17-10-intro_to_flask_django.mdx";
+import basictestingwithunittest from "./lessons/17-Advancetopics/17-11-basic_testing_with_unittest.mdx";
+import pep8andcodestyle from "./lessons/17-Advancetopics/17-12-pep8_and_code_style.mdx";
+import coursereviewandprojectideas from "./lessons/17-Advancetopics/17-13-course_review_and_project_ideas.mdx";
+import furtherlearningresources from "./lessons/17-Advancetopics/17-14-further_learning_resources.mdx";
 import furtherlearning from "./lessons/17-AdvanceTopics/17-15-further_learning_resources.mdx"
 
 

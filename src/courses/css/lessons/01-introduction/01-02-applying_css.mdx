@@ -1,8 +1,6 @@
 # Applying CSS (Inline, Internal, External)
 <section id="Applying-CSS"></section>
 
-  
-
 Yesterday, we learned what CSS is and its basic syntax. Today, we'll
 focus on the different ways you can apply CSS rules to an HTML document:
 inline styles, internal stylesheets, and external stylesheets.
@@ -58,7 +56,7 @@ written here apply only to the current HTML page.
 
 **Syntax:**
 
-```css
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -139,7 +137,7 @@ header {
 
 Then, link this CSS file in your HTML document:
 
-```css
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -181,15 +179,16 @@ The `<link>` element has a few important attributes:
     leading to faster page loads on subsequent visits.
   + **Cleaner HTML:** HTML markup remains cleaner and
     more semantic.
+    
 **Cons:**
   + Requires an additional HTTP request to load the CSS file (though
     caching mitigates this).
   + Pages might not render correctly until the external CSS is fully
     loaded (though this is usually very fast).
-```css
-**Best Practice:** For most web development projects,
+
+* **Best Practice:** For most web development projects,
 external stylesheets are the preferred method for managing CSS.
-```
+
 ## Order of Precedence (The Cascade)
 <section id="order-of-precedence-the-cascade"></section>
 When multiple styles are applied to the same element, the browser needs

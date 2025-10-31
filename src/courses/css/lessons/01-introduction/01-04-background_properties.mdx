@@ -1,9 +1,5 @@
----
-title: Day 04 Background Properties
----
-
 # Background Properties
-
+<section id="css-comments-and-basic-color-properties"></section>
   
 
 Yesterday we covered basic color properties. Today, we'll expand on that
@@ -12,25 +8,26 @@ of HTML elements. This includes not just colors, but also images, their
 repetition, position, and size.
 
 ## Recap: `background-color`
+<section id="recap-background-color"></section>
 
 As we learned, `background-color` sets a solid color for the
 background of an element.
 
-```
+```css
 .element {
   background-color: #f0e68c; /* Khaki */
 }
 ```
 
 ## `background-image`
-
+<section id="background-image"></section>
 The `background-image` property sets one or more background
 images for an element. The image is specified using the
 `url()` function.
 
 This box has a tiled background image.
 
-```
+```css
 .hero-section {
   background-image: url("images/hero-banner.jpg");
   /* If the image can't be found, it's good to have a fallback color */
@@ -46,7 +43,7 @@ By default, if the background image is smaller than the element, it will
 repeat to fill the element.
 
 ## `background-repeat`
-
+<section id="background-repeat"></section>
 The `background-repeat` property controls if and how a
 background image repeats.
 
@@ -66,7 +63,7 @@ Common values:
 
 `background-repeat: no-repeat;`
 
-```
+```css
 .header-pattern {
   background-image: url("patterns/small-pattern.png");
   background-repeat: repeat-x; /* Repeat horizontally along the top */
@@ -82,7 +79,7 @@ Common values:
 ```
 
 ## `background-position`
-
+<section id="background-position"></section>
 The `background-position` property sets the initial position
 of a background image. If `background-repeat` is set to
 `no-repeat`, this property determines where the single image
@@ -102,7 +99,7 @@ percentages, or length units.
 
 `background-position: center center;`
 
-```
+```css
 .icon-button {
   background-image: url("icons/arrow-right.png");
   background-repeat: no-repeat;
@@ -119,7 +116,7 @@ percentages, or length units.
 ```
 
 ## `background-size`
-
+<section id="background-size"></section>
 The `background-size` property specifies the size of the
 background images.
 
@@ -144,7 +141,7 @@ Common values:
 
 `background-size: contain;` (Random technology image)
 
-```
+```css
 .promo-banner {
   background-image: url("images/large-promo.jpg");
   background-repeat: no-repeat;
@@ -175,7 +172,7 @@ ensure that important parts of your image are near the center, as
 edges might get cropped on different screen sizes.
 
 ## `background-attachment`
-
+<section id="background-attachment"></section>
 The `background-attachment` property sets whether a
 background image scrolls with the rest of the page, or is fixed.
 
@@ -190,7 +187,7 @@ Common values:
   content. If the element has a scrollbar, the background scrolls with
   it.
 
-```
+```css
 body {
   /* This example is best seen on a page with enough content to scroll */
   /* For a parallax effect: */
@@ -219,7 +216,7 @@ this box to see the effect.
 More content...
 
 ## Shorthand: `background` Property
-
+<section id="shorthand-background-property"></section>
 You can combine all these background properties into a single shorthand
 property: `background`. The order for the values is generally
 recommended as:
@@ -230,7 +227,7 @@ recommended as:
 (The `background-size` must be specified after
 `background-position`, separated by a '`/`'.)
 
-```
+```css
 .complex-background {
   background: lightblue url("images/bg-texture.png") no-repeat fixed center center / cover;
   height: 500px;
